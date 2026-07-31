@@ -231,7 +231,11 @@ body{margin:0;padding:22px;background:var(--page);color:var(--ink);
 header{display:flex;align-items:center;gap:16px;margin-bottom:20px;
   background:var(--brand-bg);color:#fff;padding:18px 22px;border-radius:8px;
   border-bottom:4px solid var(--accent)}
-header .logowrap{margin-bottom:0;flex:none}
+/* Needs its own white plate, same as the contact card — the wordmark's ink
+   isn't theme-aware and its navy is close enough to the header's navy to
+   nearly vanish without one. */
+header .logowrap{margin-bottom:0;flex:none;display:inline-block;
+  background:#fff;padding:8px 12px;border-radius:6px}
 header .krlogo{width:108px}
 header .t{flex:1}
 h1{font-size:21px;margin:0 0 3px;color:#fff;font-weight:700;letter-spacing:-.01em}
