@@ -544,17 +544,17 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
           reference, not a headline.
      The accent rule also drops 4px to 3px: at phone width a 4px bar reads as a
      third element rather than a trim. */
+  /* Side-by-side with the title squeezed the mark down to the point it wasn't
+     readable. Stacked, it can run full-size across its own row. */
   header{padding:14px 16px;gap:10px;margin-bottom:14px;border-bottom-width:3px;
-    align-items:flex-start}
+    flex-direction:column;align-items:flex-start}
   h1{font-size:20px;line-height:1.2;margin:0 0 4px}
   .sub{font-size:12.5px;line-height:1.4}
   .sub .stamp{display:block;font-size:11.5px;opacity:.72;margin-top:2px}
   .sub .stamp::before{content:none}
   #export{display:none}
-  /* Shrunk rather than hidden like #export — measured at 390px, a 58px mark
-     plus a tighter plate still leaves the title a full line's width. */
-  header .logowrap{padding:7px 9px}
-  header .krlogo{width:80px}
+  header .logowrap{padding:7px 10px}
+  header .krlogo{width:130px}
   /* Stays at readable body size on purpose — see the .notice comment above; a
      public tool cannot put its caveats in the footer. Only the padding and the
      leading tighten here, and the deadline explanation moved into the coverage
