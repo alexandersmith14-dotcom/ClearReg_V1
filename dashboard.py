@@ -548,10 +548,10 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   .sub .stamp{display:block;font-size:11.5px;opacity:.72;margin-top:2px}
   .sub .stamp::before{content:none}
   #export{display:none}
-  /* Same reasoning as #export: a 108px logo plate is real estate a phone
-     header doesn't have, and the wordmark already appears in the contact
-     card lower on the page. */
-  header .logowrap{display:none}
+  /* Shrunk rather than hidden like #export — measured at 390px, a 58px mark
+     plus a tighter plate still leaves the title a full line's width. */
+  header .logowrap{padding:5px 7px}
+  header .krlogo{width:58px}
   /* Stays at readable body size on purpose — see the .notice comment above; a
      public tool cannot put its caveats in the footer. Only the padding and the
      leading tighten here, and the deadline explanation moved into the coverage
