@@ -340,27 +340,12 @@ def parse_chunk_date(chunk):
 
 def fetch_rss(source):
     # feedparser sends its own User-Agent by default, which FTC rejects with a 403.
-    #
-    # health.py marks a source BROKEN on a single failed run, no averaging like
-    # the QUIET threshold gets, so one dropped connection reads the same as a
-    # genuinely dead source. CFPB Rules hit IncompleteRead twice in under an
-    # hour while curl fetched it clean both times — a runner-side network blip,
-    # not the feed. A couple of quick retries absorbs that without hiding a real
-    # break: three strikes in a row is a different story than one.
-    parsed = None
-    for attempt in range(3):
-        try:
-            parsed = feedparser.parse(source["url"], agent=UA["User-Agent"])
-            status = parsed.get("status")
-            if status and status >= 400:
-                raise RuntimeError(f"HTTP {status}")
-            if not parsed.entries:
-                raise RuntimeError("feed returned 0 entries")
-            break
-        except Exception:
-            if attempt == 2:
-                raise
-            time.sleep(3)
+    parsed = feedparser.parse(source["url"], agent=UA["User-Agent"])
+    status = parsed.get("status")
+    if status and status >= 400:
+        raise RuntimeError(f"HTTP {status}")
+    if not parsed.entries:
+        raise RuntimeError("feed returned 0 entries")
     return [
         {
             "agency": source["agency"],
@@ -634,13 +619,32 @@ SOURCES = (
     + [(s, fetch_dob) for s in DOB_PAGES]
 )
 
+def fetch_with_retry(fetch, source, attempts=3, pause=3):
+    # health.py marks a source BROKEN on a single failed run, no averaging like
+    # the QUIET threshold gets, so one dropped connection reads the same as a
+    # genuinely dead source. In one day: CFPB Rules hit IncompleteRead twice,
+    # OCC returned 0 entries, and TX Dept of Banking failed DNS resolution —
+    # three different sources, three different fetch mechanisms (feedparser,
+    # RSS, a custom-SSL urllib scrape), three different error shapes, but curl
+    # fetched all three clean immediately after. That pattern is the runner's
+    # network, not the sources, so the retry belongs at the call site shared
+    # by every fetcher rather than duplicated inside each one.
+    for attempt in range(attempts):
+        try:
+            return fetch(source)
+        except Exception:
+            if attempt == attempts - 1:
+                raise
+            time.sleep(pause)
+
+
 def main():
     results, failures = [], []
     counts = {}
 
     for source, fetch in SOURCES:
         try:
-            items = fetch(source)
+            items = fetch_with_retry(fetch, source)
             results.extend(items)
             counts[source["agency"]] = counts.get(source["agency"], 0) + len(items)
             print(f"  OK    {source['agency']:20} {len(items)} items")
