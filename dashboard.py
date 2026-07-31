@@ -429,7 +429,15 @@ header button:hover{filter:brightness(1.06)}
 #filters summary{display:none}          /* desktop: always expanded, no control */
 #filters>.pillgroup:last-of-type{margin-bottom:18px}
 .cols{display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:start}
-@media (max-width:900px){.cols{grid-template-columns:1fr}}
+/* The update feed runs far longer than the sidebar (deadlines + agency
+   counts), so once the feed scrolls past it the sidebar just ends, leaving a
+   tall blank column beside more update cards. Sticky keeps it in view while
+   the feed scrolls — align-items:start above matters here: it keeps the
+   sidebar's own box at its natural (short) height rather than stretched to
+   match the feed, which is what gives it room to travel within the grid row
+   before its own bottom reaches the row's bottom and it scrolls away normally. */
+.colside{position:sticky;top:18px}
+@media (max-width:900px){.cols{grid-template-columns:1fr}.colside{position:static}}
 
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
