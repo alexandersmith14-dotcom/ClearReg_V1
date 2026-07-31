@@ -434,7 +434,11 @@ header button:hover{filter:brightness(1.06)}
   padding:4px 7px;cursor:pointer;white-space:nowrap}
 .dl .cal:hover{border-color:var(--border);text-decoration:underline}
 
-.agrow{display:grid;grid-template-columns:120px 1fr 74px;gap:7px 10px;align-items:center}
+/* minmax floor on the meter column, not a bare 1fr — on a real device (not
+   reproduced in any desktop or simulated-width test) the column was collapsing
+   toward zero width, leaving only the two 1px border edges visible as a thin
+   vertical mark instead of a bar. 1fr has no floor; minmax(46px,1fr) does. */
+.agrow{display:grid;grid-template-columns:120px minmax(46px,1fr) 74px;gap:7px 10px;align-items:center}
 .agrow .n{font-size:12.5px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* border, not just background — some Android Chrome builds strip background-only
    colour from small, textless, border-less elements under forced-dark/data-saver
