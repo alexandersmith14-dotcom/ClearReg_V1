@@ -549,8 +549,11 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
      The accent rule also drops 4px to 3px: at phone width a 4px bar reads as a
      third element rather than a trim. */
   /* Side-by-side with the title squeezed the mark down to the point it wasn't
-     readable. Stacked, it can run full-size across its own row. */
-  header{padding:14px 16px;gap:10px;margin-bottom:14px;border-bottom-width:3px;
+     readable. Stacked, it can run full-size across its own row. A plain 10px
+     flex gap read as cramped once the logo became its own white rectangle —
+     it needs enough air to look like a deliberate second element, not a
+     stray box bumping into the title. */
+  header{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
     flex-direction:column;align-items:flex-start}
   h1{font-size:20px;line-height:1.2;margin:0 0 4px}
   .sub{font-size:12.5px;line-height:1.4}
