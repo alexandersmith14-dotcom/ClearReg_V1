@@ -4,6 +4,7 @@ import json
 import os
 import re
 import ssl
+import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -339,12 +340,27 @@ def parse_chunk_date(chunk):
 
 def fetch_rss(source):
     # feedparser sends its own User-Agent by default, which FTC rejects with a 403.
-    parsed = feedparser.parse(source["url"], agent=UA["User-Agent"])
-    status = parsed.get("status")
-    if status and status >= 400:
-        raise RuntimeError(f"HTTP {status}")
-    if not parsed.entries:
-        raise RuntimeError("feed returned 0 entries")
+    #
+    # health.py marks a source BROKEN on a single failed run, no averaging like
+    # the QUIET threshold gets, so one dropped connection reads the same as a
+    # genuinely dead source. CFPB Rules hit IncompleteRead twice in under an
+    # hour while curl fetched it clean both times — a runner-side network blip,
+    # not the feed. A couple of quick retries absorbs that without hiding a real
+    # break: three strikes in a row is a different story than one.
+    parsed = None
+    for attempt in range(3):
+        try:
+            parsed = feedparser.parse(source["url"], agent=UA["User-Agent"])
+            status = parsed.get("status")
+            if status and status >= 400:
+                raise RuntimeError(f"HTTP {status}")
+            if not parsed.entries:
+                raise RuntimeError("feed returned 0 entries")
+            break
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(3)
     return [
         {
             "agency": source["agency"],
