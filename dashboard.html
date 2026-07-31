@@ -112,7 +112,8 @@ header button:hover{filter:brightness(1.06)}
    read any of them. */
 .notice{background:var(--surface);border:1px solid var(--border);
   border-left:4px solid var(--warn);border-radius:8px;padding:13px 16px;
-  margin-bottom:18px;font-size:13px;color:var(--ink-2)}
+  margin-bottom:18px;font-size:13px;color:var(--ink-2);text-align:justify;
+  text-align-last:left;hyphens:auto}
 .notice strong{color:var(--ink)}
 
 .coverage{font-size:12.5px;color:var(--ink-2)}
@@ -295,7 +296,8 @@ header button:hover{filter:brightness(1.06)}
 .card h3{font-size:14.5px;margin:0 0 5px;font-weight:600;line-height:1.35}
 .card h3 a{color:var(--brand);text-decoration:none}
 .card h3 a:hover{text-decoration:underline}
-.card p{margin:0;font-size:13px;color:var(--ink-2)}
+.card p{margin:0;font-size:13px;color:var(--ink-2);text-align:justify;
+  text-align-last:left;hyphens:auto}
 .card .meta{margin-top:7px;font-size:12px;color:var(--ink-muted);
   font-variant-numeric:tabular-nums}
 .u{font-weight:600}
@@ -345,7 +347,8 @@ header button:hover{filter:brightness(1.06)}
 .contact .krlogo{display:block;width:132px;height:auto}
 .contact .name{font-size:15px;font-weight:700;color:var(--ink)}
 .contact .role{font-size:13px;color:var(--ink-2);margin-top:2px}
-.contact .pitch{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55}
+.contact .pitch{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55;
+  text-align:justify;text-align-last:left;hyphens:auto}
 .contact .acts{display:flex;flex-wrap:wrap;gap:9px}
 .contact a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:6px;
   text-decoration:none;border:1px solid var(--border);color:var(--ink);
@@ -410,8 +413,8 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   #export{display:none}
   /* Shrunk rather than hidden like #export — measured at 390px, a 58px mark
      plus a tighter plate still leaves the title a full line's width. */
-  header .logowrap{padding:5px 7px}
-  header .krlogo{width:58px}
+  header .logowrap{padding:7px 9px}
+  header .krlogo{width:80px}
   /* Stays at readable body size on purpose — see the .notice comment above; a
      public tool cannot put its caveats in the footer. Only the padding and the
      leading tighten here, and the deadline explanation moved into the coverage
@@ -549,7 +552,7 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      July 31, 2026 11:18 UTC</span></p>
+      July 31, 2026 11:25 UTC</span></p>
   </div>
   <!-- Hidden entirely on a phone; see the media query. Kept in the markup rather
        than built conditionally so the click handler always has its element. -->
