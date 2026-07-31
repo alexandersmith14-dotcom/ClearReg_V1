@@ -1907,6 +1907,15 @@ reading the source document. Not legal or compliance advice.</footer>
 <script type="application/json" id="data">{json.dumps(rows)}</script>
 <script type="application/json" id="groups">{json.dumps(AGENCY_GROUPS)}</script>
 <script>{JS}</script>
+<script>
+// Chrome dropped the hard requirement for a service worker to install from the
+// menu (108 mobile / 112 desktop), but its algorithm for firing the automatic
+// install prompt still weighs having a fetch handler. Without any worker at
+// all, new visitors were never getting offered install. sw.js does nothing —
+// no caching — so it can't ever serve yesterday's regulatory data as if it
+// were current.
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
 </body></html>"""
 
     with open(OUT_PATH, "w", encoding="utf-8") as f:

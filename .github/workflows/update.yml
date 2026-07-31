@@ -112,6 +112,10 @@ jobs:
           cp icon-maskable-512.png site/icon-maskable-512.png
           cp apple-touch-icon.png site/apple-touch-icon.png
           cp site.webmanifest site/site.webmanifest
+          # No-op service worker — see its own file comment. Must be served from
+          # the root: a worker's scope is capped at its own path, and root scope
+          # is what the install-prompt check needs.
+          cp sw.js site/sw.js
           # CFR text for the "Ask the regulations" panel. Retrieval runs in the
           # browser, so this must be published or the panel can only draw on the
           # tracked updates. Regenerate with: python ecfr_corpus.py
