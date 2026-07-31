@@ -308,13 +308,6 @@ header button:hover{filter:brightness(1.06)}
   opacity:0;transition:opacity .1s}
 .kpi[data-kpi]:hover::after,.kpi[aria-pressed="true"]::after{opacity:1}
 .kpi[aria-pressed="true"]::after{content:"filtering ▾"}
-/* Touch has no hover to reveal the hint above, so it never appeared on mobile —
-   first-visit discovery of the click-to-filter tiles depended on hovering,
-   which touch can't do. Shown always rather than once-and-dismissed: the
-   problem isn't "seen it before", it's "no hover state exists here". */
-@media (hover:none) and (pointer:coarse){
-  .kpi[data-kpi]::after{opacity:1}
-}
 
 /* Two labelled groups. The pills used to be one undifferentiated row, which hid
    the fact that they answer different questions: agency pills filter by WHO
@@ -436,12 +429,7 @@ header button:hover{filter:brightness(1.06)}
 
 .agrow{display:grid;grid-template-columns:120px 1fr 74px;gap:7px 10px;align-items:center}
 .agrow .n{font-size:12.5px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* border, not just background — some Android Chrome builds strip background-only
-   colour from small, textless, border-less elements under forced-dark/data-saver
-   rendering. Measured on a real device: the bar disappeared entirely even though
-   computed styles (checked via devtools on desktop) showed the right colours. A
-   border survives that stripping. */
-.meter{position:relative;height:11px;background:var(--track);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.meter{position:relative;height:11px;background:var(--track);border-radius:4px;overflow:hidden}
 .meter>span{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:4px}
 .agrow .c{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .empty{color:var(--ink-2);font-size:13px;padding:8px 0}
@@ -1794,7 +1782,7 @@ def main():
   <div class="grouplabel">Search<small>any word</small></div>
   <div class="searchwrap">
     <input id="q" type="search" autocomplete="off"
-           placeholder="e.g. stablecoin, Regulation B"
+           placeholder="e.g. stablecoin, Regulation B, comment period…"
            aria-label="Search updates">
     <button id="clearq" type="button" hidden aria-label="Clear search">&times;</button>
   </div>
