@@ -432,21 +432,32 @@ header button:hover{filter:brightness(1.06)}
 @media (max-width:900px){.cols{grid-template-columns:1fr}}
 
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:16px 18px;box-shadow:var(--shadow-sm)}
+  padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
 .panel+.panel{margin-top:18px}
-.panel h2{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--brand);margin:0 0 12px;font-weight:700;
-  border-bottom:2px solid var(--accent);padding-bottom:7px}
+/* v1.6: Kaufman Rossin's own risk-intelligence tools (TrakRI, StatRI, ScrubRI,
+   GeoRI...) structure every panel with a solid navy header strip, not a card
+   shadow with an underlined label — evidenced across six real product
+   screenshots. The negative margin pulls the strip to the panel's edges and
+   its own radius mirrors the panel's (minus the border width), so it reads as
+   the card's own top edge rather than a heading floating in the padding.
+   .panel>h2 covers the plain div panel (agencies); .foldable>summary covers
+   the two <details> panels, where the clickable/foldable element is summary,
+   not h2 — the header strip has to live on whichever element actually owns
+   the panel's padding-box edge. */
+.panel>h2,.foldable>summary{margin:-16px -18px 14px;padding:10px 18px;
+  background:var(--brand-bg);color:#fff;border-radius:11px 11px 0 0;
+  border-bottom:3px solid var(--accent)}
+.panel>h2{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
 /* Two panels are <details> so they can fold on a phone. Suppress the native
    disclosure triangle at every width — on desktop they are plain panels with no
    affordance, and script blocks the click that would otherwise collapse them. */
 .foldable>summary{list-style:none;display:block}
 .foldable>summary::-webkit-details-marker{display:none}
-.foldable>summary h2{cursor:default}
-.panel .note{font-size:12px;color:var(--ink-2);margin:-6px 0 12px}
-/* Scope line under the deadlines heading. Sits tight to the rule above it so it
-   reads as part of the heading rather than as the first row of the list. */
-.dlscope{font-size:12px;color:var(--ink-muted);margin:-6px 0 10px;
+.foldable>summary h2{cursor:default;margin:0;font-size:11.5px;letter-spacing:.07em;
+  text-transform:uppercase;font-weight:700;color:inherit}
+.panel .note{font-size:12px;color:var(--ink-2);margin:0 0 12px}
+/* Scope line under the deadlines heading. */
+.dlscope{font-size:12px;color:var(--ink-muted);margin:0 0 10px;
   font-variant-numeric:tabular-nums}
 
 .card{padding:14px 0;border-bottom:1px solid var(--rule)}
@@ -618,6 +629,10 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   #q{font-size:16px;padding-top:11px;padding-bottom:11px}
 
   .panel{padding:14px 15px}
+  /* Must match .panel's own phone padding above, same reasoning as the
+     desktop rule — the strip's negative margin cancels exactly the padding
+     it sits inside, nothing more or less. */
+  .panel>h2,.foldable>summary{margin:-14px -15px 14px;padding:9px 15px}
   .cols{gap:14px}
   .card h3{font-size:15px}
   .card p{font-size:13.5px}
@@ -664,12 +679,16 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
      right on desktop; inside a flex row that float is ignored and it simply
      lands between the title and the arrow, which reads correctly on a phone. */
   .foldable>summary h2{display:flex;align-items:center;gap:8px}
+  /* Arrow inherits white from the navy strip now — var(--brand) here would be
+     navy-on-navy, invisible. */
   .foldable>summary h2::after{content:"▸";margin-left:auto;font-size:13px;
-    line-height:1;color:var(--brand)}
+    line-height:1;color:inherit}
   .foldable[open]>summary h2::after{content:"▾"}
-  /* The heading's bottom margin is the gap to the content; with the panel shut
-     that becomes dead space under the bar. */
-  .foldable:not([open])>summary h2{margin-bottom:0}
+  /* The strip's own bottom margin is the gap to the content below it; with the
+     panel shut there is no content, so that margin becomes dead space between
+     the strip and the panel's bottom edge. Zeroed on the summary itself, which
+     is what carries the margin now (not h2 — see the base panel-header rule). */
+  .foldable:not([open])>summary{margin-bottom:0}
 
   /* Collapse the filter block. 327px of pills sat above the first update on a
      phone; search stays OUTSIDE this <details> — now directly below the collapsed
