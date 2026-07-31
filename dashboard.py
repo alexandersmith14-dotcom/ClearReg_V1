@@ -187,6 +187,12 @@ CSS = """
   --crit:#c0392b; --warn:#9a6400; --ok:#2f7d32; --neutral:#3c3c3c;
   --chip:#f0f0f0;
   --on-accent:#212529;
+  /* v1.5: card elevation. Two-layer shadow (tight + soft) reads as a real
+     surface lift rather than a flat drop-shadow; the hover variant is the
+     same shape scaled up, not a different one, so hover feels like the same
+     card lifting further rather than a different effect kicking in. */
+  --shadow-sm:0 1px 2px rgba(16,24,32,.05),0 1px 4px rgba(16,24,32,.07);
+  --shadow-md:0 4px 10px rgba(16,24,32,.09),0 2px 4px rgba(16,24,32,.06);
 }
 @media (prefers-color-scheme:dark){
   :root:where(:not([data-theme="light"])){
@@ -199,6 +205,10 @@ CSS = """
     --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
     --chip:#232a2f;
     --on-accent:#101418;
+    /* Dark surfaces need a darker, more opaque shadow to read at all against
+       a near-black page — the light-mode rgba values would be invisible. */
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);
+    --shadow-md:0 4px 12px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
@@ -211,6 +221,8 @@ CSS = """
   --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
   --chip:#232a2f;
   --on-accent:#101418;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);
+  --shadow-md:0 4px 12px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
 /* museo-sans is the firm's typeface, licensed through Adobe Fonts and not
@@ -229,13 +241,13 @@ body{margin:0;padding:22px;background:var(--page);color:var(--ink);
   -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1240px;margin:0 auto}
 header{display:flex;align-items:center;gap:16px;margin-bottom:20px;
-  background:var(--brand-bg);color:#fff;padding:18px 22px;border-radius:8px;
-  border-bottom:4px solid var(--accent)}
+  background:var(--brand-bg);color:#fff;padding:18px 22px;border-radius:12px;
+  border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
 /* Needs its own white plate, same as the contact card — the wordmark's ink
    isn't theme-aware and its navy is close enough to the header's navy to
    nearly vanish without one. */
 header .logowrap{margin-bottom:0;flex:none;display:inline-block;
-  background:#fff;padding:8px 12px;border-radius:6px}
+  background:#fff;padding:8px 12px;border-radius:8px}
 header .krlogo{width:108px}
 header .t{flex:1}
 h1{font-size:21px;margin:0 0 3px;color:#fff;font-weight:700;letter-spacing:-.01em}
@@ -244,7 +256,8 @@ h1{font-size:21px;margin:0 0 3px;color:#fff;font-weight:700;letter-spacing:-.01e
    drop it and break instead. */
 .sub .stamp::before{content:" · "}
 button{font:inherit;font-size:13px;padding:8px 14px;color:var(--ink);
-  background:var(--surface);border:1px solid var(--border);border-radius:6px;cursor:pointer}
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
 button:hover{background:var(--raised)}
 header button{background:var(--accent);border-color:var(--accent);
   color:var(--on-accent);font-weight:700}
@@ -255,9 +268,9 @@ header button:hover{filter:brightness(1.06)}
    Anyone landing here needs to know the summaries are generated before they
    read any of them. */
 .notice{background:var(--surface);border:1px solid var(--border);
-  border-left:4px solid var(--warn);border-radius:8px;padding:13px 16px;
+  border-left:4px solid var(--warn);border-radius:12px;padding:13px 16px;
   margin-bottom:18px;font-size:13px;color:var(--ink-2);text-align:justify;
-  text-align-last:left;hyphens:auto}
+  text-align-last:left;hyphens:auto;box-shadow:var(--shadow-sm)}
 .notice strong{color:var(--ink)}
 
 .coverage{font-size:12.5px;color:var(--ink-2)}
@@ -288,24 +301,24 @@ header button:hover{filter:brightness(1.06)}
 /* "Ask the regulations" panel. Retrieval runs in the browser; only the model
    call goes to a Cloudflare Worker, which holds the API key server-side. */
 .ask-panel{background:var(--surface);border:1px solid var(--border);
-  border-left:4px solid var(--brand);border-radius:9px;padding:16px 18px;
-  margin-bottom:18px}
+  border-left:4px solid var(--brand);border-radius:12px;padding:16px 18px;
+  margin-bottom:18px;box-shadow:var(--shadow-sm)}
 .ask-panel h2{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
   color:var(--brand);margin:0 0 6px;font-weight:700}
 .ask-panel .sub{font-size:12.5px;color:var(--ink-2);margin:0 0 11px}
 .ask-row{display:flex;gap:8px;flex-wrap:wrap}
 .ask-row input{flex:1 1 380px;font:inherit;font-size:13px;padding:9px 12px;
   color:var(--ink);background:var(--page);border:1px solid var(--border);
-  border-radius:6px}
+  border-radius:8px}
 .ask-row input:focus{outline:2px solid var(--brand);outline-offset:1px}
 .ask-row button{font:inherit;font-size:13px;font-weight:700;padding:9px 18px;
   background:var(--brand);color:#fff;border:1px solid var(--brand);
-  border-radius:6px;cursor:pointer}
+  border-radius:8px;cursor:pointer}
 .ask-row button:disabled{opacity:.55;cursor:default}
 #askout{margin-top:13px;font-size:13.5px;line-height:1.6;color:var(--ink)}
 #askout:empty{display:none}
 #askout .ans{background:var(--raised);border:1px solid var(--border);
-  border-radius:8px;padding:13px 15px}
+  border-radius:10px;padding:13px 15px}
 #askout .cites{font-size:12px;color:var(--ink-muted);margin-top:9px;
   padding-top:8px;border-top:1px solid var(--rule)}
 #askout h3{font-size:13px;margin:11px 0 5px;color:var(--ink)}
@@ -330,19 +343,25 @@ header button:hover{filter:brightness(1.06)}
 }
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
   gap:12px;margin-bottom:18px}
-.kpi{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:14px 16px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;box-shadow:var(--shadow-sm)}
 .kpi .l{font-size:12px;color:var(--ink-2)}
 .kpi .v{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:6px 0 2px}
 .kpi .n{font-size:12px;color:var(--ink-muted)}
 .kpi .n.up{color:var(--crit)} .kpi .n.down{color:var(--ok)}
 /* Long/short phrasings of a tile note; the phone block swaps them. */
 .kpi .n-short{display:none}
-/* Clickable tiles (those with a non-zero count) filter the list on click. */
+/* Clickable tiles (those with a non-zero count) filter the list on click. The
+   hover lift is the same shadow shape scaled up (--shadow-md), not a
+   different effect, so it reads as the same tile rising rather than
+   something new switching on. Pressed state trades the lift for an inset
+   ring instead — it should look seated, not floating, while active. */
 .kpi[data-kpi]{cursor:pointer;user-select:none;text-align:left;
-  transition:border-color .1s,box-shadow .1s}
-.kpi[data-kpi]:hover{border-color:var(--brand)}
+  transition:border-color .12s ease,box-shadow .12s ease,transform .12s ease}
+.kpi[data-kpi]:hover:not([aria-pressed="true"]){border-color:var(--brand);
+  box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .kpi[data-kpi]:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
-.kpi[aria-pressed="true"]{border-color:var(--brand);
+.kpi[aria-pressed="true"]{border-color:var(--brand);transform:none;
   box-shadow:inset 0 0 0 1px var(--brand)}
 .kpi[data-kpi]::after{content:"filter ▸";display:block;margin-top:6px;
   font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--brand);
@@ -385,7 +404,9 @@ header button:hover{filter:brightness(1.06)}
 #clearq:hover{color:var(--ink);background:var(--chip)}
 .pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
 .pill{font-size:12.5px;padding:6px 13px;border-radius:999px;cursor:pointer;
-  background:var(--surface);border:1px solid var(--border);color:var(--ink-2)}
+  background:var(--surface);border:1px solid var(--border);color:var(--ink-2);
+  transition:background-color .12s ease,border-color .12s ease,color .12s ease}
+.pill:hover{border-color:var(--brand)}
 /* Selected pill uses navy, not the brand green: the green is a background
    accent and white text on it fails contrast badly. */
 .pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);
@@ -410,7 +431,8 @@ header button:hover{filter:brightness(1.06)}
 .cols{display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:start}
 @media (max-width:900px){.cols{grid-template-columns:1fr}}
 
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:16px 18px}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:16px 18px;box-shadow:var(--shadow-sm)}
 .panel+.panel{margin-top:18px}
 .panel h2{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;
   color:var(--brand);margin:0 0 12px;font-weight:700;
@@ -431,7 +453,7 @@ header button:hover{filter:brightness(1.06)}
 .card:first-of-type{padding-top:0}
 .card:last-child{border-bottom:none;padding-bottom:0}
 .card .top{display:flex;align-items:center;gap:8px;margin-bottom:7px;flex-wrap:wrap}
-.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;background:var(--chip);color:var(--ink-2)}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--chip);color:var(--ink-2)}
 .badge.t-Final{color:#fff;background:var(--crit)}
 .badge.t-Proposed{color:#fff;background:var(--warn)}
 .badge.t-Guidance{color:#fff;background:var(--brand)}
@@ -465,14 +487,15 @@ header button:hover{filter:brightness(1.06)}
   margin-top:3px}
 .dlfoot .when{margin-top:0}
 .dl .cal{flex:none;font:inherit;font-size:11.5px;color:var(--brand);
-  background:none;border:1px solid transparent;border-radius:6px;
-  padding:4px 7px;cursor:pointer;white-space:nowrap}
+  background:none;border:1px solid transparent;border-radius:8px;
+  padding:4px 7px;cursor:pointer;white-space:nowrap;
+  transition:border-color .12s ease}
 .dl .cal:hover{border-color:var(--border);text-decoration:underline}
 
 .agrow{display:grid;grid-template-columns:120px 1fr 74px;gap:7px 10px;align-items:center}
 .agrow .n{font-size:12.5px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.meter{position:relative;height:11px;background:var(--track);border-radius:4px;overflow:hidden}
-.meter>span{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:4px}
+.meter{position:relative;height:11px;background:var(--track);border-radius:6px;overflow:hidden}
+.meter>span{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:6px}
 .agrow .c{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .empty{color:var(--ink-2);font-size:13px;padding:8px 0}
 
@@ -480,23 +503,23 @@ header button:hover{filter:brightness(1.06)}
    estate at the bottom of the page — where someone lands after they have
    found it useful — rather than a link buried in the footer text. */
 .contact{margin-top:22px;background:var(--surface);border:1px solid var(--border);
-  border-top:4px solid var(--accent);border-radius:9px;padding:18px 20px;
-  display:flex;flex-wrap:wrap;gap:18px;align-items:center}
+  border-top:4px solid var(--accent);border-radius:12px;padding:18px 20px;
+  display:flex;flex-wrap:wrap;gap:18px;align-items:center;box-shadow:var(--shadow-sm)}
 .contact .who{flex:1 1 340px;min-width:280px}
 /* The wordmark's ink (#1e4c7e navy, #828282 grey) is fixed in the source SVG,
    not theme-aware, so it needs guaranteed contrast against dark mode's near-black
    surface. A small white plate does that without recolouring the logo itself. */
 .contact .logowrap{display:inline-block;background:#fff;padding:8px 12px;
-  border-radius:6px;margin-bottom:11px}
+  border-radius:8px;margin-bottom:11px}
 .contact .krlogo{display:block;width:132px;height:auto}
 .contact .name{font-size:15px;font-weight:700;color:var(--ink)}
 .contact .role{font-size:13px;color:var(--ink-2);margin-top:2px}
 .contact .pitch{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55;
   text-align:justify;text-align-last:left;hyphens:auto}
 .contact .acts{display:flex;flex-wrap:wrap;gap:9px}
-.contact a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:6px;
+.contact a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;
   text-decoration:none;border:1px solid var(--border);color:var(--ink);
-  background:var(--raised)}
+  background:var(--raised);transition:border-color .12s ease,filter .12s ease}
 .contact a.btn:hover{border-color:var(--brand)}
 .contact a.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
 .contact a.btn.primary:hover{filter:brightness(1.12)}
@@ -573,7 +596,7 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   /* A light shrink: tighter padding and a slightly smaller value number, to buy
      back a little height above the first update without making the tiles cramped
      — the big number stays the headline. */
-  .kpi{padding:10px 12px;border-radius:10px}
+  .kpi{padding:10px 12px;border-radius:12px}
   .kpi .v{font-size:23px;margin:2px 0 1px}
   .kpi .l,.kpi .n{font-size:11.5px;line-height:1.3}
   /* Short phrasing so no tile note wraps: one wrapped note made the bottom row
