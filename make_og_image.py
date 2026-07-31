@@ -48,9 +48,23 @@ for line in lines:
     d.text((70, y), line, font=font(30), fill=MUTED)
     y += 46
 
-d.text((70, H - 118), "Built by Alexander Smith, CRCM, CFE",
+# Text lockup rather than the real SVG mark: no SVG rasterizer is in
+# requirements.txt, and this script isn't part of the CI run (see the module
+# docstring — it's committed output, regenerated locally), so pulling one in
+# just for a manual script isn't worth it. Same three-colour reading as the
+# real logo (bold / pipe / lighter), sized to what PIL can measure and place.
+logo_y = 430
+f_word, f_tag = font(30, bold=True), font(17)
+d.text((70, logo_y), "KAUFMAN", font=f_word, fill=WHITE)
+x = 70 + d.textbbox((0, 0), "KAUFMAN ", font=f_word)[2]
+d.text((x, logo_y), "|", font=f_word, fill=GREEN)
+x += d.textbbox((0, 0), "| ", font=f_word)[2]
+d.text((x, logo_y), "ROSSIN", font=f_word, fill=MUTED)
+d.text((70, logo_y + 38), "cpa + advisors", font=f_tag, fill=MUTED)
+
+d.text((70, H - 108), "Built by Alexander Smith, CRCM, CFE",
        font=font(28, bold=True), fill=WHITE)
-d.text((70, H - 78), "Risk Advisory Services  ·  Kaufman Rossin",
+d.text((70, H - 68), "Risk Advisory Services  ·  Kaufman Rossin",
        font=font(26), fill=MUTED)
 
 img.save(OUT, "PNG", optimize=True)
