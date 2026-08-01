@@ -640,7 +640,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    bar between KAUFMAN and ROSSIN, already var(--accent)'s lime by default
    in the source SVG, and stays lime rather than washing out to white. */
 .footbrand .logowrap{display:inline-block}
-.footbrand .krlogo{display:block;width:170px;height:auto}
+.footbrand .krlogo{display:block;width:220px;height:auto}
 .footbrand .krlogo .cls-1,.footbrand .krlogo .cls-3{filter:brightness(0) invert(1)}
 /* kaufmanrossin.com's own footer wordmark drops the "cpa + advisors" line
    entirely — just the mark. .cls-3 is that subtext specifically (traced
