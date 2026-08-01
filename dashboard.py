@@ -653,8 +653,9 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footsocialwrap{max-width:1240px;margin:0 auto;padding:0 22px 24px}
 .footsocial{display:flex;gap:8px}
 .footsocial .social-btn{display:inline-flex;align-items:center;justify-content:center;
-  width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
+  width:40px;height:40px;border-radius:50%;background:var(--accent);color:#00294a;
   transition:filter .12s ease}
+.footsocial .social-btn svg{width:22px;height:22px}
 .footsocial .social-btn:hover{filter:brightness(1.1)}
 /* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
    pointed at the real pages on its site since RegWatch has none of its own
