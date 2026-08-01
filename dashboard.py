@@ -680,6 +680,10 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footlegal p{margin:0 0 8px}
 .footlegal a{color:#9fb3c8;text-decoration:underline}
 .footlegal a:hover{color:#fff}
+/* Matches kaufmanrossin.com's own footer exactly: this one link is blue
+   (#007bff), Legal Disclaimer/Privacy Policy next to it are plain white. */
+.footlegal a.donotsell{color:#007bff}
+.footlegal a.donotsell:hover{color:#3395ff}
 .footbottom{display:flex;flex-wrap:wrap;justify-content:space-between;
   gap:6px 20px;margin-top:10px;padding-top:10px;
   border-top:1px solid rgba(255,255,255,.1)}
@@ -2289,7 +2293,7 @@ def main():
         services provider; as well as its affiliated entities, Kaufman Rossin Alternative
         Investment Services, LLC, a full-service fund administration provider, and Mary Street
         Capital, an investment banking affiliate.</p>
-      <p><a href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
+      <p><a class="donotsell" href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
       <p>Deadlines are structured fields from matched Federal Register documents. Summaries are
         model-generated from agency listings and are not a substitute for reading the source
         document. Not legal or compliance advice.</p>

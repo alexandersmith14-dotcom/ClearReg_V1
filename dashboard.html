@@ -510,6 +510,10 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footlegal p{margin:0 0 8px}
 .footlegal a{color:#9fb3c8;text-decoration:underline}
 .footlegal a:hover{color:#fff}
+/* Matches kaufmanrossin.com's own footer exactly: this one link is blue
+   (#007bff), Legal Disclaimer/Privacy Policy next to it are plain white. */
+.footlegal a.donotsell{color:#007bff}
+.footlegal a.donotsell:hover{color:#3395ff}
 .footbottom{display:flex;flex-wrap:wrap;justify-content:space-between;
   gap:6px 20px;margin-top:10px;padding-top:10px;
   border-top:1px solid rgba(255,255,255,.1)}
@@ -734,7 +738,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 1, 2026 20:06 UTC</span></p>
+      August 01, 2026 20:25 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
@@ -967,7 +971,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
         services provider; as well as its affiliated entities, Kaufman Rossin Alternative
         Investment Services, LLC, a full-service fund administration provider, and Mary Street
         Capital, an investment banking affiliate.</p>
-      <p><a href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
+      <p><a class="donotsell" href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
       <p>Deadlines are structured fields from matched Federal Register documents. Summaries are
         model-generated from agency listings and are not a substitute for reading the source
         document. Not legal or compliance advice.</p>
