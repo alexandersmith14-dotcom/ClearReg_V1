@@ -446,13 +446,8 @@ header button:hover{filter:brightness(1.06)}
 .kpi[data-kpi]:hover:not([aria-pressed="true"]){border-color:var(--brand);
   box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .kpi[data-kpi]:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
-.kpi[aria-pressed="true"]{border-color:var(--brand);transform:none;
-  box-shadow:inset 0 0 0 1px var(--brand)}
-.kpi[data-kpi]::after{content:"filter ▸";display:block;margin-top:6px;
-  font-size:10.5px;font-weight:600;letter-spacing:.04em;color:var(--brand);
-  opacity:0;transition:opacity .1s}
-.kpi[data-kpi]:hover::after,.kpi[aria-pressed="true"]::after{opacity:1}
-.kpi[aria-pressed="true"]::after{content:"filtering ▾"}
+.kpi[aria-pressed="true"]{border-color:var(--accent);transform:none;
+  box-shadow:inset 0 0 0 1px var(--accent)}
 
 /* Two labelled groups. The pills used to be one undifferentiated row, which hid
    the fact that they answer different questions: agency pills filter by WHO
