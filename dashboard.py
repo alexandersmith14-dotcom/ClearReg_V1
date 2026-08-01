@@ -236,10 +236,15 @@ CSS = """
    The system stack below gives SF on iOS, Segoe UI on Windows, Roboto on
    Android — each platform's own interface face, which is what "native" looks
    like. Do not reintroduce Georgia or Verdana as fallbacks. */
-body{margin:0;padding:22px;background:var(--page);color:var(--ink);
+body{margin:0;padding:0;background:var(--page);color:var(--ink);
   font-family:var(--ui-font);font-size:14px;line-height:1.55;
   -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1240px;margin:0 auto}
+.wrap{max-width:1240px;margin:0 auto;padding:22px}
+/* Thin brand strip above the header, full-bleed edge to edge — echoes the
+   navy utility bar kaufmanrossin.com runs above its own nav. Sits outside
+   .wrap in the markup so the page's own padding never insets it; decorative
+   only, same fixed-chrome reasoning as the header below. */
+.topband{background:var(--brand-bg);height:10px}
 /* v1.7: matches kaufmanrossin.com's own header — the wordmark sits flush on a
    plain white bar with navy text, no box around it at all. Fixed white/navy
    regardless of page theme, not var(--surface)/var(--ink): the real site has
@@ -577,41 +582,44 @@ header button:hover{filter:brightness(1.06)}
 .agrow .c{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .empty{color:var(--ink-2);font-size:13px;padding:8px 0}
 
-/* Contact card. This is the point of publishing the tool, so it gets real
-   estate at the bottom of the page — where someone lands after they have
-   found it useful — rather than a link buried in the footer text. */
-.contact{margin-top:22px;background:var(--surface);border:1px solid var(--border);
-  border-top:4px solid var(--accent);border-radius:12px;padding:18px 20px;
-  display:flex;flex-wrap:wrap;gap:18px;align-items:center;box-shadow:var(--shadow-sm)}
-/* Firm half (logo + KR's own social channels) and personal half (Alexander's
-   name/role/pitch/buttons) as two sides of one card, not two separate cards —
-   same overall visual weight the page already had, a divider rather than a
-   second box. Wraps to its own row on phone via the parent's flex-wrap. */
-.contact .firm{display:flex;flex-direction:column;align-items:flex-start;
-  gap:11px;flex:none;padding-right:20px;border-right:1px solid var(--border)}
-.contact .who{flex:1 1 340px;min-width:280px}
-/* The wordmark's ink (#1e4c7e navy, #828282 grey) is fixed in the source SVG,
-   not theme-aware, so it needs guaranteed contrast against dark mode's near-black
-   surface. A small white plate does that without recolouring the logo itself. */
-.contact .logowrap{display:inline-block;background:#fff;padding:8px 12px;border-radius:8px}
-.contact .krlogo{display:block;width:132px;height:auto}
-.contact .social{display:flex;gap:4px}
-.contact .social-btn{display:inline-flex;align-items:center;justify-content:center;
-  width:32px;height:32px;border-radius:50%;color:var(--ink-2);
-  transition:background-color .12s ease,color .12s ease}
-.contact .social-btn:hover{background:var(--chip);color:var(--brand)}
-.contact .name{font-size:15px;font-weight:700;color:var(--ink)}
-.contact .role{font-size:13px;color:var(--ink-2);margin-top:2px}
-.contact .pitch{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55;
+/* Footer band. Full-bleed navy, mirrors kaufmanrossin.com's own footer — this
+   is the point of publishing the tool, so it gets real estate at the bottom,
+   not a link buried in small print. It sits outside .wrap in the markup so
+   the navy reaches both edges; .footwrap re-applies the same 1240px column so
+   the content still lines up with everything above it. Fixed white/light text
+   throughout, not var(--ink) — same reasoning as the header: brand chrome on
+   a fixed navy background in every theme, not a theme-following surface. */
+footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
+.footwrap{max-width:1240px;margin:0 auto;padding:28px 20px 20px;
+  display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.footbrand{display:flex;flex-direction:column;gap:14px;flex:none}
+/* Same white-plate trick the header uses: the wordmark's ink is fixed in its
+   source SVG, not theme-aware, so it needs a guaranteed light backing. */
+.footbrand .logowrap{display:inline-block;background:#fff;padding:8px 12px;border-radius:8px}
+.footbrand .krlogo{display:block;width:132px;height:auto}
+.footbrand .social{display:flex;gap:8px}
+.footbrand .social-btn{display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
+  transition:filter .12s ease}
+.footbrand .social-btn:hover{filter:brightness(1.1)}
+.footwho{flex:1 1 340px;min-width:280px}
+.footwho .name{font-size:15px;font-weight:700;color:#fff}
+.footwho .role{font-size:13px;color:#a9c1d6;margin-top:2px}
+.footwho .pitch{font-size:13px;color:#c9d6e3;margin-top:9px;line-height:1.55;
   text-align:justify;text-align-last:left;hyphens:auto}
-.contact .acts{display:flex;flex-wrap:wrap;gap:9px}
-.contact a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;
-  text-decoration:none;border:1px solid var(--border);color:var(--ink);
-  background:var(--raised);transition:border-color .12s ease,filter .12s ease}
-.contact a.btn:hover{border-color:var(--brand)}
-.contact a.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.contact a.btn.primary:hover{filter:brightness(1.12)}
-footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
+.footwho .acts{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.footwho a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;
+  text-decoration:none;border:1px solid rgba(255,255,255,.35);color:#fff;
+  background:rgba(255,255,255,.07);
+  transition:border-color .12s ease,background-color .12s ease,filter .12s ease}
+.footwho a.btn:hover{border-color:#fff;background:rgba(255,255,255,.16)}
+.footwho a.btn.primary{background:var(--accent);border-color:var(--accent);color:#00294a}
+.footwho a.btn.primary:hover{filter:brightness(1.08)}
+/* Legal strip. The divider spans the full navy width; the text inside
+   re-centers to the same 1240px column as .footwrap above it. */
+.footlegalwrap{border-top:1px solid rgba(255,255,255,.15)}
+.footlegal{max-width:1240px;margin:0 auto;padding:14px 20px 20px;
+  font-size:11px;color:#8fa6bc;line-height:1.6}
 
 /* ===================================================================
    PHONE LAYOUT LIVES LAST, AND MUST STAY LAST.
@@ -642,7 +650,8 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
      phone reads as dense rather than compact — small type is the main thing that
      makes a page feel clunky rather than considered. Nothing here is larger than
      its desktop size; the phone just stops being punished. */
-  body{padding:12px;font-size:15px}
+  .wrap{padding:12px}
+  body{font-size:15px}
 
   /* The header was 152px — 18% of an iPhone screen — as a solid navy slab with
      a two-line title and a three-line subtitle. Two causes, both fixed here
@@ -720,11 +729,11 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
 
   .rr-table td,.rr-table th{padding:4px 5px;font-size:11.5px}
   .rr-letter{width:46px}
-  .contact{padding:15px 16px;gap:14px}
-  /* The divider only makes sense side-by-side; stacked, it would read as a
-     stray vertical line hanging off the wrapped row. */
-  .contact .firm{border-right:none;padding-right:0;padding-bottom:14px;
-    border-bottom:1px solid var(--border);width:100%}
+  .footwrap{padding:20px 16px 16px;gap:16px}
+  /* Stacked, the divider reads better under the brand block than as a
+     stray line hanging off the wrapped row. */
+  .footbrand{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
+    width:100%}
 
   /* Stacked columns put deadlines eight screens down, below every update card,
      even though they are the most actionable thing on the page. display:contents
@@ -749,7 +758,7 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   /* Inline on the date row, so it costs no extra line, but padded enough to be
      tappable. A full 44px here would grow every deadline row instead. */
   .dl .cal,.cardfoot .cal{min-height:34px;padding:0 10px;border-color:var(--border)}
-  .contact a.btn{min-height:44px;display:inline-flex;align-items:center}
+  .footwho a.btn{min-height:44px;display:inline-flex;align-items:center}
   .card h3{line-height:1.45}
   .card h3 a{display:inline-block;padding:2px 0}
   #showmore,#dlmore{width:100%;margin-top:12px;padding:11px;font-weight:600;
@@ -1995,7 +2004,9 @@ def main():
 <meta name="twitter:description" content="{share_desc}">
 <meta name="twitter:image" content="{SITE_URL}og-image.png">
 <style>{CSS}</style></head>
-<body data-today="{today}"><div class="wrap">
+<body data-today="{today}">
+<div class="topband"></div>
+<div class="wrap">
 
 <header>
   <div class="logowrap">{KR_LOGO_SVG}</div>
@@ -2122,48 +2133,52 @@ def main():
   </div>
 </div>
 
-<div class="contact">
-  <div class="firm">
-    <div class="logowrap">{KR_LOGO_SVG}</div>
-    <div class="social">
-      <a class="social-btn" href="https://www.linkedin.com/company/kaufman-rossin-&-co"
-         target="_blank" rel="noopener" aria-label="Kaufman Rossin on LinkedIn">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
-      </a>
-      <a class="social-btn" href="https://www.facebook.com/KaufmanRossin"
-         target="_blank" rel="noopener" aria-label="Kaufman Rossin on Facebook">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.2 3.57c-2.5 0-4.2 1.52-4.2 4.3V9.9H7.3V13h2.7v8z"/></svg>
-      </a>
-      <a class="social-btn" href="https://www.instagram.com/kaufmanrossin/"
-         target="_blank" rel="noopener" aria-label="Kaufman Rossin on Instagram">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
-      </a>
-      <a class="social-btn" href="https://www.youtube.com/user/KaufmanRossin"
-         target="_blank" rel="noopener" aria-label="Kaufman Rossin on YouTube">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9A28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15.3V8.7L15.8 12z"/></svg>
-      </a>
-    </div>
-  </div>
-  <div class="who">
-    <div class="name">Built by Alexander Smith, CRCM, CFE</div>
-    <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
-    <div class="pitch">I built this to track regulatory activity affecting
-      community banks, credit unions and fintechs. If you're impacted by any of these
-      updates, or have questions, please feel free to reach out to see how we can help.</div>
-  </div>
-  <div class="acts">
-    <a class="btn primary" href="https://www.linkedin.com/in/alexandersmith14/"
-       target="_blank" rel="noopener">Connect on LinkedIn</a>
-    <a class="btn" href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker">Email me</a>
-    <a class="btn" href="https://kaufmanrossin.com/professionals/alexander-smith/"
-       target="_blank" rel="noopener">Full bio</a>
-  </div>
 </div>
 
-<footer>Deadlines are structured fields from matched Federal Register documents.
-Summaries are model-generated from agency listings and are not a substitute for
-reading the source document. Not legal or compliance advice.</footer>
-</div>
+<footer class="sitefoot">
+  <div class="footwrap">
+    <div class="footbrand">
+      <div class="logowrap">{KR_LOGO_SVG}</div>
+      <div class="social">
+        <a class="social-btn" href="https://www.linkedin.com/company/kaufman-rossin-&-co"
+           target="_blank" rel="noopener" aria-label="Kaufman Rossin on LinkedIn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.facebook.com/KaufmanRossin"
+           target="_blank" rel="noopener" aria-label="Kaufman Rossin on Facebook">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.2 3.57c-2.5 0-4.2 1.52-4.2 4.3V9.9H7.3V13h2.7v8z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.instagram.com/kaufmanrossin/"
+           target="_blank" rel="noopener" aria-label="Kaufman Rossin on Instagram">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.youtube.com/user/KaufmanRossin"
+           target="_blank" rel="noopener" aria-label="Kaufman Rossin on YouTube">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9A28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15.3V8.7L15.8 12z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footwho">
+      <div class="name">Built by Alexander Smith, CRCM, CFE</div>
+      <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
+      <div class="pitch">I built this to track regulatory activity affecting
+        community banks, credit unions and fintechs. If you're impacted by any of these
+        updates, or have questions, please feel free to reach out to see how we can help.</div>
+      <div class="acts">
+        <a class="btn primary" href="https://www.linkedin.com/in/alexandersmith14/"
+           target="_blank" rel="noopener">Connect on LinkedIn</a>
+        <a class="btn" href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker">Email me</a>
+        <a class="btn" href="https://kaufmanrossin.com/professionals/alexander-smith/"
+           target="_blank" rel="noopener">Full bio</a>
+      </div>
+    </div>
+  </div>
+  <div class="footlegalwrap">
+    <div class="footlegal">Deadlines are structured fields from matched Federal Register documents.
+    Summaries are model-generated from agency listings and are not a substitute for
+    reading the source document. Not legal or compliance advice.</div>
+  </div>
+</footer>
 <script type="application/json" id="data">{json.dumps(rows)}</script>
 <script type="application/json" id="groups">{json.dumps(AGENCY_GROUPS)}</script>
 <script>{JS}</script>
