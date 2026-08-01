@@ -626,8 +626,8 @@ header button:hover{filter:brightness(1.06)}
    throughout, not var(--ink) — same reasoning as the header: brand chrome on
    a fixed navy background in every theme, not a theme-following surface. */
 footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
-.footwrap{max-width:1240px;margin:0 auto;padding:28px 20px 20px;
-  display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.footwrap{max-width:1240px;margin:0 auto;padding:22px 20px 16px;
+  display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
 .footbrand{display:flex;flex-direction:column;flex:none}
 /* kaufmanrossin.com's own footer runs the wordmark flush white on navy, no
    plate behind it. The source SVG's ink is fixed (navy body, grey subtext,
@@ -655,11 +655,11 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    (no blog, no offices, no careers page). Every link here leaves the site,
    same reasoning as Full bio above: target=_blank, never orphan the reader
    mid-update-list. */
-.footnav{display:flex;flex-wrap:wrap;gap:28px;flex:1 1 380px}
-.footcol{display:flex;flex-direction:column;gap:7px;min-width:120px}
+.footnav{display:flex;flex-wrap:wrap;gap:28px;flex:0 1 auto}
+.footcol{display:flex;flex-direction:column;gap:6px;min-width:120px}
 .footcol h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:#fff;margin:0 0 3px;font-weight:700}
-.footcol a{font-size:13px;color:#c9d6e3;text-decoration:none}
+.footcol a{font-size:14px;font-weight:600;color:#c9d6e3;text-decoration:none}
 .footcol a:hover{color:#fff;text-decoration:underline}
 .footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
 .footsub a.btn{display:inline-block;font-size:13px;font-weight:700;padding:8px 16px;
