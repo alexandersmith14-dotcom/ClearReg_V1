@@ -578,6 +578,7 @@ header button:hover{filter:brightness(1.06)}
 .dl:last-child{border-bottom:none}
 .dl .dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:6px}
 .dl .body{flex:1}
+.dl .agency{font-size:12px;color:var(--ink-muted);margin-bottom:2px}
 .dl .ttl{font-size:13.5px;font-weight:600;line-height:1.35}
 .dl .ttl a{color:var(--ink);text-decoration:none}
 .dl .ttl a:hover{text-decoration:underline}
@@ -1262,6 +1263,7 @@ function renderDeadlines(rs) {
     return `<div class="dl">
       <div class="dot" style="background:${col}"></div>
       <div class="body">
+        <div class="agency">${esc(d.sources.join(' · '))}</div>
         <div class="ttl"><a href="${esc(d.fr_url || d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a></div>
         <div class="dlfoot">
           <div class="when ${cls}">${esc(what)} ${esc(when)} · ${n} day${n === 1 ? '' : 's'}</div>
@@ -1283,13 +1285,15 @@ function renderDeadlines(rs) {
   // "N of M · what you clicked". M is every upcoming deadline in the current
   // view, so the reader can see the filter bit even when the rows look familiar.
   const scope = $('#dlscope');
+  const total = deadlineItems(DATA.filter(d => showAll || d.relevant)).length;
   if (scope) {
-    const total = deadlineItems(DATA.filter(d => showAll || d.relevant)).length;
     const what = scopeLabel();
     scope.textContent = what
       ? `${items.length} of ${total} · ${what}`
       : `All upcoming · ${total}`;
   }
+  const dlCount = $('#dlcount');
+  if (dlCount) dlCount.textContent = `${total} deadline${total === 1 ? '' : 's'}`;
 }
 
 function renderAgencies(rs) {
@@ -2217,7 +2221,8 @@ def main():
   </div>
   <div class="colside">
     <details class="panel p-deadlines foldable" open>
-      <summary><h2>Upcoming deadlines</h2></summary>
+      <summary><h2>Upcoming deadlines <span style="float:right;text-transform:none;letter-spacing:0"
+          id="dlcount"></span></h2></summary>
       <!-- Says what the panel is currently scoped to. Without it the heading
            read "Upcoming deadlines" whatever was selected, and two of the KPI
            tiles are defined BY having a deadline — so filtering to them returns
