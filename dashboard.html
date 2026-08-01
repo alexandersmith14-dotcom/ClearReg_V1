@@ -57,10 +57,15 @@
 @media (prefers-color-scheme:dark){
   :root:where(:not([data-theme="light"])){
     color-scheme:dark;
+    /* --brand-bg lighter than plain navy (#00294a read as almost the same
+       black as --page:#101418 — the top band and footer nearly vanished).
+       Not lightened all the way to --brand's #4e9bd8: that's tuned for
+       small text/links, and would be a glaring wall of blue at full-bleed
+       band size. This sits between the two. */
     --page:#101418; --surface:#161a1d; --raised:#1d2226;
     --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
     --rule:#2a3035; --border:rgba(255,255,255,.12);
-    --brand:#4e9bd8; --brand-bg:#00294a; --accent:#aed136;
+    --brand:#4e9bd8; --brand-bg:#123a63; --accent:#aed136;
     --bar:#4e9bd8; --track:#2a3035;
     --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
     --chip:#232a2f;
@@ -76,7 +81,7 @@
   --page:#101418; --surface:#161a1d; --raised:#1d2226;
   --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
   --rule:#2a3035; --border:rgba(255,255,255,.12);
-  --brand:#4e9bd8; --brand-bg:#00294a; --accent:#aed136;
+  --brand:#4e9bd8; --brand-bg:#123a63; --accent:#aed136;
   --bar:#4e9bd8; --track:#2a3035;
   --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
   --chip:#232a2f;
@@ -469,13 +474,15 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
   transition:filter .12s ease}
 .footsocial .social-btn:hover{filter:brightness(1.1)}
-.footwho{display:flex;gap:16px;flex:1 1 340px;min-width:280px}
+/* Photo stacked above the text — kaufmanrossin.com's own Key Contacts card
+   runs vertically, not side-by-side. */
+.footwho{display:flex;flex-direction:column;gap:12px;flex:1 1 340px;min-width:280px}
 /* Square, green-bordered headshot — matches kaufmanrossin.com's own Key
    Contacts card exactly (the one Jason Chorlins-style card), not the round
    crop the previous version used. Fixed size, not responsive to text — a
    photo scaling with its caption reads as a bug, not a feature. */
 .footphoto{flex:none}
-.footphoto img{display:block;width:110px;height:110px;border-radius:8px;
+.footphoto img{display:block;width:130px;height:130px;border-radius:8px;
   object-fit:cover;border:3px solid var(--accent)}
 .footwhotext{flex:1 1 auto;min-width:0}
 .footwho .name{font-size:15px;font-weight:700;color:#fff}
@@ -744,7 +751,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 1, 2026 10:55 UTC</span></p>
+      August 01, 2026 11:40 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
