@@ -270,14 +270,30 @@ header button:hover{filter:brightness(1.06)}
   line-height:1;padding:2px 8px;cursor:pointer;border-radius:50%}
 #clearq:hover{color:var(--ink);background:var(--chip)}
 .pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+/* Hard offset shadow (no blur, solid colour) rather than a soft drop shadow —
+   a distinct depth cue for these specifically, since KPI tiles/panels already
+   use the soft --shadow-sm/md language elsewhere. Hover pulls the pill away
+   from its shadow (offset grows); a real click presses it flush into the
+   shadow (offset to 0) for tactile feedback. Kept modest (3-5px) since pills
+   sit only 7px apart — a bigger offset would visually collide with the next
+   pill over. var(--ink) inverts per theme (dark offset on a light pill, light
+   offset on a dark one), so no new colour token is needed. */
 .pill{font-size:12.5px;padding:6px 13px;border-radius:999px;cursor:pointer;
   background:var(--surface);border:1px solid var(--border);color:var(--ink-2);
-  transition:background-color .12s ease,border-color .12s ease,color .12s ease}
-.pill:hover{border-color:var(--brand)}
+  box-shadow:3px 3px 0 0 var(--ink);
+  transition:background-color .12s ease,border-color .12s ease,color .12s ease,
+    box-shadow .12s ease,transform .12s ease}
+.pill:hover{border-color:var(--brand);transform:translate(-1px,-1px);
+  box-shadow:5px 5px 0 0 var(--ink)}
+.pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--ink)}
 /* Selected pill uses navy, not the brand green: the green is a background
-   accent and white text on it fails contrast badly. */
+   accent and white text on it fails contrast badly. Its offset switches to
+   the lime accent, though — navy-on-navy would all but vanish, and it ties
+   the "selected" affordance to the brand highlight colour instead. */
 .pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);
-  color:#fff;font-weight:700}
+  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--accent)}
+.pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--accent)}
+.pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--accent)}
 
 /* Relevance is a lens, not a gate — this switches between the filtered default
    and everything collected. */
