@@ -633,12 +633,15 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:start}
 .footbrand{display:flex;flex-direction:column}
 /* kaufmanrossin.com's own footer runs the wordmark flush white on navy, no
-   plate behind it. The source SVG's ink is fixed (navy body, grey subtext,
-   lime accent bar), not theme-aware, so a plain recolour can't reach that —
-   brightness(0) flattens every fill to black first, then invert(1) turns
-   the whole mark pure white in one pass, accent bar included. */
+   plate behind it. The source SVG's ink is fixed (navy body, grey subtext),
+   not theme-aware, so a plain recolour can't reach that — brightness(0)
+   flattens the fill to black first, then invert(1) turns it pure white.
+   Applied to .cls-1/.cls-3 only, not the whole logo: .cls-2 is the accent
+   bar between KAUFMAN and ROSSIN, already var(--accent)'s lime by default
+   in the source SVG, and stays lime rather than washing out to white. */
 .footbrand .logowrap{display:inline-block}
-.footbrand .krlogo{display:block;width:132px;height:auto;filter:brightness(0) invert(1)}
+.footbrand .krlogo{display:block;width:170px;height:auto}
+.footbrand .krlogo .cls-1,.footbrand .krlogo .cls-3{filter:brightness(0) invert(1)}
 /* kaufmanrossin.com's own footer wordmark drops the "cpa + advisors" line
    entirely — just the mark. .cls-3 is that subtext specifically (traced
    from the header version, which does want it), so hiding it here rather
