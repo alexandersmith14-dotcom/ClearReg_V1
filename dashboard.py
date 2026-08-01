@@ -1045,7 +1045,7 @@ function rows() {
     // One agency, several feeds — the pill value is pipe separated so "OCC"
     // covers both the press feed and the bulletins.
     if (filter.kind === 'agency') {
-      return filter.value.split('|').some(f => d.sources.includes(f));
+      return filter.value.some(group => group.split('|').some(f => d.sources.includes(f)));
     }
     // Fintech uses the classifier's explicit judgment, not a word match.
     // Searching the text instead returns 63 items where the classifier finds 48,
@@ -1204,7 +1204,11 @@ function calButtons(d) {
 // the reader actually clicked.
 function scopeLabel() {
   const parts = [];
-  if (filter.kind !== 'all') {
+  if (filter.kind === 'agency') {
+    const labels = Array.from(document.querySelectorAll('#sourceGroup .pill[aria-pressed="true"]'))
+      .map(p => p.textContent.trim());
+    if (labels.length) parts.push(labels.join(', '));
+  } else if (filter.kind !== 'all') {
     const el = $('.kpi[aria-pressed="true"] .l') || $('.pill[aria-pressed="true"]');
     if (el) parts.push(el.textContent.trim());
   }
@@ -1386,12 +1390,53 @@ function clearFilterUI() {
   $('#viewnote').textContent = '';
 }
 
-document.querySelectorAll('.pill').forEach(p => p.addEventListener('click', () => {
-  clearFilterUI();
-  p.setAttribute('aria-pressed', 'true');
-  filter = {kind: p.dataset.kind, value: p.dataset.value || ''};
-  render();
-}));
+document.querySelectorAll('.pill').forEach(p => {
+  if (p.closest('#sourceGroup')) return; // Source pills: multi-select, handled below.
+  p.addEventListener('click', () => {
+    clearFilterUI();
+    p.setAttribute('aria-pressed', 'true');
+    filter = {kind: p.dataset.kind, value: p.dataset.value || ''};
+    render();
+  });
+});
+
+// Source pills multi-select: pick several agencies, results combine (OR).
+// Still a single filter dimension overall — picking a KPI tile or Fintech/
+// Credit-union pill clears the Source selections, same as before.
+const sourceGroup = $('#sourceGroup');
+if (sourceGroup) {
+  const agencyPills = () => Array.from(sourceGroup.querySelectorAll('.pill[data-kind="agency"]'));
+  const allPill = sourceGroup.querySelector('.pill[data-kind="all"]');
+
+  function applySourceFilter() {
+    const chosen = agencyPills().filter(p => p.getAttribute('aria-pressed') === 'true')
+      .map(p => p.dataset.value);
+    if (chosen.length) {
+      filter = {kind: 'agency', value: chosen};
+      allPill.setAttribute('aria-pressed', 'false');
+    } else {
+      filter = {kind: 'all', value: ''};
+      allPill.setAttribute('aria-pressed', 'true');
+    }
+    render();
+  }
+
+  allPill.addEventListener('click', () => {
+    clearFilterUI();
+    allPill.setAttribute('aria-pressed', 'true');
+    filter = {kind: 'all', value: ''};
+    render();
+  });
+
+  agencyPills().forEach(p => p.addEventListener('click', () => {
+    document.querySelectorAll('.kpi[data-kpi], .pill[data-kind="fintech"], .pill[data-kind="credit_union"]')
+      .forEach(x => x.setAttribute('aria-pressed', 'false'));
+    $('#viewnote').textContent = '';
+    const pressed = p.getAttribute('aria-pressed') === 'true';
+    p.setAttribute('aria-pressed', String(!pressed));
+    applySourceFilter();
+  }));
+}
 
 // KPI tiles filter the list to exactly what they count. Clicking the active tile
 // again clears back to all. KPI items are all relevant, so also drop out of the
@@ -2216,8 +2261,8 @@ def main():
     <button class="pill" data-kind="credit_union" aria-pressed="false">Credit unions only</button>
     <span class="count" id="viewnote"></span>
   </div>
-  <div class="pillgroup">
-    <div class="grouplabel">Source<small>who published it</small></div>
+  <div class="pillgroup" id="sourceGroup">
+    <div class="grouplabel">Source<small>who published it &middot; pick several to combine</small></div>
     {source_pills}
   </div>
 </details>
