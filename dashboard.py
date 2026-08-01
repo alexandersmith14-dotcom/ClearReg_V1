@@ -543,10 +543,6 @@ header button:hover{filter:brightness(1.06)}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
 .panel+.panel{margin-top:18px}
-/* Lime border on the two main panels — same accent as the quick-contact
-   card, not the neutral grey every other panel (including Updates by
-   agency) still uses. */
-.p-updates,.p-deadlines{border-color:var(--accent)}
 /* v1.6: Kaufman Rossin's own risk-intelligence tools (TrakRI, StatRI, ScrubRI,
    GeoRI...) structure every panel with a solid navy header strip, not a card
    shadow with an underlined label — evidenced across six real product
