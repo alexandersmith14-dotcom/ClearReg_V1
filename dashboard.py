@@ -673,9 +673,11 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footcol a{font-size:8px;font-weight:700;color:#fff;text-decoration:none}
 .footcol a:hover{text-decoration:underline}
 .footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
-.footsub a.btn{display:inline-block;font-size:13px;font-weight:700;padding:8px 16px;
-  border-radius:8px;text-decoration:none;background:#fff;color:#212529;
-  border:1px solid #fff;transition:background-color .12s ease}
+.footsub a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;
+  font-size:13px;font-weight:400;padding:9px 16px;border-radius:0;
+  text-decoration:none;background:#fff;color:#212529;
+  border:1px solid #fff;border-left:4px solid var(--accent);
+  transition:background-color .12s ease}
 .footsub a.btn:hover{background:transparent;color:#fff}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
@@ -692,8 +694,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footlegal a.donotsell{color:#007bff}
 .footlegal a.donotsell:hover{color:#3395ff}
 .footbottom{display:flex;flex-wrap:wrap;justify-content:space-between;
-  gap:6px 20px;margin-top:10px;padding-top:10px;
-  border-top:1px solid rgba(255,255,255,.1)}
+  gap:6px 20px;margin-top:10px;padding-top:10px}
 
 /* ===================================================================
    PHONE LAYOUT LIVES LAST, AND MUST STAY LAST.
@@ -2303,9 +2304,6 @@ def main():
         Investment Services, LLC, a full-service fund administration provider, and Mary Street
         Capital, an investment banking affiliate.</p>
       <p><a class="donotsell" href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
-      <p>Deadlines are structured fields from matched Federal Register documents. Summaries are
-        model-generated from agency listings and are not a substitute for reading the source
-        document. Not legal or compliance advice.</p>
       <div class="footbottom">
         <div class="links">&copy; 2025 Kaufman, Rossin &amp; Co., A Professional Association, All Rights Reserved
           &nbsp;|&nbsp; <a href="https://kaufmanrossin.com/legal-disclaimer/" target="_blank" rel="noopener">Legal Disclaimer</a>
