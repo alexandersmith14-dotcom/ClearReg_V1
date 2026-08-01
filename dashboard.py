@@ -240,23 +240,25 @@ body{margin:0;padding:22px;background:var(--page);color:var(--ink);
   font-family:var(--ui-font);font-size:14px;line-height:1.55;
   -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1240px;margin:0 auto}
-/* v1.7: matches kaufmanrossin.com's own header — the wordmark sits on a
-   white/surface bar with navy text, not a navy block. Real site's logo needs
-   no plate at all because its own bar is white and stays white; here the bar
-   now follows the theme, meaning dark mode's --surface is still near-black,
-   so header .logowrap keeps its own white plate (background:#fff) just like
-   the contact card does, for the same reason — the wordmark's ink is fixed,
-   not theme-aware. In light mode the plate is white-on-white and invisible,
-   which is fine; it only does anything in dark mode. */
+/* v1.7: matches kaufmanrossin.com's own header — the wordmark sits flush on a
+   plain white bar with navy text, no box around it at all. Fixed white/navy
+   regardless of page theme, not var(--surface)/var(--ink): the real site has
+   no dark mode to match, and following the theme put the logo back in a
+   white plate floating on dark mode's near-black surface — exactly the boxed
+   look this was meant to get rid of. Treating the header as fixed brand
+   chrome, like a real nav bar, means it never needs that plate in any mode. */
 header{display:flex;align-items:center;gap:16px;margin-bottom:20px;
-  background:var(--surface);color:var(--ink);padding:18px 22px;border-radius:12px;
+  background:#fff;color:#212529;padding:18px 22px;border-radius:12px;
   border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
-header .logowrap{margin-bottom:0;flex:none;display:inline-block;
-  background:#fff;padding:8px 12px;border-radius:8px}
+header .logowrap{margin-bottom:0;flex:none}
 header .krlogo{width:108px}
 header .t{flex:1}
-h1{font-size:21px;margin:0 0 3px;color:var(--brand);font-weight:700;letter-spacing:-.01em}
-.sub{color:var(--ink-2);font-size:13px;margin:0}
+/* Fixed navy/grey, not var(--brand)/var(--ink-2) — same reasoning as the
+   header background just above: this text sits on the fixed-white bar in
+   every theme, not the theme-following surface, so it needs the fixed-light
+   ink to match, same as the logo's own ink. */
+h1{font-size:21px;margin:0 0 3px;color:#003b6a;font-weight:700;letter-spacing:-.01em}
+.sub{color:#3c3c3c;font-size:13px;margin:0}
 /* Desktop keeps both facts on one line; the separator is CSS so the phone can
    drop it and break instead. */
 .sub .stamp::before{content:" · "}
