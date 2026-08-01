@@ -54,28 +54,7 @@
   --shadow-sm:0 1px 2px rgba(16,24,32,.05),0 1px 4px rgba(16,24,32,.07);
   --shadow-md:0 4px 10px rgba(16,24,32,.09),0 2px 4px rgba(16,24,32,.06);
 }
-@media (prefers-color-scheme:dark){
-  :root:where(:not([data-theme="light"])){
-    color-scheme:dark;
-    /* --brand-bg lighter than plain navy (#00294a read as almost the same
-       black as --page:#101418 — the top band and footer nearly vanished).
-       Not lightened all the way to --brand's #4e9bd8: that's tuned for
-       small text/links, and would be a glaring wall of blue at full-bleed
-       band size. This sits between the two. */
-    --page:#101418; --surface:#161a1d; --raised:#1d2226;
-    --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
-    --rule:#2a3035; --border:rgba(255,255,255,.12);
-    --brand:#4e9bd8; --brand-bg:#123a63; --accent:#aed136;
-    --bar:#4e9bd8; --track:#2a3035;
-    --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
-    --chip:#232a2f;
-    --on-accent:#101418;
-    /* Dark surfaces need a darker, more opaque shadow to read at all against
-       a near-black page — the light-mode rgba values would be invisible. */
-    --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 1px 4px rgba(0,0,0,.3);
-    --shadow-md:0 4px 12px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.35);
-  }
-}
+
 :root[data-theme="dark"]{
   color-scheme:dark;
   --page:#101418; --surface:#161a1d; --raised:#1d2226;
@@ -751,7 +730,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 1, 2026 11:41 UTC</span></p>
+      August 01, 2026 11:49 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.

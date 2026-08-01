@@ -168,6 +168,13 @@ KR_LOGO_SVG = """<svg class="krlogo" viewBox="0 0 351.4 67.22" role="img" aria-l
 <path class="cls-3" d="m 164.77,58.53 a 6.09,6.09 0 0 0 4.22,1.69 c 1.51,0 2.83,-0.76 2.83,-2.25 0,-3.09 -7.61,-2.33 -7.61,-6.94 0,-2.53 2.28,-3.9 4.83,-3.9 a 6,6 0 0 1 4.36,1.56 l -0.87,1.46 a 5,5 0 0 0 -3.54,-1.29 c -1.44,0 -2.81,0.62 -2.81,2.19 0,3.12 7.61,2.28 7.61,6.94 0,2.31 -2,4 -4.83,4 a 7.21,7.21 0 0 1 -5.23,-2 z"/>
 </svg>"""
 
+# Off while the light-mode look is still being tuned — every screenshot and
+# every "check the live site" otherwise has to be read against whichever
+# theme the viewer happens to be in. The variables and the manual
+# :root[data-theme="dark"] scope stay in the CSS either way; this only
+# gates the automatic prefers-color-scheme switch. Flip back on when done.
+DARK_MODE_ENABLED = False
+
 CSS = """
 :root{
   color-scheme:light;
@@ -194,6 +201,7 @@ CSS = """
   --shadow-sm:0 1px 2px rgba(16,24,32,.05),0 1px 4px rgba(16,24,32,.07);
   --shadow-md:0 4px 10px rgba(16,24,32,.09),0 2px 4px rgba(16,24,32,.06);
 }
+""" + ("""
 @media (prefers-color-scheme:dark){
   :root:where(:not([data-theme="light"])){
     color-scheme:dark;
@@ -216,6 +224,7 @@ CSS = """
     --shadow-md:0 4px 12px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.35);
   }
 }
+""" if DARK_MODE_ENABLED else "") + """
 :root[data-theme="dark"]{
   color-scheme:dark;
   --page:#101418; --surface:#161a1d; --raised:#1d2226;
