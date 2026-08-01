@@ -543,6 +543,10 @@ header button:hover{filter:brightness(1.06)}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
 .panel+.panel{margin-top:18px}
+/* Lime border on the two main panels — same accent as the quick-contact
+   card, not the neutral grey every other panel (including Updates by
+   agency) still uses. */
+.p-updates,.p-deadlines{border-color:var(--accent)}
 /* v1.6: Kaufman Rossin's own risk-intelligence tools (TrakRI, StatRI, ScrubRI,
    GeoRI...) structure every panel with a solid navy header strip, not a card
    shadow with an underlined label — evidenced across six real product
@@ -634,16 +638,16 @@ header button:hover{filter:brightness(1.06)}
    bigger square-photo Key Contacts card. Ordinary surface card like .notice
    above it, sitting on the page itself rather than the navy footer below. */
 .quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--accent);
-  border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;
-  max-width:420px;box-shadow:var(--shadow-sm)}
-.quickcontact .qc-photo img{display:block;width:72px;height:72px;border-radius:50%;
+  border-radius:12px;padding:22px 24px;display:flex;gap:18px;align-items:flex-start;
+  max-width:460px;box-shadow:var(--shadow-sm)}
+.quickcontact .qc-photo img{display:block;width:88px;height:88px;border-radius:50%;
   object-fit:cover}
 .quickcontact .qc-text{min-width:0}
-.quickcontact .qc-name{display:block;font-size:14px;font-weight:700;color:var(--brand);
+.quickcontact .qc-name{display:block;font-size:15px;font-weight:700;color:var(--brand);
   text-decoration:none}
 .quickcontact .qc-name:hover{text-decoration:underline}
-.quickcontact .qc-title{font-size:13px;color:var(--ink-2);margin-top:2px;line-height:1.4}
-.quickcontact .qc-icons{display:flex;gap:6px;margin-top:10px}
+.quickcontact .qc-title{font-size:13.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
+.quickcontact .qc-icons{display:flex;gap:6px;margin-top:12px}
 /* Fixed dark squares regardless of theme — matches kaufmanrossin.com's own
    icon buttons exactly, same reasoning as the header/logo staying fixed. */
 .quickcontact .qc-icons a{display:inline-flex;align-items:center;justify-content:center;
