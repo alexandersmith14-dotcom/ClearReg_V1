@@ -410,11 +410,27 @@ header button:hover{filter:brightness(1.06)}
   .ask-row input{flex:1 1 100%}
   .ask-row button{width:100%}
 }
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+/* A real 2x2 for the four tiles — all the same size, not two stretched
+   to fill a row — with Updates by agency as a tall panel to their right,
+   explicitly placed across both rows. Explicit placement (not order/span
+   on the tiles) is what makes the 2x2 fall out correctly: the four .kpi
+   tiles are auto-placed in DOM order and simply skip the cell agency
+   already occupies, landing as [Updates this week, Open comment periods]
+   / [Enforcement actions, Effective this quarter] — Effective ends up
+   under Open comment periods, not floating on its own. Grouped with the
+   KPI tiles because both are quick-glance summary stats — it was
+   previously buried in the sidebar below the deadlines list. */
+.kpis{display:grid;grid-template-columns:1fr 1fr 2fr;grid-auto-rows:1fr;
   gap:12px;margin-bottom:18px}
+.kpis .p-agencies{grid-column:3;grid-row:1 / span 2}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;
-  padding:14px 16px;box-shadow:var(--shadow-sm)}
-.kpi .l{font-size:12px;color:var(--ink-2)}
+  padding:14px 16px;box-shadow:var(--shadow-sm);overflow:hidden}
+/* Same navy strip + lime underline as .panel>h2, on the tile's own label —
+   negative margin exactly cancels .kpi's own padding so it reads as the
+   tile's top edge, not a heading floating inside it. */
+.kpi .l{margin:-14px -16px 12px;padding:8px 16px;font-size:11.5px;
+  letter-spacing:.07em;text-transform:uppercase;font-weight:700;
+  background:var(--brand-bg);color:#fff;border-bottom:3px solid var(--accent)}
 .kpi .v{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:6px 0 2px}
 .kpi .n{font-size:12px;color:var(--ink-muted)}
 .kpi .n.up{color:var(--crit)} .kpi .n.down{color:var(--ok)}
@@ -798,6 +814,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      back a little height above the first update without making the tiles cramped
      — the big number stays the headline. */
   .kpi{padding:10px 12px;border-radius:12px}
+  .kpi .l{margin:-10px -12px 10px;padding:6px 12px}
   .kpi .v{font-size:23px;margin:2px 0 1px}
   .kpi .l,.kpi .n{font-size:11.5px;line-height:1.3}
   /* Short phrasing so no tile note wraps: one wrapped note made the bottom row
@@ -843,13 +860,15 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 
   /* Stacked columns put deadlines eight screens down, below every update card,
      even though they are the most actionable thing on the page. display:contents
-     lifts the panels out of their column wrappers so they can be ordered. */
+     lifts the panels out of their column wrappers so they can be ordered.
+     Updates by agency isn't part of .cols any more — it moved into .kpis —
+     so there's no order rule for it here. */
   .cols{display:flex;flex-direction:column;gap:14px}
   .colmain,.colside{display:contents}
   .p-deadlines{order:1}
   .p-updates{order:2}
   #alsofound{order:3}
-  .p-agencies{order:4}
+  .quickcontact{order:4}
 
   /* Touch targets. Apple's guideline is 44px and these measured 33-35px, which
      is the difference between tapping a filter and aiming at one. min-height
@@ -2167,7 +2186,16 @@ def main():
   <div style="margin-top:6px">{regref_html}</div>
 </div>
 
-<div class="kpis">{kpi_html}</div>
+<div class="kpis">{kpi_html}
+  <!-- Sits inside .kpis, not the sidebar — grouped with the KPI tiles since
+       both are quick-glance summary stats, per Alexander. It takes tile3/4's
+       old row-1 spot; those two tiles reflow to their own row below via
+       nth-child ordering in the stylesheet, not by reordering the markup. -->
+  <div class="panel p-agencies">
+    <h2>Updates by agency</h2>
+    <div class="agrow" id="agencies"></div>
+  </div>
+</div>
 <!-- Filters & view sits above Search now (was the other way round). On a phone
      this block collapses to its summary, so Search still lands directly under a
      single "Filters & view ▸" line and stays the first live control. -->
@@ -2218,6 +2246,31 @@ def main():
       <button id="showmore" type="button" hidden>Show more updates</button>
     </details>
     <div id="alsofound"></div>
+    <!-- Lives in .colmain, not after .cols, deliberately. .cols is a grid
+         whose row stretches to the taller column; with the update list
+         capped at 8 cards, colmain is now routinely shorter than colside's
+         deadlines+agencies stack, and anything sitting after .cols closes
+         had to wait out that whole row — a slab of empty page below the
+         "Show more" button before this card even appeared. Placing it
+         inside colmain means it follows the update list immediately,
+         regardless of how tall the sidebar is. -->
+    <div class="quickcontact">
+      <div class="qc-photo">
+        <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="72" height="72" loading="lazy">
+      </div>
+      <div class="qc-text">
+        <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
+        <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin, one of the Top 50 CPA and advisory firms in the U.S.</div>
+        <div class="qc-icons">
+          <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="colside">
     <details class="panel p-deadlines foldable" open>
@@ -2239,32 +2292,6 @@ def main():
            rather than a button that does nothing. -->
       <button id="dlmore" type="button" hidden>Show more deadlines</button>
     </details>
-    <div class="panel p-agencies">
-      <h2>Updates by agency</h2>
-      <div class="agrow" id="agencies"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Small bordered "quick" author card, same shape as kaufmanrossin.com's own
-     blog-post byline box — not the bigger Key Contacts card. It sits on the
-     page itself, separate from the navy footer below it: a quick who-wrote-this
-     up here, the firm's own branding down there. -->
-<div class="quickcontact">
-  <div class="qc-photo">
-    <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="72" height="72" loading="lazy">
-  </div>
-  <div class="qc-text">
-    <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
-    <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin, one of the Top 50 CPA and advisory firms in the U.S.</div>
-    <div class="qc-icons">
-      <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-      </a>
-      <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
-      </a>
-    </div>
   </div>
 </div>
 
