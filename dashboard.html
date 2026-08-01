@@ -288,7 +288,7 @@ header button:hover{filter:brightness(1.06)}
    the fact that they answer different questions: agency pills filter by WHO
    published an item, topic pills by WHAT it is about. Same look, different
    mechanism, no way for a reader to tell. */
-.pillgroup{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:9px}
+.pillgroup{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:18px}
 .pillgroup:last-of-type{margin-bottom:18px}
 .grouplabel{font-size:11px;font-weight:700;letter-spacing:.06em;
   text-transform:uppercase;color:var(--ink-muted);width:104px;flex:none}
@@ -328,12 +328,12 @@ header button:hover{filter:brightness(1.06)}
    offset on a dark one), so no new colour token is needed. */
 .pill{font-size:12.5px;padding:6px 13px;border-radius:999px;cursor:pointer;
   background:var(--surface);border:1px solid var(--border);color:var(--ink-2);
-  box-shadow:3px 3px 0 0 var(--ink);
+  box-shadow:3px 3px 0 0 var(--brand);
   transition:background-color .12s ease,border-color .12s ease,color .12s ease,
     box-shadow .12s ease,transform .12s ease}
 .pill:hover{border-color:var(--brand);transform:translate(-1px,-1px);
-  box-shadow:5px 5px 0 0 var(--ink)}
-.pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--ink)}
+  box-shadow:5px 5px 0 0 var(--brand)}
+.pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--brand)}
 /* Selected pill uses navy, not the brand green: the green is a background
    accent and white text on it fails contrast badly. Its offset switches to
    the lime accent, though — navy-on-navy would all but vanish, and it ties
@@ -346,7 +346,7 @@ header button:hover{filter:brightness(1.06)}
 /* Relevance is a lens, not a gate — this switches between the filtered default
    and everything collected. */
 .viewtoggle{display:inline-flex;border:1px solid var(--border);border-radius:999px;
-  overflow:hidden}
+  overflow:hidden;box-shadow:3px 3px 0 0 var(--brand)}
 .viewtoggle button{border:none;border-radius:0;padding:6px 15px;font-size:12.5px;
   background:var(--surface);color:var(--ink-2);cursor:pointer}
 .viewtoggle button[aria-pressed="true"]{background:var(--brand);color:#fff;font-weight:700}
@@ -465,7 +465,7 @@ header button:hover{filter:brightness(1.06)}
    above it, sitting on the page itself rather than the navy footer below. */
 .quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--accent);
   border-radius:12px;padding:22px 24px;display:flex;gap:18px;align-items:flex-start;
-  max-width:460px;box-shadow:var(--shadow-sm)}
+  box-shadow:var(--shadow-sm)}
 .quickcontact .qc-photo img{display:block;width:88px;height:88px;border-radius:50%;
   object-fit:cover}
 .quickcontact .qc-text{min-width:0}
@@ -792,7 +792,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 1, 2026 22:57 UTC</span></p>
+      August 01, 2026 23:25 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
@@ -836,7 +836,8 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
        old row-1 spot; those two tiles reflow to their own row below via
        nth-child ordering in the stylesheet, not by reordering the markup. -->
   <div class="panel p-agencies">
-    <h2>Updates by agency</h2>
+    <h2>Updates by agency <span style="float:right;text-transform:none;letter-spacing:0"
+        id="agencycount"></span></h2>
     <div class="agrow" id="agencies"></div>
   </div>
 </div>
@@ -850,9 +851,11 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
     <div class="viewtoggle">
       <!-- "Relevant only" was self-referential: relevant to whom? These say who
            the page is for. Counts are filled in by script so they cannot go
-           stale against the data. -->
-      <button id="viewRelevant" aria-pressed="true">Banks, credit unions &amp; fintechs</button>
+           stale against the data. Everything comes first in the markup now,
+           not because it's the default (it isn't — see setView below) but
+           per Alexander's request on ordering. -->
       <button id="viewAll" aria-pressed="false">Everything</button>
+      <button id="viewRelevant" aria-pressed="true">Banks, credit unions &amp; fintechs</button>
     </div>
     <!-- Fintech and Credit unions sit with the view toggle, not with Source,
          because they are the same kind of control: lenses on the classifier's
@@ -1439,6 +1442,8 @@ function renderDeadlines(rs) {
 }
 
 function renderAgencies(rs) {
+  const agencyCount = $('#agencycount');
+  if (agencyCount) agencyCount.textContent = `${rs.length} update${rs.length === 1 ? '' : 's'}`;
   const c = {};
   // Counted by agency, matching the Source pills. Counting raw feeds instead
   // listed "FDIC" and "FDIC FILs" as if they were separate regulators, and an
@@ -1482,9 +1487,7 @@ function setView(all) {
   showAll = all;
   $('#viewAll').setAttribute('aria-pressed', String(all));
   $('#viewRelevant').setAttribute('aria-pressed', String(!all));
-  $('#viewnote').textContent = all
-    ? 'Showing everything collected, including items the filter set aside'
-    : 'Showing items that met the community bank / fintech criteria';
+  $('#viewnote').textContent = '';
   render();
 }
 $('#viewAll').addEventListener('click', () => setView(true));
