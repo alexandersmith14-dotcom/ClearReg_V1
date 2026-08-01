@@ -657,10 +657,14 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    mid-update-list. */
 .footnav{display:flex;flex-wrap:wrap;gap:28px;flex:0 1 auto}
 .footcol{display:flex;flex-direction:column;gap:6px;min-width:120px}
-.footcol h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:#fff;margin:0 0 3px;font-weight:700}
-.footcol a{font-size:14px;font-weight:600;color:#c9d6e3;text-decoration:none}
-.footcol a:hover{color:#fff;text-decoration:underline}
+.footcol h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  color:#fff;margin:0 0 3px;font-weight:600}
+/* Measured off kaufmanrossin.com's own footer: 14px, weight 300, pure
+   white. The earlier 600-weight/off-white version was overcorrecting —
+   what read as "bold" on their site is white-on-navy optical bleed, not
+   actual font-weight; theirs is lighter than ours was, not heavier. */
+.footcol a{font-size:14px;font-weight:300;color:#fff;text-decoration:none}
+.footcol a:hover{text-decoration:underline}
 .footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
 .footsub a.btn{display:inline-block;font-size:13px;font-weight:700;padding:8px 16px;
   border-radius:8px;text-decoration:none;background:#fff;color:#212529;
