@@ -596,6 +596,28 @@ header button:hover{filter:brightness(1.06)}
 .agrow .c{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .empty{color:var(--ink-2);font-size:13px;padding:8px 0}
 
+/* Small bordered author card — kaufmanrossin.com's own blog-post byline box
+   (photo left, name/title right, tiny icon buttons underneath), not the
+   bigger square-photo Key Contacts card. Ordinary surface card like .notice
+   above it, sitting on the page itself rather than the navy footer below. */
+.quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;
+  max-width:420px;box-shadow:var(--shadow-sm)}
+.quickcontact .qc-photo img{display:block;width:72px;height:72px;border-radius:50%;
+  object-fit:cover}
+.quickcontact .qc-text{min-width:0}
+.quickcontact .qc-name{display:block;font-size:14px;font-weight:700;color:var(--brand);
+  text-decoration:none}
+.quickcontact .qc-name:hover{text-decoration:underline}
+.quickcontact .qc-title{font-size:13px;color:var(--ink-2);margin-top:2px;line-height:1.4}
+.quickcontact .qc-icons{display:flex;gap:6px;margin-top:10px}
+/* Fixed dark squares regardless of theme — matches kaufmanrossin.com's own
+   icon buttons exactly, same reasoning as the header/logo staying fixed. */
+.quickcontact .qc-icons a{display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:6px;background:#212529;color:#fff;
+  transition:filter .12s ease}
+.quickcontact .qc-icons a:hover{filter:brightness(1.3)}
+
 /* Footer band. Full-bleed navy, mirrors kaufmanrossin.com's own footer — this
    is the point of publishing the tool, so it gets real estate at the bottom,
    not a link buried in small print. It sits outside .wrap in the markup so
@@ -623,32 +645,6 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
   transition:filter .12s ease}
 .footsocial .social-btn:hover{filter:brightness(1.1)}
-/* Photo stacked above the text — kaufmanrossin.com's own Key Contacts card
-   runs vertically, not side-by-side. */
-.footwho{display:flex;flex-direction:column;gap:12px;flex:1 1 340px;min-width:280px}
-/* Square, green-bordered headshot — matches kaufmanrossin.com's own Key
-   Contacts card exactly (the one Jason Chorlins-style card), not the round
-   crop the previous version used. Fixed size, not responsive to text — a
-   photo scaling with its caption reads as a bug, not a feature. */
-.footphoto{flex:none}
-.footphoto img{display:block;width:130px;height:130px;border-radius:8px;
-  object-fit:cover;border:3px solid var(--accent)}
-.footwhotext{flex:1 1 auto;min-width:0}
-.footwho .name{font-size:15px;font-weight:700;color:#fff}
-.footwho .role{font-size:13px;color:#a9c1d6;margin-top:2px}
-.footwho .loc{display:flex;align-items:center;gap:8px;margin-top:7px;
-  font-size:12.5px;color:#a9c1d6}
-.footwho .loc a{display:inline-flex;color:#c9d6e3;transition:color .12s ease}
-.footwho .loc a:hover{color:#fff}
-/* The bio itself is the click target, same as kaufmanrossin.com's own card —
-   there is no separate "view profile" button, the excerpt IS the link. */
-.footwho .bio{display:block;text-decoration:none;margin-top:9px}
-.footwho .bio p{font-size:13px;color:#c9d6e3;line-height:1.55;margin:0;
-  text-align:justify;text-align-last:left;hyphens:auto}
-.footwho .bio:hover p{color:#fff}
-.footwho .viewprofile{display:inline-block;font-size:11px;font-weight:700;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
-  margin-top:8px;padding-bottom:2px;border-bottom:2px solid var(--accent)}
 /* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
    pointed at the real pages on its site since RegWatch has none of its own
    (no blog, no offices, no careers page). Every link here leaves the site,
@@ -787,12 +783,10 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   .rr-table td,.rr-table th{padding:4px 5px;font-size:11.5px}
   .rr-letter{width:46px}
   .footwrap{padding:20px 16px 16px;gap:16px}
-  /* Stacked, the divider reads better under the contact card than as a
-     stray line hanging off the wrapped row. */
-  .footwho{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
+  /* Stacked, the divider reads better under the logo than as a stray line
+     hanging off the wrapped row. */
+  .footbrand{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
     width:100%}
-  .footbrand{width:100%}
-  .footphoto img{width:76px;height:76px}
   .footnav{width:100%;gap:18px 22px;padding-top:14px;
     border-top:1px solid rgba(255,255,255,.15)}
   .footsocialwrap{padding:0 16px}
@@ -821,7 +815,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   /* Inline on the date row, so it costs no extra line, but padded enough to be
      tappable. A full 44px here would grow every deadline row instead. */
   .dl .cal,.cardfoot .cal{min-height:34px;padding:0 10px;border-color:var(--border)}
-  .footwho a.btn{min-height:44px;display:inline-flex;align-items:center}
+  .quickcontact .qc-icons a{width:36px;height:36px}
   .card h3{line-height:1.45}
   .card h3 a{display:inline-block;padding:2px 0}
   #showmore,#dlmore{width:100%;margin-top:12px;padding:11px;font-weight:600;
@@ -2196,37 +2190,32 @@ def main():
   </div>
 </div>
 
+<!-- Small bordered "quick" author card, same shape as kaufmanrossin.com's own
+     blog-post byline box — not the bigger Key Contacts card. It sits on the
+     page itself, separate from the navy footer below it: a quick who-wrote-this
+     up here, the firm's own branding down there. -->
+<div class="quickcontact">
+  <div class="qc-photo">
+    <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="72" height="72" loading="lazy">
+  </div>
+  <div class="qc-text">
+    <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
+    <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin</div>
+    <div class="qc-icons">
+      <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <footer class="sitefoot">
   <div class="footwrap">
-    <div class="footwho">
-      <div class="footphoto">
-        <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="110" height="110" loading="lazy">
-      </div>
-      <div class="footwhotext">
-        <div class="name">Alexander Smith, CRCM, CFE</div>
-        <div class="role">Senior Manager, Risk Advisory Services &middot; Kaufman Rossin</div>
-        <div class="loc">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
-          Miami
-          <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
-          </a>
-        </div>
-        <a class="bio" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">
-          <p>Alexander Smith leverages his Certified Regulatory Compliance Manager (CRCM)
-            certification and industry expertise to provide financial institutions with strategic
-            compliance solutions. He also advises clients on internal audit and internal
-            control-related projects, such as business risk assessments and process improvement,
-            to streamline business operations and maximize value.</p>
-          <span class="viewprofile">View profile</span>
-        </a>
-      </div>
-    </div>
     <div class="footbrand">
       <div class="logowrap">{KR_LOGO_SVG}</div>
     </div>
