@@ -117,6 +117,21 @@ button{font:inherit;font-size:13px;padding:8px 14px;color:var(--ink);
 button:hover{background:var(--raised)}
 header button{background:var(--accent);border-color:var(--accent);
   color:var(--on-accent);font-weight:700}
+/* Solid navy + lime trim, same pairing as the footer's Subscribe button —
+   a deliberate two-tone pill rather than the plain white default. Extra
+   top margin so it reads as its own element below the last card, not
+   crowded right up against it. Same sweep-fill trick as Subscribe: a
+   200%-wide two-tone gradient sliding via background-position, not a
+   plain background-color fade (which has no direction). Text colour
+   still has to crossfade alongside it — navy needs white text, lime
+   needs dark — but that's a uniform fade on a small run of text, not
+   the visible directional cue the button itself needs. */
+#showmore,#dlmore{margin-top:16px;color:#fff;
+  border:1px solid var(--brand);border-left:8px solid var(--accent);
+  background:linear-gradient(to right,var(--accent) 50%,var(--brand) 50%);
+  background-size:200% 100%;background-position:right bottom;
+  transition:background-position .5s ease,color .5s ease}
+#showmore:hover,#dlmore:hover{background-position:left bottom;color:#00294a}
 header button:hover{filter:brightness(1.06)}
 
 /* Icon toolbar (share / install / more) — overrides the lime header-button
@@ -756,7 +771,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 1, 2026 21:27 UTC</span></p>
+      August 01, 2026 21:36 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
