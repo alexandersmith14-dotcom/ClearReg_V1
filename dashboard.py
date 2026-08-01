@@ -603,25 +603,29 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   transition:filter .12s ease}
 .footbrand .social-btn:hover{filter:brightness(1.1)}
 .footwho{display:flex;gap:16px;flex:1 1 340px;min-width:280px}
-/* Green-ringed circle, same accent kaufmanrossin.com uses around its own
-   Key Contacts headshots. Fixed size, not responsive to text — a photo
-   scaling with its caption reads as a bug, not a feature. */
+/* Square, green-bordered headshot — matches kaufmanrossin.com's own Key
+   Contacts card exactly (the one Jason Chorlins-style card), not the round
+   crop the previous version used. Fixed size, not responsive to text — a
+   photo scaling with its caption reads as a bug, not a feature. */
 .footphoto{flex:none}
-.footphoto img{display:block;width:76px;height:76px;border-radius:50%;
+.footphoto img{display:block;width:110px;height:110px;border-radius:8px;
   object-fit:cover;border:3px solid var(--accent)}
 .footwhotext{flex:1 1 auto;min-width:0}
 .footwho .name{font-size:15px;font-weight:700;color:#fff}
 .footwho .role{font-size:13px;color:#a9c1d6;margin-top:2px}
-.footwho .pitch{font-size:13px;color:#c9d6e3;margin-top:9px;line-height:1.55;
+.footwho .loc{display:flex;align-items:center;gap:8px;margin-top:7px;
+  font-size:12.5px;color:#a9c1d6}
+.footwho .loc a{display:inline-flex;color:#c9d6e3;transition:color .12s ease}
+.footwho .loc a:hover{color:#fff}
+/* The bio itself is the click target, same as kaufmanrossin.com's own card —
+   there is no separate "view profile" button, the excerpt IS the link. */
+.footwho .bio{display:block;text-decoration:none;margin-top:9px}
+.footwho .bio p{font-size:13px;color:#c9d6e3;line-height:1.55;margin:0;
   text-align:justify;text-align-last:left;hyphens:auto}
-.footwho .acts{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
-.footwho a.btn{font-size:13px;font-weight:600;padding:9px 16px;border-radius:8px;
-  text-decoration:none;border:1px solid rgba(255,255,255,.35);color:#fff;
-  background:rgba(255,255,255,.07);
-  transition:border-color .12s ease,background-color .12s ease,filter .12s ease}
-.footwho a.btn:hover{border-color:#fff;background:rgba(255,255,255,.16)}
-.footwho a.btn.primary{background:var(--accent);border-color:var(--accent);color:#00294a}
-.footwho a.btn.primary:hover{filter:brightness(1.08)}
+.footwho .bio:hover p{color:#fff}
+.footwho .viewprofile{display:inline-block;font-size:11px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
+  margin-top:8px;padding-bottom:2px;border-bottom:2px solid var(--accent)}
 /* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
    pointed at the real pages on its site since RegWatch has none of its own
    (no blog, no offices, no careers page). Every link here leaves the site,
@@ -764,7 +768,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      stray line hanging off the wrapped row. */
   .footbrand{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
     width:100%}
-  .footphoto img{width:60px;height:60px}
+  .footphoto img{width:76px;height:76px}
   .footnav{width:100%;gap:18px 22px;padding-top:14px;
     border-top:1px solid rgba(255,255,255,.15)}
   .footbottom{flex-direction:column;gap:8px}
@@ -2194,21 +2198,29 @@ def main():
     </div>
     <div class="footwho">
       <div class="footphoto">
-        <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="76" height="76" loading="lazy">
+        <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="110" height="110" loading="lazy">
       </div>
       <div class="footwhotext">
-        <div class="name">Built by Alexander Smith, CRCM, CFE</div>
-        <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
-        <div class="pitch">I built this to track regulatory activity affecting
-          community banks, credit unions and fintechs. If you're impacted by any of these
-          updates, or have questions, please feel free to reach out to see how we can help.</div>
-        <div class="acts">
-          <a class="btn primary" href="https://www.linkedin.com/in/alexandersmith14/"
-             target="_blank" rel="noopener">Connect on LinkedIn</a>
-          <a class="btn" href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker">Email me</a>
-          <a class="btn" href="https://kaufmanrossin.com/professionals/alexander-smith/"
-             target="_blank" rel="noopener">Full bio</a>
+        <div class="name">Alexander Smith, CRCM, CFE</div>
+        <div class="role">Senior Manager, Risk Advisory Services &middot; Kaufman Rossin</div>
+        <div class="loc">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          Miami
+          <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
+          </a>
         </div>
+        <a class="bio" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">
+          <p>Alexander Smith leverages his Certified Regulatory Compliance Manager (CRCM)
+            certification and industry expertise to provide financial institutions with strategic
+            compliance solutions. He also advises clients on internal audit and internal
+            control-related projects, such as business risk assessments and process improvement,
+            to streamline business operations and maximize value.</p>
+          <span class="viewprofile">View profile</span>
+        </a>
       </div>
     </div>
     <div class="footnav">
