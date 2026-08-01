@@ -602,7 +602,14 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
   transition:filter .12s ease}
 .footbrand .social-btn:hover{filter:brightness(1.1)}
-.footwho{flex:1 1 340px;min-width:280px}
+.footwho{display:flex;gap:16px;flex:1 1 340px;min-width:280px}
+/* Green-ringed circle, same accent kaufmanrossin.com uses around its own
+   Key Contacts headshots. Fixed size, not responsive to text — a photo
+   scaling with its caption reads as a bug, not a feature. */
+.footphoto{flex:none}
+.footphoto img{display:block;width:76px;height:76px;border-radius:50%;
+  object-fit:cover;border:3px solid var(--accent)}
+.footwhotext{flex:1 1 auto;min-width:0}
 .footwho .name{font-size:15px;font-weight:700;color:#fff}
 .footwho .role{font-size:13px;color:#a9c1d6;margin-top:2px}
 .footwho .pitch{font-size:13px;color:#c9d6e3;margin-top:9px;line-height:1.55;
@@ -615,11 +622,34 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footwho a.btn:hover{border-color:#fff;background:rgba(255,255,255,.16)}
 .footwho a.btn.primary{background:var(--accent);border-color:var(--accent);color:#00294a}
 .footwho a.btn.primary:hover{filter:brightness(1.08)}
+/* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
+   pointed at the real pages on its site since RegWatch has none of its own
+   (no blog, no offices, no careers page). Every link here leaves the site,
+   same reasoning as Full bio above: target=_blank, never orphan the reader
+   mid-update-list. */
+.footnav{display:flex;flex-wrap:wrap;gap:28px;flex:1 1 380px}
+.footcol{display:flex;flex-direction:column;gap:7px;min-width:120px}
+.footcol h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:#fff;margin:0 0 3px;font-weight:700}
+.footcol a{font-size:13px;color:#c9d6e3;text-decoration:none}
+.footcol a:hover{color:#fff;text-decoration:underline}
+.footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
+.footsub a.btn{display:inline-block;font-size:13px;font-weight:700;padding:8px 16px;
+  border-radius:8px;text-decoration:none;background:var(--accent);color:#00294a}
+.footsub a.btn:hover{filter:brightness(1.08)}
 /* Legal strip. The divider spans the full navy width; the text inside
-   re-centers to the same 1240px column as .footwrap above it. */
+   re-centers to the same 1240px column as .footwrap above it. Copied
+   verbatim from kaufmanrossin.com's own footer, entities and all — this is
+   the firm's standard boilerplate, not RegWatch-specific text. */
 .footlegalwrap{border-top:1px solid rgba(255,255,255,.15)}
 .footlegal{max-width:1240px;margin:0 auto;padding:14px 20px 20px;
   font-size:11px;color:#8fa6bc;line-height:1.6}
+.footlegal p{margin:0 0 8px}
+.footlegal a{color:#9fb3c8;text-decoration:underline}
+.footlegal a:hover{color:#fff}
+.footbottom{display:flex;flex-wrap:wrap;justify-content:space-between;
+  gap:6px 20px;margin-top:10px;padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.1)}
 
 /* ===================================================================
    PHONE LAYOUT LIVES LAST, AND MUST STAY LAST.
@@ -734,6 +764,10 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      stray line hanging off the wrapped row. */
   .footbrand{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
     width:100%}
+  .footphoto img{width:60px;height:60px}
+  .footnav{width:100%;gap:18px 22px;padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.15)}
+  .footbottom{flex-direction:column;gap:8px}
 
   /* Stacked columns put deadlines eight screens down, below every update card,
      even though they are the most actionable thing on the page. display:contents
@@ -2159,24 +2193,75 @@ def main():
       </div>
     </div>
     <div class="footwho">
-      <div class="name">Built by Alexander Smith, CRCM, CFE</div>
-      <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
-      <div class="pitch">I built this to track regulatory activity affecting
-        community banks, credit unions and fintechs. If you're impacted by any of these
-        updates, or have questions, please feel free to reach out to see how we can help.</div>
-      <div class="acts">
-        <a class="btn primary" href="https://www.linkedin.com/in/alexandersmith14/"
-           target="_blank" rel="noopener">Connect on LinkedIn</a>
-        <a class="btn" href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker">Email me</a>
-        <a class="btn" href="https://kaufmanrossin.com/professionals/alexander-smith/"
-           target="_blank" rel="noopener">Full bio</a>
+      <div class="footphoto">
+        <img src="alexander-smith.png" alt="Alexander Smith, CRCM, CFE" width="76" height="76" loading="lazy">
+      </div>
+      <div class="footwhotext">
+        <div class="name">Built by Alexander Smith, CRCM, CFE</div>
+        <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
+        <div class="pitch">I built this to track regulatory activity affecting
+          community banks, credit unions and fintechs. If you're impacted by any of these
+          updates, or have questions, please feel free to reach out to see how we can help.</div>
+        <div class="acts">
+          <a class="btn primary" href="https://www.linkedin.com/in/alexandersmith14/"
+             target="_blank" rel="noopener">Connect on LinkedIn</a>
+          <a class="btn" href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker">Email me</a>
+          <a class="btn" href="https://kaufmanrossin.com/professionals/alexander-smith/"
+             target="_blank" rel="noopener">Full bio</a>
+        </div>
+      </div>
+    </div>
+    <div class="footnav">
+      <div class="footcol">
+        <h3>Locations</h3>
+        <a href="https://kaufmanrossin.com/contact-us/miami/" target="_blank" rel="noopener">Miami</a>
+        <a href="https://kaufmanrossin.com/contact-us/ft-lauderdale/" target="_blank" rel="noopener">Fort Lauderdale</a>
+        <a href="https://kaufmanrossin.com/contact-us/boca-raton/" target="_blank" rel="noopener">Boca Raton</a>
+        <a href="https://kaufmanrossin.com/contact-us/palm-beach/" target="_blank" rel="noopener">Palm Beach</a>
+        <a href="https://kaufmanrossin.com/contact-us/new-york/" target="_blank" rel="noopener">New York</a>
+        <a href="https://kaufmanrossin.com/contact-us/bangalore/" target="_blank" rel="noopener">Bangalore</a>
+        <a href="https://kaufmanrossin.com/contact-us/gurgaon/" target="_blank" rel="noopener">Gurgaon</a>
+        <a href="https://kaufmanrossin.com/contact-us/ivory-coast/" target="_blank" rel="noopener">Ivory Coast</a>
+      </div>
+      <div class="footcol">
+        <h3>Quick Links</h3>
+        <a href="https://kaufmanrossin.com/blog/" target="_blank" rel="noopener">Blog</a>
+        <a href="https://kaufmanrossin.com/news/" target="_blank" rel="noopener">News</a>
+        <a href="https://kaufmanrossin.com/resources/" target="_blank" rel="noopener">Resources</a>
+        <a href="https://kaufmanrossin.com/professionals/" target="_blank" rel="noopener">Our Professionals</a>
+        <a href="https://kaufmanrossin.com/preference-center/" target="_blank" rel="noopener">Subscription Center</a>
+        <a href="https://www.linkedin.com/careersite/kaufmanrossin" target="_blank" rel="noopener">Careers</a>
+        <a href="https://kaufmanrossin.com/events" target="_blank" rel="noopener">Events</a>
+        <a href="https://kaufmanrossin.com/photos" target="_blank" rel="noopener">Photo Gallery</a>
+      </div>
+      <div class="footcol footsub">
+        <h3>Subscribe</h3>
+        <p>Get the latest news.</p>
+        <a class="btn" href="https://kaufmanrossin.com/subscribe/" target="_blank" rel="noopener">Subscribe</a>
       </div>
     </div>
   </div>
   <div class="footlegalwrap">
-    <div class="footlegal">Deadlines are structured fields from matched Federal Register documents.
-    Summaries are model-generated from agency listings and are not a substitute for
-    reading the source document. Not legal or compliance advice.</div>
+    <div class="footlegal">
+      <p>The Kaufman Rossin Group consists of Kaufman Rossin CPAs and Advisors, a professional
+        association providing accounting and advisory services; its wholly owned subsidiaries
+        Kaufman Rossin Wealth, LLC, an Investment Adviser; Kaufman Rossin Insurance Services, an
+        insurance solutions provider; Kaufman Rossin Registries, LLC, a registered agent; and
+        Kaufman Rossin Professional Services Private Limited, an India-based professional
+        services provider; as well as its affiliated entities, Kaufman Rossin Alternative
+        Investment Services, LLC, a full-service fund administration provider, and Mary Street
+        Capital, an investment banking affiliate.</p>
+      <p><a href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Do Not Sell or Share My Personal Information</a></p>
+      <p>Deadlines are structured fields from matched Federal Register documents. Summaries are
+        model-generated from agency listings and are not a substitute for reading the source
+        document. Not legal or compliance advice.</p>
+      <div class="footbottom">
+        <div class="links">&copy; 2025 Kaufman, Rossin &amp; Co., A Professional Association, All Rights Reserved
+          &middot; <a href="https://kaufmanrossin.com/legal-disclaimer/" target="_blank" rel="noopener">Legal Disclaimer</a>
+          &middot; <a href="https://kaufmanrossin.com/website-privacy-policy/" target="_blank" rel="noopener">Privacy Policy</a></div>
+        <div class="praxity">Kaufman Rossin is proud to be a member of Praxity</div>
+      </div>
+    </div>
   </div>
 </footer>
 <script type="application/json" id="data">{json.dumps(rows)}</script>
