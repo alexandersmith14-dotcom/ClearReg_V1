@@ -292,16 +292,17 @@ header button{background:var(--accent);border-color:var(--accent);
    top margin so it reads as its own element below the last card, not
    crowded right up against it. Same sweep-fill trick as Subscribe: a
    200%-wide two-tone gradient sliding via background-position, not a
-   plain background-color fade (which has no direction). Text colour
-   still has to crossfade alongside it — navy needs white text, lime
-   needs dark — but that's a uniform fade on a small run of text, not
-   the visible directional cue the button itself needs. */
+   plain background-color fade (which has no direction).
+   Text stays white through the hover fill by request — every other use
+   of the lime accent on this page keeps text dark on it for contrast
+   (see the header button), so this is a deliberate one-off exception,
+   not the pattern to copy elsewhere. */
 #showmore,#dlmore{margin-top:16px;color:#fff;
   border:1px solid var(--brand);border-left:8px solid var(--accent);
   background:linear-gradient(to right,var(--accent) 50%,var(--brand) 50%);
   background-size:200% 100%;background-position:right bottom;
-  transition:background-position .5s ease,color .5s ease}
-#showmore:hover,#dlmore:hover{background-position:left bottom;color:#00294a}
+  transition:background-position .5s ease}
+#showmore:hover,#dlmore:hover{background-position:left bottom}
 header button:hover{filter:brightness(1.06)}
 
 /* Icon toolbar (share / install / more) — overrides the lime header-button
