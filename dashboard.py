@@ -663,7 +663,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    white. The earlier 600-weight/off-white version was overcorrecting —
    what read as "bold" on their site is white-on-navy optical bleed, not
    actual font-weight; theirs is lighter than ours was, not heavier. */
-.footcol a{font-size:9px;font-weight:300;color:#fff;text-decoration:none}
+.footcol a{font-size:8px;font-weight:700;color:#fff;text-decoration:none}
 .footcol a:hover{text-decoration:underline}
 .footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
 .footsub a.btn{display:inline-block;font-size:13px;font-weight:700;padding:8px 16px;
