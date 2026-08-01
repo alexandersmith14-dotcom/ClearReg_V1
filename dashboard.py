@@ -673,12 +673,20 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footcol a{font-size:8px;font-weight:700;color:#fff;text-decoration:none}
 .footcol a:hover{text-decoration:underline}
 .footsub p{font-size:13px;color:#c9d6e3;margin:0 0 10px}
+/* Sweep, not fade. A plain background-color transition has no direction —
+   it just crossfades everywhere at once. This is the standard trick: a
+   two-stop gradient at 200% width, only half visible at a time, and
+   sliding background-position across it reads as the fill sweeping in
+   from the left. Text stays one dark colour throughout — it has enough
+   contrast on both white and lime — so nothing needs to sync against it. */
 .footsub a.btn{display:block;width:100%;box-sizing:border-box;text-align:center;
   font-size:13px;font-weight:400;padding:9px 16px;border-radius:0;
-  text-decoration:none;background:#fff;color:#212529;
+  text-decoration:none;color:#212529;
   border:1px solid #fff;border-left:8px solid var(--accent);
-  transition:background-color .5s ease,border-color .5s ease,color .5s ease}
-.footsub a.btn:hover,.footsub a.btn:active{background:var(--accent);border-color:var(--accent);color:#00294a}
+  background:linear-gradient(to right,var(--accent) 50%,#fff 50%);
+  background-size:200% 100%;background-position:right bottom;
+  transition:background-position .5s ease,border-color .5s ease}
+.footsub a.btn:hover,.footsub a.btn:active{background-position:left bottom;border-color:var(--accent)}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
    verbatim from kaufmanrossin.com's own footer, entities and all — this is
