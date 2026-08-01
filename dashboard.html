@@ -130,6 +130,33 @@ header button{background:var(--accent);border-color:var(--accent);
   color:var(--on-accent);font-weight:700}
 header button:hover{filter:brightness(1.06)}
 
+/* Icon toolbar (share / install / more) — overrides the lime header-button
+   fill above: these are quiet icon buttons, not CTAs, and .icon-btn beats
+   the plain-element "header button" selector on specificity regardless of
+   source order. #export keeps the lime fill; it lives in the dropdown, not
+   directly in the toolbar row, so the generic rule still reaches it there.
+   Fixed light colours throughout, not var(--page)/var(--surface)/var(--chip)
+   — same reasoning as the header itself just above: this chrome sits on the
+   now-fixed-white header regardless of page theme, so a theme-following dark
+   pill here would float against it like a mismatched island in dark mode. */
+.icon-toolbar{display:flex;align-items:center;gap:2px;flex:none;
+  background:#f4f4f4;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:4px}
+.icon-toolbar .icon-btn{width:36px;height:36px;padding:0;display:inline-flex;
+  align-items:center;justify-content:center;border-radius:50%;border:none;
+  background:transparent;color:#003b6a;font-weight:400;
+  transition:background-color .12s ease}
+.icon-toolbar .icon-btn:hover{background:#e3e3e3;filter:none}
+.icon-btn-wrap{position:relative}
+.more-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:20;
+  background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:10px;
+  box-shadow:0 4px 10px rgba(16,24,32,.15);padding:6px;min-width:140px}
+.more-menu[hidden]{display:none}
+.more-menu button{width:100%;text-align:left;color:#212529}
+.icon-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(6px);
+  background:#212529;color:#fff;padding:8px 16px;border-radius:8px;font-size:13px;
+  z-index:50;opacity:0;pointer-events:none;transition:opacity .15s ease,transform .15s ease}
+.icon-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 /* Public-facing notice. Deliberately at the top and in normal body size: a
    personal triage tool can put its caveats in the footer, a public one can't.
    Anyone landing here needs to know the summaries are generated before they
@@ -388,11 +415,20 @@ header button:hover{filter:brightness(1.06)}
 .dlfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;
   margin-top:3px}
 .dlfoot .when{margin-top:0}
-.dl .cal{flex:none;font:inherit;font-size:11.5px;color:var(--brand);
+/* Unscoped (was .dl .cal) — the same button now also appears on update cards
+   in the main feed, not just the sidebar deadline list. */
+.cal{flex:none;font:inherit;font-size:11.5px;color:var(--brand);
   background:none;border:1px solid transparent;border-radius:8px;
   padding:4px 7px;cursor:pointer;white-space:nowrap;
   transition:border-color .12s ease}
-.dl .cal:hover{border-color:var(--border);text-decoration:underline}
+.cal:hover{border-color:var(--border);text-decoration:underline}
+/* Card version: meta text left, one or two (rare — an item can have both a
+   comment deadline and an effective date) calendar buttons right. Wraps
+   rather than truncating when both are present. */
+.cardfoot{display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:4px 10px;margin-top:7px}
+.cardfoot .meta{margin-top:0}
+.cardfoot .cal{padding:2px 7px}
 
 .agrow{display:grid;grid-template-columns:120px 1fr 74px;gap:7px 10px;align-items:center}
 .agrow .n{font-size:12.5px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -485,6 +521,10 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   .sub .stamp{display:block;font-size:11.5px;opacity:.72;margin-top:2px}
   .sub .stamp::before{content:none}
   #export{display:none}
+  /* Share and install stay — they're mobile-first actions, arguably more
+     useful here than on desktop. The More button only ever held Export CSV,
+     which isn't offered on a phone, so there's nothing left for it to open. */
+  .icon-btn-wrap{display:none}
   header .logowrap{padding:7px 10px}
   header .krlogo{width:130px}
   /* Stays at readable body size on purpose — see the .notice comment above; a
@@ -554,7 +594,7 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   #showmore,#dlmore{min-height:44px}
   /* Inline on the date row, so it costs no extra line, but padded enough to be
      tappable. A full 44px here would grow every deadline row instead. */
-  .dl .cal{min-height:34px;padding:0 10px;border-color:var(--border)}
+  .dl .cal,.cardfoot .cal{min-height:34px;padding:0 10px;border-color:var(--border)}
   .contact a.btn{min-height:44px;display:inline-flex;align-items:center}
   .card h3{line-height:1.45}
   .card h3 a{display:inline-block;padding:2px 0}
@@ -634,10 +674,30 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
       August 01, 2026 01:46 UTC</span></p>
   </div>
-  <!-- Hidden entirely on a phone; see the media query. Kept in the markup rather
-       than built conditionally so the click handler always has its element. -->
-  <button id="export">Export CSV</button>
+  <!-- Share and install are mobile-first actions, so unlike the old lone
+       Export CSV button they stay visible on a phone; see the media query.
+       Export CSV moves into the overflow menu — it's still desktop-only,
+       same reasoning as before, just relocated. -->
+  <div class="icon-toolbar">
+    <button id="shareBtn" class="icon-btn" type="button" aria-label="Share this page" title="Share">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+    </button>
+    <button id="installBtn" class="icon-btn" type="button" aria-label="Install or bookmark this app" title="Install app">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a.5.5 0 0 1 .5.5v16l-6.5-4-6.5 4v-16a.5.5 0 0 1 .5-.5z"/></svg>
+    </button>
+    <div class="icon-btn-wrap">
+      <button id="moreBtn" class="icon-btn" type="button" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More">
+        <svg viewBox="0 0 24 24" width="19" height="19"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
+      </button>
+      <div id="moreMenu" class="more-menu" hidden>
+        <!-- Kept in the markup, not built conditionally, so #export's click
+             handler always has its element regardless of menu state. -->
+        <button id="export" type="button">Export CSV</button>
+      </div>
+    </div>
+  </div>
 </header>
+<div id="iconToast" class="icon-toast" role="status" aria-live="polite"></div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
      what to do about it. How deadlines are derived moved into "What this covers"
@@ -794,6 +854,72 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const days = d => Math.round((new Date(d) - new Date(TODAY)) / 86400000);
 
+// Deferred until Chrome decides installability criteria are met; may never
+// fire at all (desktop Safari, already installed, unsupported browser) —
+// installBtn falls back to a toast in that case rather than doing nothing
+// silently. Registered up here, immediately, since the event can fire before
+// any of the click handlers below are wired up.
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+});
+
+const toastEl = $('#iconToast');
+let toastTimer = null;
+function showToast(msg) {
+  if (!toastEl) return;
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+
+$('#shareBtn').addEventListener('click', async () => {
+  const shareData = {title: document.title, url: location.href};
+  if (navigator.share) {
+    try { await navigator.share(shareData); } catch (e) { /* user cancelled the sheet — not an error */ }
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(location.href);
+    showToast('Link copied');
+  } catch (e) {
+    showToast('Copy failed — copy the address bar instead');
+  }
+});
+
+$('#installBtn').addEventListener('click', async () => {
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    return;
+  }
+  showToast(window.matchMedia('(display-mode: standalone)').matches
+    ? 'Already installed'
+    : 'Use your browser menu to install or bookmark this page');
+});
+
+const moreBtn = $('#moreBtn'), moreMenu = $('#moreMenu');
+function closeMoreMenu() {
+  moreMenu.hidden = true;
+  moreBtn.setAttribute('aria-expanded', 'false');
+}
+moreBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const opening = moreMenu.hidden;
+  moreMenu.hidden = !opening;
+  moreBtn.setAttribute('aria-expanded', String(opening));
+});
+document.addEventListener('click', e => {
+  if (!moreMenu.hidden && !e.target.closest('.icon-btn-wrap')) closeMoreMenu();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !moreMenu.hidden) closeMoreMenu();
+});
+$('#export').addEventListener('click', closeMoreMenu);
+
 let filter = {kind: 'all', value: ''};
 let query = '';
 // Relevance is a lens, not a gate. The profile it screens against is one
@@ -903,7 +1029,10 @@ function renderFilteredOut() {
           </div>
           <h3><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a></h3>
           <p>${esc(d.why)}</p>
-          <div class="meta">${esc(d.date)}</div>
+          <div class="cardfoot">
+            <div class="meta">${esc(d.date)}</div>
+            ${calButtons(d)}
+          </div>
         </div>`).join('')}
     </div>`;
 }
@@ -945,7 +1074,10 @@ function renderCards(rs) {
       </div>
       <h3><a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a></h3>
       <p>${esc(d.why)}</p>
-      <div class="meta">${esc(d.date)} · <span class="u u-${esc(d.urgency)}">${esc(d.urgency)}</span></div>
+      <div class="cardfoot">
+        <div class="meta">${esc(d.date)} · <span class="u u-${esc(d.urgency)}">${esc(d.urgency)}</span></div>
+        ${calButtons(d)}
+      </div>
     </div>`;
   }).join('') : '<div class="empty">No updates match this filter.</div>';
   $('#cardcount').textContent = `${rs.length} update${rs.length === 1 ? '' : 's'}`;
@@ -968,6 +1100,22 @@ function deadlineItems(rs) {
       items.push({d, when: d.effective_on, what: 'Takes effect'});
   });
   return items;
+}
+
+// Same two dates deadlineItems checks, but rendered inline on the update card
+// itself rather than only in the sidebar — a reader scanning the feed can add
+// a comment deadline or effective date to their calendar without hunting for
+// the matching sidebar entry. Markup and data-* attributes match .dl .cal
+// exactly so the one delegated click handler below covers both.
+function calButtons(d) {
+  const btns = [];
+  if (d.comments_close_on && d.comments_close_on >= TODAY)
+    btns.push(['Comments close', d.comments_close_on]);
+  if (d.effective_on && d.effective_on >= TODAY)
+    btns.push(['Takes effect', d.effective_on]);
+  return btns.map(([label, when]) => `<button class="cal" data-t="${esc(d.title)}"
+    data-w="${esc(when)}" data-l="${esc(label)}" data-u="${esc(d.url)}"
+    aria-label="Add ${esc(label.toLowerCase())} ${esc(when)} to your calendar">+ Calendar</button>`).join('');
 }
 
 // Human name for whatever is narrowing the page right now. Read off the pressed
@@ -1222,11 +1370,13 @@ if (dlMoreBtn) dlMoreBtn.addEventListener('click', () => {
   dlMoreBtn.hidden = true;
 });
 
-// "Add to calendar" per deadline — delegated, since the list re-renders on every
-// filter change. Builds a one-event .ics and downloads it; the phone's calendar
-// app opens it, the desktop's saves it.
-const dlList = document.getElementById('deadlines');
-if (dlList) dlList.addEventListener('click', e => {
+// "Add to calendar" — delegated on document rather than any one list, since
+// .cal buttons now render in three places that each re-render independently
+// (sidebar deadlines, update cards, "also found" cards) and re-binding a
+// listener to regenerated markup in three spots is just this, done three
+// times. Builds a one-event .ics and downloads it; the phone's calendar app
+// opens it, the desktop's saves it.
+document.addEventListener('click', e => {
   const b = e.target.closest('.cal');
   if (!b) return;
   const ics = eventIcs(b.dataset.t, b.dataset.w, b.dataset.l, b.dataset.u);
