@@ -251,7 +251,7 @@ header{display:flex;align-items:center;gap:16px;margin-bottom:20px;
   background:#fff;color:#212529;padding:18px 22px;border-radius:12px;
   border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
 header .logowrap{margin-bottom:0;flex:none}
-header .krlogo{width:108px}
+header .krlogo{width:150px}
 header .t{flex:1}
 /* Fixed navy/grey, not var(--brand)/var(--ink-2) — same reasoning as the
    header background just above: this text sits on the fixed-white bar in
