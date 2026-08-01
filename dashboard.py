@@ -626,9 +626,12 @@ header button:hover{filter:brightness(1.06)}
    throughout, not var(--ink) — same reasoning as the header: brand chrome on
    a fixed navy background in every theme, not a theme-following surface. */
 footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
-.footwrap{max-width:1240px;margin:0 auto;padding:22px 20px 16px;
-  display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
-.footbrand{display:flex;flex-direction:column;flex:none}
+/* Same 1fr/400px split as .cols above, and the same 22px padding as .wrap
+   — so the second column lands at exactly the same x as "Updates by
+   agency" does in the main content, not an eyeballed approximation. */
+.footwrap{max-width:1240px;margin:0 auto;padding:22px 22px 16px;
+  display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:start}
+.footbrand{display:flex;flex-direction:column}
 /* kaufmanrossin.com's own footer runs the wordmark flush white on navy, no
    plate behind it. The source SVG's ink is fixed (navy body, grey subtext,
    lime accent bar), not theme-aware, so a plain recolour can't reach that —
@@ -644,7 +647,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 /* Social row. Kept well clear of the logo, near the legal strip at the
    bottom — same placement kaufmanrossin.com's own footer uses, not
    crowded directly under the wordmark. */
-.footsocialwrap{max-width:1240px;margin:0 auto;padding:0 20px 24px}
+.footsocialwrap{max-width:1240px;margin:0 auto;padding:0 22px 24px}
 .footsocial{display:flex;gap:8px}
 .footsocial .social-btn{display:inline-flex;align-items:center;justify-content:center;
   width:32px;height:32px;border-radius:50%;background:var(--accent);color:#00294a;
@@ -655,8 +658,8 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    (no blog, no offices, no careers page). Every link here leaves the site,
    same reasoning as Full bio above: target=_blank, never orphan the reader
    mid-update-list. */
-.footnav{display:flex;flex-wrap:wrap;gap:28px;flex:0 1 auto}
-.footcol{display:flex;flex-direction:column;gap:6px;min-width:120px}
+.footnav{display:flex;flex-wrap:wrap;gap:14px}
+.footcol{display:flex;flex-direction:column;gap:6px;min-width:100px}
 .footcol h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;
   color:#fff;margin:0 0 3px;font-weight:600}
 /* Measured off kaufmanrossin.com's own footer: 14px, weight 300, pure
@@ -675,7 +678,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
    verbatim from kaufmanrossin.com's own footer, entities and all — this is
    the firm's standard boilerplate, not RegWatch-specific text. */
 .footlegalwrap{border-top:1px solid rgba(255,255,255,.15)}
-.footlegal{max-width:1240px;margin:0 auto;padding:14px 20px 20px;
+.footlegal{max-width:1240px;margin:0 auto;padding:14px 22px 20px;
   font-size:11px;color:#8fa6bc;line-height:1.6}
 .footlegal p{margin:0 0 8px}
 .footlegal a{color:#9fb3c8;text-decoration:underline}
@@ -796,7 +799,9 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 
   .rr-table td,.rr-table th{padding:4px 5px;font-size:11.5px}
   .rr-letter{width:46px}
-  .footwrap{padding:20px 16px 16px;gap:16px}
+  /* The desktop grid's fixed 400px second column would overflow a phone
+     screen, so this reverts to a plain stacked flex column. */
+  .footwrap{display:flex;flex-direction:column;padding:20px 16px 16px;gap:16px}
   /* Stacked, the divider reads better under the logo than as a stray line
      hanging off the wrapped row. */
   .footbrand{padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15);
