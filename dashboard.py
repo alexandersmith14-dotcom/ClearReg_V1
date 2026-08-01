@@ -1084,19 +1084,22 @@ function renderFilteredOut() {
     </div>`;
 }
 
-// Fewer cards on a phone. At 25 the page ran ten screens deep, which put the
-// contact card past the point anyone scrolls. The rest are one tap away.
+// One initial card limit on every screen size, not just phones. At 25 the
+// desktop page ran deep before the contact card and footer came into view;
+// 8 matches what the phone was already doing, so there's one number to
+// reason about instead of two. The rest are one click/tap away.
 //
-// Driven by a matchMedia listener rather than a one-off check at load: a
-// load-time read is unreliable and would also strand a phone that rotates into
-// landscape with the narrow layout.
+// MOBILE still drives ordering, folding and the filter block below —
+// driven by a matchMedia listener rather than a one-off check at load: a
+// load-time read is unreliable and would also strand a phone that rotates
+// into landscape with the narrow layout.
 // MUST match the phone media query in the stylesheet above. A phone in
 // landscape is ~800px wide, so testing width alone treated it as a desktop and
 // switched off the folding, the deadlines-first ordering and the collapsed
 // filter block exactly when the 375px-tall screen needed them most.
 const MOBILE = window.matchMedia(
   '(max-width:640px), (hover:none) and (pointer:coarse) and (max-width:1024px)');
-let cardLimit = MOBILE.matches ? 8 : 25;
+let cardLimit = 8;
 // Deadlines are ordered FIRST on a phone because they are the most actionable
 // thing here — but uncapped that panel ran 1,389px, two thirds of everything
 // above the first update card. Capping it keeps the ordering decision without
@@ -1446,7 +1449,7 @@ foldables.forEach(el => {
 });
 
 function applyViewport() {
-  if (!userChoseLimit) cardLimit = MOBILE.matches ? 8 : 25;
+  if (!userChoseLimit) cardLimit = 8;
   if (!userChoseDlLimit) dlLimit = MOBILE.matches ? 6 : Infinity;
   // Re-open anything the reader folded on a phone before turning to landscape or
   // widening the window; a collapsed panel on desktop has no visible way back.
