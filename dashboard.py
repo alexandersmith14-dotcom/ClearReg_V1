@@ -677,7 +677,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   font-size:13px;font-weight:400;padding:9px 16px;border-radius:0;
   text-decoration:none;background:#fff;color:#212529;
   border:1px solid #fff;border-left:8px solid var(--accent);
-  transition:background-color .12s ease}
+  transition:background-color .5s ease,border-color .5s ease,color .5s ease}
 .footsub a.btn:hover,.footsub a.btn:active{background:var(--accent);border-color:var(--accent);color:#00294a}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
