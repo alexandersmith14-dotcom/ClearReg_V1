@@ -583,13 +583,23 @@ header button:hover{filter:brightness(1.06)}
 .contact{margin-top:22px;background:var(--surface);border:1px solid var(--border);
   border-top:4px solid var(--accent);border-radius:12px;padding:18px 20px;
   display:flex;flex-wrap:wrap;gap:18px;align-items:center;box-shadow:var(--shadow-sm)}
+/* Firm half (logo + KR's own social channels) and personal half (Alexander's
+   name/role/pitch/buttons) as two sides of one card, not two separate cards —
+   same overall visual weight the page already had, a divider rather than a
+   second box. Wraps to its own row on phone via the parent's flex-wrap. */
+.contact .firm{display:flex;flex-direction:column;align-items:flex-start;
+  gap:11px;flex:none;padding-right:20px;border-right:1px solid var(--border)}
 .contact .who{flex:1 1 340px;min-width:280px}
 /* The wordmark's ink (#1e4c7e navy, #828282 grey) is fixed in the source SVG,
    not theme-aware, so it needs guaranteed contrast against dark mode's near-black
    surface. A small white plate does that without recolouring the logo itself. */
-.contact .logowrap{display:inline-block;background:#fff;padding:8px 12px;
-  border-radius:8px;margin-bottom:11px}
+.contact .logowrap{display:inline-block;background:#fff;padding:8px 12px;border-radius:8px}
 .contact .krlogo{display:block;width:132px;height:auto}
+.contact .social{display:flex;gap:4px}
+.contact .social-btn{display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;color:var(--ink-2);
+  transition:background-color .12s ease,color .12s ease}
+.contact .social-btn:hover{background:var(--chip);color:var(--brand)}
 .contact .name{font-size:15px;font-weight:700;color:var(--ink)}
 .contact .role{font-size:13px;color:var(--ink-2);margin-top:2px}
 .contact .pitch{font-size:13px;color:var(--ink-2);margin-top:9px;line-height:1.55;
@@ -711,6 +721,10 @@ footer{margin-top:22px;font-size:11px;color:var(--ink-muted)}
   .rr-table td,.rr-table th{padding:4px 5px;font-size:11.5px}
   .rr-letter{width:46px}
   .contact{padding:15px 16px;gap:14px}
+  /* The divider only makes sense side-by-side; stacked, it would read as a
+     stray vertical line hanging off the wrapped row. */
+  .contact .firm{border-right:none;padding-right:0;padding-bottom:14px;
+    border-bottom:1px solid var(--border);width:100%}
 
   /* Stacked columns put deadlines eight screens down, below every update card,
      even though they are the most actionable thing on the page. display:contents
@@ -2109,8 +2123,28 @@ def main():
 </div>
 
 <div class="contact">
-  <div class="who">
+  <div class="firm">
     <div class="logowrap">{KR_LOGO_SVG}</div>
+    <div class="social">
+      <a class="social-btn" href="https://www.linkedin.com/company/kaufman-rossin-&-co"
+         target="_blank" rel="noopener" aria-label="Kaufman Rossin on LinkedIn">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zm7 0h3.8v1.9h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>
+      </a>
+      <a class="social-btn" href="https://www.facebook.com/KaufmanRossin"
+         target="_blank" rel="noopener" aria-label="Kaufman Rossin on Facebook">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.25-1.5 1.55-1.5H16.7V3.7C16.4 3.66 15.4 3.57 14.2 3.57c-2.5 0-4.2 1.52-4.2 4.3V9.9H7.3V13h2.7v8z"/></svg>
+      </a>
+      <a class="social-btn" href="https://www.instagram.com/kaufmanrossin/"
+         target="_blank" rel="noopener" aria-label="Kaufman Rossin on Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a class="social-btn" href="https://www.youtube.com/user/KaufmanRossin"
+         target="_blank" rel="noopener" aria-label="Kaufman Rossin on YouTube">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M21.6 7.6a2.7 2.7 0 0 0-1.9-1.9C18 5.2 12 5.2 12 5.2s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9A28 28 0 0 0 2 12a28 28 0 0 0 .4 4.4 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28 28 0 0 0 22 12a28 28 0 0 0-.4-4.4zM10 15.3V8.7L15.8 12z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="who">
     <div class="name">Built by Alexander Smith, CRCM, CFE</div>
     <div class="role">Risk Advisory Services &middot; Kaufman Rossin</div>
     <div class="pitch">I built this to track regulatory activity affecting
