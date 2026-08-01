@@ -120,7 +120,7 @@ ICS_PATH = "deadlines.ics"
 
 # Absolute URL of the published site. Social scrapers require absolute URLs for
 # og:image and og:url — a relative path silently produces no preview.
-SITE_URL = "https://alexandersmith14-dotcom.github.io/regwatch/"
+SITE_URL = "https://alexandersmith14-dotcom.github.io/RegWatch_V2/"
 
 # Kaufman Rossin brand.
 # Navy #003B6A and green #AED136 are taken from kaufmanrossin.com, along with

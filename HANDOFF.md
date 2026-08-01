@@ -3,8 +3,8 @@
 Paste this into a new chat, or point Claude at this file.
 
 **Project:** `C:\Users\alexa\RegWatch`
-**Live:** https://alexandersmith14-dotcom.github.io/regwatch/
-**Repo:** https://github.com/alexandersmith14-dotcom/regwatch (public)
+**Live:** https://alexandersmith14-dotcom.github.io/RegWatch_V2/
+**Repo:** https://github.com/alexandersmith14-dotcom/RegWatch_V2 (public)
 
 ---
 
@@ -209,10 +209,12 @@ things to do, not fixes.
    pages → measure keep-rate → decide). FL and TX are in. Any new state gets the
    same measure-first test; expect low volume per state.
 6. **GitHub 60-day inactivity rule** — scheduled workflows in public repos are
-   disabled after 60 days without repo activity. Bot commits happen daily but
-   whether they count is undocumented. If the page timestamp ever stops advancing
-   with no failure email, this is the likely cause. The weekly `regwatch-watchdog`
-   scheduled task is the backstop.
+   disabled after 60 days without repo activity, and a scheduled workflow
+   *running* does not itself count as activity — only a commit/push does.
+   `.github/workflows/watchdog.yml` is the backstop: a weekly empty commit,
+   independent of whether there was real regulatory news to report that
+   week. Runs in GitHub itself now, not a scheduled task on a PC — nothing
+   external to keep alive.
 
 Done 2026-07-20/21 (not open anymore): daily source health check + alerting,
 CI dependency fix, FinCEN date bug, tab/bookmark/home-screen icons, foldable

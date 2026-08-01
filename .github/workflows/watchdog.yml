@@ -1,0 +1,33 @@
+name: Watchdog heartbeat
+
+# Backstop against GitHub's own rule: a public repo's scheduled workflows are
+# disabled after 60 days with no repository activity — and a scheduled
+# workflow simply *running* does not count as activity, only a commit/push
+# does. update.yml only commits on days it finds something new, so a long
+# quiet stretch across all 14 sources (unlikely, but possible) could let the
+# repo go dark with no error to alert on.
+#
+# This runs weekly, well inside the 60-day window, and makes a real empty
+# commit — guaranteed push activity regardless of whether there was
+# regulatory news that week. Previously a scheduled task on a PC; moved here
+# so nothing external has to stay running for it to work.
+on:
+  schedule:
+    - cron: "0 12 * * 1"   # every Monday, 12:00 UTC
+  workflow_dispatch: {}    # lets you trigger a run by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Empty commit to keep the repo active
+        run: |
+          git config user.name "regwatch-bot"
+          git config user.email "actions@github.com"
+          git commit --allow-empty -m "Watchdog heartbeat ($(date -u +%Y-%m-%d))"
+          git push
