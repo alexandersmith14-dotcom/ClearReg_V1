@@ -678,7 +678,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   text-decoration:none;background:#fff;color:#212529;
   border:1px solid #fff;border-left:8px solid var(--accent);
   transition:background-color .12s ease}
-.footsub a.btn:hover{background:transparent;color:#fff}
+.footsub a.btn:hover,.footsub a.btn:active{background:var(--accent);border-color:var(--accent);color:#00294a}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
    verbatim from kaufmanrossin.com's own footer, entities and all — this is
