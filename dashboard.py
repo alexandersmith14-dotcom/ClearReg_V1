@@ -600,7 +600,7 @@ header button:hover{filter:brightness(1.06)}
    (photo left, name/title right, tiny icon buttons underneath), not the
    bigger square-photo Key Contacts card. Ordinary surface card like .notice
    above it, sitting on the page itself rather than the navy footer below. */
-.quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--border);
+.quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--accent);
   border-radius:12px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;
   max-width:420px;box-shadow:var(--shadow-sm)}
 .quickcontact .qc-photo img{display:block;width:72px;height:72px;border-radius:50%;
@@ -2200,7 +2200,7 @@ def main():
   </div>
   <div class="qc-text">
     <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
-    <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin</div>
+    <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin, one of the Top 50 CPA and advisory firms in the U.S.</div>
     <div class="qc-icons">
       <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
