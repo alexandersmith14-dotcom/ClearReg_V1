@@ -150,15 +150,16 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .pagehead{display:flex;align-items:center;gap:16px;margin-bottom:14px;
   padding-bottom:14px;border-bottom:1px solid var(--border)}
 .pagehead .t{flex:1}
-/* Check Spike mark — a checkmark that keeps going into the same flat-then-peak
-   shape as the rest of the identity work. Sits at wordmark scale, not icon
-   scale, since this is the one place the mark appears at full size rather
-   than shrunk into a tab or a home-screen tile. */
-.brandmark{flex:none;width:38px;height:38px}
-.brandmark svg{display:block;width:100%;height:100%}
 /* var(--brand), not a fixed navy — the pagehead now lives inside .notice,
    which follows the theme-able --surface, so its text must follow theme too. */
 h1{font-size:27px;margin:0;color:var(--brand);font-weight:800;letter-spacing:-.01em}
+/* The Check Spike mark trails off the wordmark's last "i" instead of sitting
+   beside it as a separate icon — display:flex + align-items:flex-end lands
+   the mark on the text baseline the same way a trailing punctuation mark
+   would sit. Sized relative to the h1's own font-size, not a fixed pixel
+   value, so it stays in proportion if the wordmark size ever changes. */
+h1.wordmark{display:flex;align-items:flex-end;gap:1px}
+h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 /* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
    KR wordmark, just set as small text under the product name rather than
    redrawing the logo mark at a tiny size. */
@@ -915,19 +916,16 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      standalone .pagehead card, per Alexander — one tile, not two). -->
 <div class="notice">
   <div class="pagehead">
-    <!-- Check Spike: a checkmark (resolved/cleared) that keeps going into a
-         flat-then-peak spike — the house "flat until it isn't" shape, so the
-         mark reads as the same identity wherever it shows up small (tab,
-         home-screen icon) or here at full size. -->
-    <div class="brandmark" aria-hidden="true">
-      <svg viewBox="0 0 64 64">
-        <path d="M10,34 L22,46 L40,18 L46,18 L50,10 L54,18 L60,18" fill="none"
-          stroke="var(--brand)" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="50" cy="10" r="4" fill="var(--accent)"/>
-      </svg>
-    </div>
     <div class="t">
-      <h1>Mihari</h1>
+      <!-- Check Spike, integrated: a checkmark (resolved/cleared) that keeps
+           going into the same flat-then-peak spike used across the identity
+           work, trailing off the wordmark's last "i" instead of sitting
+           beside it as a separate icon — the wordmark carries its own mark. -->
+      <h1 class="wordmark">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
+          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
+            stroke="var(--brand)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
+        </svg></h1>
       <!-- Same lockup convention as the firm's other tools (e.g. regERI): the
            product wordmark, then a small "by KAUFMAN | ROSSIN" credit directly
            under it, reusing the KR wordmark's own navy/lime pipe divider at a
