@@ -265,22 +265,22 @@ body{margin:0;padding:0;background:var(--page);color:var(--ink);
 .krtopwrap{max-width:1240px;margin:0 auto;padding:0 22px;
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .krtop nav{display:flex;align-items:center}
-.krtop a{display:inline-block;padding:10px 10px;font-size:16px;font-weight:500;
+.krtop a{display:inline-block;padding:6px 10px;font-size:14px;font-weight:500;
   color:#fff;text-decoration:none;white-space:nowrap}
 .krtop a:hover{text-decoration:underline}
 .krtop .sites a.active{background:var(--accent);color:var(--brand);border-radius:2px}
-.krtop .util a{font-size:14px;border-left:1px solid rgba(255,255,255,.3)}
+.krtop .util a{font-size:12.5px;border-left:1px solid rgba(255,255,255,.3)}
 .krtop .util a:first-child{border-left:none}
 /* Second band: plain flush white bar, no card/shadow — this is fixed brand
    chrome sitting outside .wrap, not a themed page element, so it stays
    white/navy in every theme same as the old single-band header did. */
 header.krheader{background:#fff;border-bottom:1px solid var(--border)}
-.krheaderwrap{max-width:1240px;margin:0 auto;padding:16px 22px;
+.krheaderwrap{max-width:1240px;margin:0 auto;padding:10px 22px;
   display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .krheaderwrap .logowrap{flex:none}
-.krheaderwrap .krlogo{width:190px}
-.krheader nav{display:flex;align-items:center;gap:26px}
-.krheader nav a{color:var(--brand);font-size:16px;font-weight:500;text-decoration:none}
+.krheaderwrap .krlogo{width:160px}
+.krheader nav{display:flex;align-items:center;gap:20px}
+.krheader nav a{color:var(--brand);font-size:14.5px;font-weight:500;text-decoration:none}
 .krheader nav a:hover{text-decoration:underline}
 .krheader .krsearch{display:inline-flex;align-items:center;justify-content:center;
   width:32px;height:32px;border-radius:50%;border:1px solid var(--border);color:var(--brand)}
