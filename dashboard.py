@@ -338,7 +338,7 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
    side padding here (see .krtop above), so a normal block already spans
    edge to edge without the scrollbar-width overflow that trick invites. */
 .herowrap{position:relative;background:var(--brand-bg);overflow:hidden;
-  margin-bottom:24px}
+  margin-bottom:14px}
 .hero-bgmark{position:absolute;right:-32px;bottom:-28px;pointer-events:none}
 .hero-bgmark svg{display:block}
 /* Draws the big background line in once on load, using the path's own
@@ -450,7 +450,7 @@ button:hover{background:var(--raised)}
    Anyone landing here needs to know the summaries are generated before they
    read any of them. */
 .notice{background:var(--surface);border:1px solid var(--border);
-  border-left:4px solid var(--warn);border-radius:12px;padding:13px 16px;
+  border-left:4px solid var(--crit);border-radius:12px;padding:13px 16px;
   margin-bottom:18px;font-size:13px;color:var(--ink-2);text-align:justify;
   text-align-last:left;hyphens:auto;box-shadow:var(--shadow-sm)}
 .notice strong{color:var(--ink)}
