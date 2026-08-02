@@ -189,7 +189,7 @@ CSS = """
   --page:#f4f4f4; --surface:#ffffff; --raised:#fafafa;
   --ink:#212529; --ink-2:#3c3c3c; --ink-muted:#6c757d;
   --rule:#e3e3e3; --border:rgba(0,0,0,.12);
-  --brand:#003b6a; --brand-bg:#003b6a; --accent:#aed136;
+  --brand:#003b6a; --brand-bg:#003b6a; --brand-bg-2:#001f3f; --brand-bg-light:#074c83; --accent:#aed136;
   --bar:#003b6a; --track:#e3e3e3;
   --crit:#c0392b; --warn:#9a6400; --ok:#2f7d32; --neutral:#3c3c3c;
   --chip:#f0f0f0;
@@ -213,7 +213,7 @@ CSS = """
     --page:#101418; --surface:#161a1d; --raised:#1d2226;
     --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
     --rule:#2a3035; --border:rgba(255,255,255,.12);
-    --brand:#4e9bd8; --brand-bg:#123a63; --accent:#aed136;
+    --brand:#4e9bd8; --brand-bg:#123a63; --brand-bg-2:#0a2242; --brand-bg-light:#215383; --accent:#aed136;
     --bar:#4e9bd8; --track:#2a3035;
     --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
     --chip:#232a2f;
@@ -230,7 +230,7 @@ CSS = """
   --page:#101418; --surface:#161a1d; --raised:#1d2226;
   --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
   --rule:#2a3035; --border:rgba(255,255,255,.12);
-  --brand:#4e9bd8; --brand-bg:#123a63; --accent:#aed136;
+  --brand:#4e9bd8; --brand-bg:#123a63; --brand-bg-2:#0a2242; --brand-bg-light:#215383; --accent:#aed136;
   --bar:#4e9bd8; --track:#2a3035;
   --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
   --chip:#232a2f;
@@ -337,8 +337,9 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
    Plain full-width block, not a 100vw/translateX breakout — body carries no
    side padding here (see .krtop above), so a normal block already spans
    edge to edge without the scrollbar-width overflow that trick invites. */
-.herowrap{position:relative;background:var(--brand-bg);overflow:hidden;
-  margin-bottom:14px}
+.herowrap{position:relative;
+  background:radial-gradient(ellipse at center,var(--brand-bg) 0%,var(--brand-bg-2) 100%);
+  overflow:hidden;margin-bottom:14px}
 .hero-bgmark{position:absolute;right:-32px;bottom:-28px;pointer-events:none}
 .hero-bgmark svg{display:block}
 /* Draws the big background line in once on load, using the path's own
@@ -546,7 +547,8 @@ button:hover{background:var(--raised)}
    tile's top edge, not a heading floating inside it. */
 .kpi .l{margin:-14px -16px 12px;padding:8px 16px;font-size:11.5px;
   letter-spacing:.07em;text-transform:uppercase;font-weight:700;
-  background:var(--brand-bg);color:#fff;border-bottom:3px solid var(--accent)}
+  background:radial-gradient(ellipse at center,var(--brand-bg-light) 0%,var(--brand-bg) 100%);
+  color:#fff;border-bottom:3px solid var(--accent)}
 .kpi .v{font-size:32px;line-height:1.15;letter-spacing:-.02em;margin:6px 0 2px}
 .kpi .n{font-size:12px;color:var(--ink-muted)}
 .kpi .n.up{color:var(--crit)} .kpi .n.down{color:var(--ok)}
@@ -625,8 +627,9 @@ button:hover{background:var(--raised)}
    matching the View toggle's active state — that control's shadow lives on
    its shared wrapper, not per-button, so every segment (pressed or not)
    shares the same lime offset. */
-.pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);
-  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--accent)}
+.pill[aria-pressed="true"]{
+  background:radial-gradient(ellipse at center,var(--brand-bg-light) 0%,var(--brand) 100%);
+  border-color:var(--brand);color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--accent)}
 .pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--accent)}
 .pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--accent)}
 
@@ -636,7 +639,9 @@ button:hover{background:var(--raised)}
   overflow:hidden;box-shadow:3px 3px 0 0 var(--accent)}
 .viewtoggle button{border:none;border-radius:0;padding:6px 15px;font-size:12.5px;
   background:var(--surface);color:var(--ink-2);cursor:pointer}
-.viewtoggle button[aria-pressed="true"]{background:var(--brand);color:#fff;font-weight:700}
+.viewtoggle button[aria-pressed="true"]{
+  background:radial-gradient(ellipse at center,var(--brand-bg-light) 0%,var(--brand) 100%);
+  color:#fff;font-weight:700}
 /* Set-aside items are dimmed AND labelled — dimming alone is not a readable
    signal, and in the everything view the reader must be able to tell which
    items met the criteria. */
@@ -672,7 +677,8 @@ button:hover{background:var(--raised)}
    not h2 — the header strip has to live on whichever element actually owns
    the panel's padding-box edge. */
 .panel>h2,.foldable>summary{margin:-16px -18px 14px;padding:10px 18px;
-  background:var(--brand-bg);color:#fff;border-radius:11px 11px 0 0;
+  background:radial-gradient(ellipse at center,var(--brand-bg-light) 0%,var(--brand-bg) 100%);
+  color:#fff;border-radius:11px 11px 0 0;
   border-bottom:3px solid var(--accent)}
 .panel>h2{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:700}
 /* Two panels are <details> so they can fold on a phone. Suppress the native
