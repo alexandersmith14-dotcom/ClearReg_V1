@@ -458,6 +458,46 @@ button:hover{background:var(--raised)}
   z-index:50;opacity:0;pointer-events:none;transition:opacity .15s ease,transform .15s ease}
 .icon-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* Notes/Tasks dialog — a single shared modal reused across every item rather
+   than one per card, since there can be hundreds of cards on screen. Only
+   its content and the data-url it's bound to change per open. Sits above
+   the icon toast (z-index 50) since a save can fire while it's open. */
+.item-dialog-backdrop{position:fixed;inset:0;background:rgba(10,14,18,.5);
+  display:flex;align-items:center;justify-content:center;padding:20px;z-index:60}
+.item-dialog-backdrop[hidden]{display:none}
+.item-dialog{background:var(--surface);border-radius:12px;box-shadow:var(--shadow-md);
+  width:100%;max-width:420px;max-height:min(560px,84vh);display:flex;flex-direction:column;
+  overflow:hidden}
+.idhead{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;
+  border-bottom:1px solid var(--border)}
+.idhead .idttl{flex:1;font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.idkind{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--brand);margin-bottom:2px}
+#idClose{flex:none;width:26px;height:26px;padding:0;display:flex;align-items:center;
+  justify-content:center;font-size:18px;line-height:1;border-radius:6px}
+#idBody{padding:14px 16px;overflow-y:auto}
+#idNoteText{width:100%;min-height:120px;resize:vertical;font:inherit;font-size:14px;
+  padding:10px 12px;color:var(--ink);background:var(--surface);border:1px solid var(--border);
+  border-radius:8px}
+#idNoteText:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+.idnotefoot{margin-top:8px;font-size:11.5px;color:var(--ink-muted)}
+#idTaskForm{display:flex;gap:8px;margin-bottom:12px}
+#idTaskInput{flex:1;font:inherit;font-size:14px;padding:8px 10px;color:var(--ink);
+  background:var(--surface);border:1px solid var(--border);border-radius:8px}
+#idTaskInput:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:var(--brand)}
+#idTaskForm button{padding:8px 12px}
+#idTaskList{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.idtask{display:flex;align-items:center;gap:9px;padding:7px 4px;border-radius:6px}
+.idtask:hover{background:var(--raised)}
+.idtask label{flex:1;display:flex;align-items:center;gap:9px;font-size:13.5px;
+  color:var(--ink);cursor:pointer}
+.idtask input[type=checkbox]{width:16px;height:16px;flex:none;accent-color:var(--brand)}
+.idtask.done label{color:var(--ink-muted);text-decoration:line-through}
+.idtaskdel{flex:none;width:24px;height:24px;padding:0;display:flex;align-items:center;
+  justify-content:center;color:var(--ink-muted);border:none;background:none;border-radius:6px}
+.idtaskdel:hover{color:var(--crit);background:var(--raised)}
+.idempty{font-size:13px;color:var(--ink-muted);padding:6px 4px}
+
 /* Public-facing notice. Deliberately at the top and in normal body size: a
    personal triage tool can put its caveats in the footer, a public one can't.
    Anyone landing here needs to know the summaries are generated before they
@@ -757,6 +797,26 @@ button:hover{background:var(--raised)}
   flex-wrap:wrap;gap:4px 10px;margin-top:7px}
 .cardfoot .meta{margin-top:0}
 .cardfoot .cal{padding:2px 7px}
+/* Groups calendar buttons (0-2, only when dated) with the always-present
+   Notes/Tasks icons into one right-hand cluster, so cardfoot/dlfoot stay a
+   clean two-group flex (meta left, actions right) instead of the three
+   loose children space-between would otherwise spread unevenly. */
+.actions{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.itemrow{display:flex;gap:2px}
+/* Notes/Tasks icon buttons — same interaction language as .cal but icon-only
+   (aria-label carries the name) since they sit on every item, dated or not,
+   and a text label on two more buttons per card would crowd the list. The
+   dot marks items that already have a saved note or an open task, so a
+   reader scanning the feed can tell what they've already annotated without
+   opening each one. */
+.itembtn{position:relative;flex:none;display:inline-flex;align-items:center;
+  justify-content:center;width:28px;height:28px;padding:0;color:var(--ink-muted);
+  background:none;border:1px solid transparent;border-radius:8px;cursor:pointer;
+  transition:border-color .12s ease,color .12s ease}
+.itembtn:hover{border-color:var(--border);color:var(--brand)}
+.itembtn .dot{position:absolute;top:3px;right:3px;width:7px;height:7px;
+  border-radius:50%;background:var(--accent);display:none}
+.itembtn.has .dot{display:block}
 
 .agrow{display:grid;grid-template-columns:120px 1fr 74px;gap:7px 10px;align-items:center}
 .agrow .n{font-size:12.5px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -1021,6 +1081,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   /* Inline on the date row, so it costs no extra line, but padded enough to be
      tappable. A full 44px here would grow every deadline row instead. */
   .dl .cal,.cardfoot .cal{min-height:34px;padding:0 10px;border-color:var(--border)}
+  .itembtn{width:34px;height:34px;border-color:var(--border)}
   .quickcontact .qc-icons a{width:36px;height:36px}
   .card h3{line-height:1.45}
   .card h3 a{display:inline-block;padding:2px 0}
@@ -1252,7 +1313,7 @@ function renderFilteredOut() {
           <p>${esc(d.why)}</p>
           <div class="cardfoot">
             <div class="meta">${esc(d.date)}</div>
-            ${calButtons(d)}
+            <div class="actions">${calButtons(d)}${itemActionButtons(d)}</div>
           </div>
         </div>`).join('')}
     </div>`;
@@ -1300,7 +1361,7 @@ function renderCards(rs) {
       <p>${esc(d.why)}</p>
       <div class="cardfoot">
         <div class="meta">${esc(d.date)} · <span class="u u-${esc(d.urgency)}">${esc(d.urgency)}</span></div>
-        ${calButtons(d)}
+        <div class="actions">${calButtons(d)}${itemActionButtons(d)}</div>
       </div>
     </div>`;
   }).join('') : '<div class="empty">No updates match this filter.</div>';
@@ -1331,6 +1392,7 @@ function deadlineItems(rs) {
 // a comment deadline or effective date to their calendar without hunting for
 // the matching sidebar entry. Markup and data-* attributes match .dl .cal
 // exactly so the one delegated click handler below covers both.
+const CAL_ICON = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>';
 function calButtons(d) {
   const btns = [];
   if (d.comments_close_on && d.comments_close_on >= TODAY)
@@ -1339,7 +1401,31 @@ function calButtons(d) {
     btns.push(['Takes effect', d.effective_on]);
   return btns.map(([label, when]) => `<button class="cal" data-t="${esc(d.title)}"
     data-w="${esc(when)}" data-l="${esc(label)}" data-u="${esc(d.url)}"
-    aria-label="Add ${esc(label.toLowerCase())} ${esc(when)} to your calendar">+ Calendar</button>`).join('');
+    aria-label="Add ${esc(label.toLowerCase())} ${esc(when)} to your calendar">${CAL_ICON}</button>`).join('');
+}
+
+// Notes/Tasks icon buttons, present on every item (dated or not) — unlike
+// calButtons above, which only renders when a comment/effective date exists.
+// Storage is per-browser localStorage keyed by the item's URL: there's no
+// login on this site, so a stable per-device key is the only option, and
+// it keeps these completely private (nothing here leaves the browser).
+const NOTES_KEY = 'mihariNotes';
+const TASKS_KEY = 'mihariTasks';
+function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch { return {}; } }
+function saveNotes(o) { localStorage.setItem(NOTES_KEY, JSON.stringify(o)); }
+function loadTasks() { try { return JSON.parse(localStorage.getItem(TASKS_KEY)) || {}; } catch { return {}; } }
+function saveTasks(o) { localStorage.setItem(TASKS_KEY, JSON.stringify(o)); }
+const NOTE_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg>';
+const TASK_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6.5l1.2 1.2L7.5 5.4"/><path d="M4 12.5l1.2 1.2 2.3-2.3"/><path d="M4 18.5l1.2 1.2 2.3-2.3"/></svg>';
+function itemActionButtons(d) {
+  const hasNote = !!(loadNotes()[d.url] || '').trim();
+  const hasTask = (loadTasks()[d.url] || []).some(t => !t.done);
+  return `<div class="itemrow">
+    <button class="itembtn${hasNote ? ' has' : ''}" data-mode="notes" data-t="${esc(d.title)}"
+      data-u="${esc(d.url)}" aria-label="Notes">${NOTE_ICON}<span class="dot"></span></button>
+    <button class="itembtn${hasTask ? ' has' : ''}" data-mode="tasks" data-t="${esc(d.title)}"
+      data-u="${esc(d.url)}" aria-label="Tasks">${TASK_ICON}<span class="dot"></span></button>
+  </div>`;
 }
 
 // Human name for whatever is narrowing the page right now. Read off the pressed
@@ -1428,9 +1514,12 @@ function renderDeadlines(rs) {
         <div class="ttl"><a href="${esc(d.fr_url || d.url)}" target="_blank" rel="noopener">${esc(d.title)}</a></div>
         <div class="dlfoot">
           <div class="when ${cls}">${esc(what)} ${esc(when)} · ${n} day${n === 1 ? '' : 's'}</div>
-          <button class="cal" data-t="${esc(d.title)}" data-w="${esc(when)}"
-            data-l="${esc(what)}" data-u="${esc(d.fr_url || d.url)}"
-            aria-label="Add this deadline to your calendar">+ Calendar</button>
+          <div class="actions">
+            <button class="cal" data-t="${esc(d.title)}" data-w="${esc(when)}"
+              data-l="${esc(what)}" data-u="${esc(d.fr_url || d.url)}"
+              aria-label="Add this deadline to your calendar">${CAL_ICON}</button>
+            ${itemActionButtons(d)}
+          </div>
         </div>
       </div></div>`;
   }).join('')
@@ -1676,6 +1765,99 @@ document.addEventListener('click', e => {
   const name = (b.dataset.l + '-' + b.dataset.w).replace(/[^a-z0-9]+/gi, '-')
     .toLowerCase().replace(/^-|-$/g, '') + '.ics';
   downloadText(name, ics, 'text/calendar');
+});
+
+// ---------------------------------------------------------- Notes & Tasks
+// One shared dialog reused across every item, rather than one per card —
+// there can be hundreds of cards rendered at once. Only its content and the
+// URL it's bound to change per open. Closing it re-runs render() so any
+// card whose note/task state just changed picks up its dot immediately.
+const itemDialog = $('#itemDialog');
+const idBody = $('#idBody');
+const idTitleEl = $('#idTitle');
+const idKindEl = $('#idKind');
+let idCurrent = null;
+let idSaveTimer = null;
+
+function openItemDialog(mode, title, url) {
+  idCurrent = { mode, title, url };
+  idKindEl.textContent = mode === 'notes' ? 'Note' : 'Tasks';
+  idTitleEl.textContent = title;
+  renderItemDialogBody();
+  itemDialog.hidden = false;
+  const focusEl = idBody.querySelector('textarea, input');
+  if (focusEl) focusEl.focus();
+}
+function closeItemDialog() {
+  if (itemDialog.hidden) return;
+  itemDialog.hidden = true;
+  idCurrent = null;
+  render();
+}
+function renderItemDialogBody() {
+  if (!idCurrent) return;
+  const { mode, url } = idCurrent;
+  if (mode === 'notes') {
+    const val = loadNotes()[url] || '';
+    idBody.innerHTML = `<textarea id="idNoteText"
+      placeholder="Private note — only saved in this browser.">${esc(val)}</textarea>
+      <div class="idnotefoot">Saved automatically. Only visible on this device.</div>`;
+    $('#idNoteText').addEventListener('input', e => {
+      clearTimeout(idSaveTimer);
+      const v = e.target.value;
+      idSaveTimer = setTimeout(() => {
+        const n = loadNotes();
+        if (v.trim()) n[url] = v; else delete n[url];
+        saveNotes(n);
+      }, 400);
+    });
+  } else {
+    const list = loadTasks()[url] || [];
+    idBody.innerHTML = `
+      <form id="idTaskForm">
+        <input id="idTaskInput" type="text" placeholder="Add a task" autocomplete="off">
+        <button type="submit">Add</button>
+      </form>
+      <ul id="idTaskList">${list.length ? list.map(t => `
+        <li class="idtask${t.done ? ' done' : ''}" data-id="${esc(t.id)}">
+          <label><input type="checkbox" ${t.done ? 'checked' : ''}>${esc(t.text)}</label>
+          <button type="button" class="idtaskdel" aria-label="Delete task">&times;</button>
+        </li>`).join('') : '<li class="idempty">No tasks yet.</li>'}</ul>`;
+    $('#idTaskForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = $('#idTaskInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const t = loadTasks();
+      const arr = t[url] || (t[url] = []);
+      arr.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), text, done: false });
+      saveTasks(t);
+      renderItemDialogBody();
+    });
+    idBody.querySelectorAll('.idtask').forEach(li => {
+      const id = li.dataset.id;
+      li.querySelector('input[type=checkbox]').addEventListener('change', e => {
+        const t = loadTasks();
+        const task = (t[url] || []).find(x => x.id === id);
+        if (task) { task.done = e.target.checked; saveTasks(t); }
+        li.classList.toggle('done', e.target.checked);
+      });
+      li.querySelector('.idtaskdel').addEventListener('click', () => {
+        const t = loadTasks();
+        t[url] = (t[url] || []).filter(x => x.id !== id);
+        saveTasks(t);
+        renderItemDialogBody();
+      });
+    });
+  }
+}
+document.addEventListener('click', e => {
+  const openBtn = e.target.closest('.itembtn');
+  if (openBtn) { openItemDialog(openBtn.dataset.mode, openBtn.dataset.t, openBtn.dataset.u); return; }
+  if (e.target.id === 'idClose' || e.target === itemDialog) closeItemDialog();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !itemDialog.hidden) closeItemDialog();
 });
 
 
@@ -2469,6 +2651,19 @@ def main():
 <div class="wrap">
 
 <div id="iconToast" class="icon-toast" role="status" aria-live="polite"></div>
+
+<!-- Notes/Tasks dialog, shared across every item -- see the CSS comment
+     above .item-dialog-backdrop for why this is one element, not one per
+     card. Content and data-url swap in via renderItemDialogBody(). -->
+<div id="itemDialog" class="item-dialog-backdrop" hidden>
+  <div class="item-dialog" role="dialog" aria-modal="true" aria-labelledby="idTitle">
+    <div class="idhead">
+      <div class="idttl"><span class="idkind" id="idKind"></span><span id="idTitle"></span></div>
+      <button id="idClose" type="button" aria-label="Close">&times;</button>
+    </div>
+    <div id="idBody"></div>
+  </div>
+</div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
      what to do about it. How deadlines are derived moved into "What this covers"
