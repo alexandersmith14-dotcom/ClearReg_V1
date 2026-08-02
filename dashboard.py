@@ -340,7 +340,7 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 .herowrap{position:relative;
   background:radial-gradient(ellipse at center,var(--brand-bg) 0%,var(--brand-bg-2) 100%);
   overflow:hidden;margin-bottom:14px}
-.hero-bgmark{position:absolute;right:-32px;bottom:-28px;pointer-events:none}
+.hero-bgmark{position:absolute;right:48px;bottom:-28px;pointer-events:none}
 .hero-bgmark svg{display:block}
 /* Draws the big background line in once on load, using the path's own
    length as stroke-dasharray/offset. */
@@ -355,7 +355,7 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
    duration made it read faster and twitchier. Tuned by eye, not a formula:
    small sped up a touch, this one slowed down further, aiming for both to
    feel like the same pace despite the size difference. */
-.hero-ping{animation:heroPing 6.2s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
+.hero-ping{animation:heroPing 8.4s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
 @keyframes heroPing{
   0%{opacity:.5;transform:scale(1)}
   75%{opacity:0;transform:scale(2.4)}
