@@ -196,7 +196,7 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
    fill the grid column — that's what lets .hero-rule below key off 100% and
    always match the wordmark's actual rendered width instead of guessing a
    fixed px value that's wrong at some size or other. */
-.hero-titleblock{width:fit-content}
+.hero-titleblock{width:fit-content;display:flex;flex-direction:column;align-items:flex-end}
 .hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
   color:#fff;margin:0;line-height:1;letter-spacing:-.02em;
   display:flex;align-items:flex-end;gap:2px}
