@@ -348,12 +348,13 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 @keyframes heroDraw{to{stroke-dashoffset:0}}
 /* Starts once the line finishes drawing, not before — pinging mid-draw would
    read as two unrelated animations instead of one sequenced moment. */
-.hero-ping-sm{animation:heroPing 3.4s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
-/* Slower than the small icon's ping (5.4s vs 3.4s) — same relative timing
-   reads as much faster here since the ring travels a lot more pixel
-   distance at this scale; slowing the cycle brings the two back to feeling
-   like the same pace instead of this one looking twitchy by comparison. */
-.hero-ping{animation:heroPing 5.4s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
+.hero-ping-sm{animation:heroPing 2.6s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
+/* Different cycle length than the small icon's ping on purpose — the ring
+   travels far more pixel distance at this scale, so matching the raw
+   duration made it read faster and twitchier. Tuned by eye, not a formula:
+   small sped up a touch, this one slowed down further, aiming for both to
+   feel like the same pace despite the size difference. */
+.hero-ping{animation:heroPing 6.2s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
 @keyframes heroPing{
   0%{opacity:.5;transform:scale(1)}
   75%{opacity:0;transform:scale(2.4)}
