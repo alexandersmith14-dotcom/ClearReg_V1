@@ -160,6 +160,52 @@ h1{font-size:27px;margin:0;color:var(--brand);font-weight:800;letter-spacing:-.0
    value, so it stays in proportion if the wordmark size ever changes. */
 h1.wordmark{display:flex;align-items:flex-end;gap:1px}
 h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
+
+/* Full-bleed hero band, same skeleton as the firm's RISK page: giant
+   wordmark + lime rule + credit line on the left, body copy beside a lime
+   divider on the right, Check Spike oversized and faint in the background.
+   Plain full-width block, not a 100vw/translateX breakout — body carries no
+   side padding here (see .krtop above), so a normal block already spans
+   edge to edge without the scrollbar-width overflow that trick invites. */
+.herowrap{position:relative;background:var(--brand-bg);overflow:hidden;
+  margin-bottom:24px}
+.hero-bgmark{position:absolute;right:-70px;bottom:-60px;pointer-events:none}
+.hero-bgmark svg{display:block}
+/* Draws the big background line in once on load, using the path's own
+   length as stroke-dasharray/offset. */
+.hero-bgmark path{stroke-dasharray:570;stroke-dashoffset:570;
+  animation:heroDraw 2.4s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes heroDraw{to{stroke-dashoffset:0}}
+/* Starts once the line finishes drawing, not before — pinging mid-draw would
+   read as two unrelated animations instead of one sequenced moment. */
+.hero-ping{animation:heroPing 3.4s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
+@keyframes heroPing{
+  0%{opacity:.5;transform:scale(1)}
+  75%{opacity:0;transform:scale(2.4)}
+  100%{opacity:0;transform:scale(2.4)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bgmark path{animation:none;stroke-dashoffset:0}
+  .hero-ping{animation:none;opacity:0}
+}
+.hero-inner{position:relative;z-index:1;max-width:1240px;margin:0 auto;
+  padding:64px 22px;display:grid;grid-template-columns:1fr 1px 1fr;
+  gap:44px;align-items:center}
+.hero-divider{background:var(--accent);width:1px;height:100%;align-self:stretch}
+.hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
+  color:#fff;margin:0;line-height:1;letter-spacing:-.02em}
+.hero-rule{width:110px;height:4px;background:var(--accent);margin:16px 0 10px}
+.hero-sub{font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:#bcd3e6;margin:0}
+.hero-sub b{display:block;color:#fff;font-weight:800;font-size:15px;
+  letter-spacing:0;text-transform:none;margin-top:3px}
+.hero-copy{font-size:19px;line-height:1.55;font-weight:600;color:#fff;margin:0}
+@media (max-width:820px){
+  .hero-inner{grid-template-columns:1fr;padding:48px 20px}
+  .hero-divider{display:none}
+  .hero-bgmark svg{width:340px;height:auto}
+}
+
 /* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
    KR wordmark, just set as small text under the product name rather than
    redrawing the logo mark at a tiny size. */
@@ -904,6 +950,33 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
       August 2, 2026 08:56 UTC</span>
   </div>
 </div>
+
+<!-- Hero band, same skeleton as the firm's RISK page (see the CSS comment
+     above .herowrap): a brand moment before the functional dashboard starts,
+     not part of .wrap so it can run full-bleed. -->
+<div class="herowrap">
+  <div class="hero-bgmark" aria-hidden="true">
+    <svg viewBox="0 0 460 380" width="620" height="512">
+      <path d="M70,238 L154,322 L280,126 L322,126 L350,70 L378,126 L420,126"
+        fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"
+        stroke-linejoin="round" opacity=".14"/>
+      <circle class="hero-ping" cx="350" cy="70" r="20" fill="none" stroke="var(--accent)"
+        stroke-width="4" opacity="0"/>
+      <circle cx="350" cy="70" r="17" fill="var(--accent)" opacity=".55"/>
+    </svg>
+  </div>
+  <div class="hero-inner">
+    <div>
+      <p class="hero-word">Mihari</p>
+      <div class="hero-rule"></div>
+      <p class="hero-sub">Regulatory watch<b>by KAUFMAN | ROSSIN</b></p>
+    </div>
+    <div class="hero-divider"></div>
+    <p class="hero-copy">The latest technology makes regulatory noise —
+      and now yours — more measurable, manageable and easy to act on.</p>
+  </div>
+</div>
+
 <div class="wrap">
 
 <div id="iconToast" class="icon-toast" role="status" aria-live="polite"></div>
