@@ -263,9 +263,9 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
 /* Full-bleed replica of kaufmanrossin.com's own two-band header: a navy
    utility strip (site-switcher tabs + Payment Portal/File Sharing/phone/
    Español) above a white nav bar (wordmark + primary nav). Every link here
-   leaves RegWatch for the real site, same target=_blank reasoning as the
-   footer's nav — RegWatch has none of these pages itself; this is brand
-   chrome borrowed wholesale, not a RegWatch-specific nav that happens to
+   leaves Mihari for the real site, same target=_blank reasoning as the
+   footer's nav — Mihari has none of these pages itself; this is brand
+   chrome borrowed wholesale, not a Mihari-specific nav that happens to
    look similar. Colours/sizes measured off the live site, not eyeballed. */
 .krtop{background:var(--brand-bg)}
 .krtopwrap{max-width:1240px;margin:0 auto;padding:0 22px;
@@ -303,7 +303,7 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 /* Grey breadcrumb band — same colours as the real site's Bootstrap-derived
    breadcrumb: light grey pill, blue link, muted grey for the current page.
    Full-bleed here rather than the real site's narrower boxed version, since
-   RegWatch's page has no sidebar to make room for. */
+   Mihari's page has no sidebar to make room for. */
 .krcrumb{background:#e9ecef}
 .krcrumbwrap{display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:8px;max-width:1240px;margin:0 auto;padding:16px 22px;font-size:14px}
@@ -313,24 +313,82 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .krcrumb-path span:last-child{color:#6c757d}
 .krcrumb-updated{color:#6c757d;font-size:12.5px}
 /* Page-specific title card — everything the real corporate header doesn't
-   carry (RegWatch's own name, audience, freshness stamp, share/export
+   carry (Mihari's own name, audience, freshness stamp, share/export
    actions). Sits below the replicated chrome above, inside .wrap like the
    rest of the page content; no longer holds its own logo since the krheader
    band above already carries the wordmark once. */
-.pagehead{display:flex;align-items:center;gap:16px;margin-bottom:16px;
-  background:#fff;color:#212529;padding:12px 20px;border-radius:12px;
-  border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
+.pagehead{display:flex;align-items:center;gap:16px;margin-bottom:14px;
+  padding-bottom:14px;border-bottom:1px solid var(--border)}
 .pagehead .t{flex:1}
-/* Fixed navy/grey, not var(--brand)/var(--ink-2) — same reasoning as the
-   pagehead background just above: this text sits on the fixed-white card in
-   every theme, not the theme-following surface. */
-h1{font-size:27px;margin:0;color:#003b6a;font-weight:800;letter-spacing:-.01em}
-h1 .lime{color:var(--accent)}
+/* var(--brand), not a fixed navy — the pagehead now lives inside .notice,
+   which follows the theme-able --surface, so its text must follow theme too. */
+h1{font-size:27px;margin:0;color:var(--brand);font-weight:800;letter-spacing:-.01em}
+/* The Check Spike mark trails off the wordmark's last "i" instead of sitting
+   beside it as a separate icon — display:flex + align-items:flex-end lands
+   the mark on the text baseline the same way a trailing punctuation mark
+   would sit. Sized relative to the h1's own font-size, not a fixed pixel
+   value, so it stays in proportion if the wordmark size ever changes. */
+h1.wordmark{display:flex;align-items:flex-end;gap:1px}
+h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
+
+/* Full-bleed hero band, same skeleton as the firm's RISK page: giant
+   wordmark + lime rule + credit line on the left, body copy beside a lime
+   divider on the right, Check Spike oversized and faint in the background.
+   Plain full-width block, not a 100vw/translateX breakout — body carries no
+   side padding here (see .krtop above), so a normal block already spans
+   edge to edge without the scrollbar-width overflow that trick invites. */
+.herowrap{position:relative;background:var(--brand-bg);overflow:hidden;
+  margin-bottom:24px}
+.hero-bgmark{position:absolute;right:-40px;bottom:-35px;pointer-events:none}
+.hero-bgmark svg{display:block}
+/* Draws the big background line in once on load, using the path's own
+   length as stroke-dasharray/offset. */
+.hero-bgmark path{stroke-dasharray:570;stroke-dashoffset:570;
+  animation:heroDraw 2.4s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes heroDraw{to{stroke-dashoffset:0}}
+/* Starts once the line finishes drawing, not before — pinging mid-draw would
+   read as two unrelated animations instead of one sequenced moment. */
+.hero-ping{animation:heroPing 3.4s cubic-bezier(.25,.6,.4,1) 2.4s infinite}
+@keyframes heroPing{
+  0%{opacity:.5;transform:scale(1)}
+  75%{opacity:0;transform:scale(2.4)}
+  100%{opacity:0;transform:scale(2.4)}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-bgmark path{animation:none;stroke-dashoffset:0}
+  .hero-ping{animation:none;opacity:0}
+}
+.hero-inner{position:relative;z-index:1;max-width:1240px;margin:0 auto;
+  padding:64px 22px;display:grid;grid-template-columns:1fr 1px 1fr;
+  gap:44px;align-items:center}
+.hero-divider{background:var(--accent);width:1px;height:100%;align-self:stretch}
+/* Fits to content (the wordmark, its widest child) rather than stretching to
+   fill the grid column — that's what lets .hero-rule below key off 100% and
+   always match the wordmark's actual rendered width instead of guessing a
+   fixed px value that's wrong at some size or other. */
+.hero-titleblock{width:fit-content;display:flex;flex-direction:column;align-items:flex-end}
+.hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
+  color:#fff;margin:0;line-height:1;letter-spacing:-.02em;
+  display:flex;align-items:flex-end;gap:2px}
+.hero-word svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
+.hero-rule{width:100%;height:4px;background:var(--accent);margin:16px 0 10px}
+.hero-sub{margin:0;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:#bcd3e6}
+.hero-sub b{display:block;color:#fff;font-weight:800;font-size:15px;
+  letter-spacing:0;text-transform:none;margin-top:3px}
+.hero-pipe{color:var(--accent);font-weight:400}
+.hero-copy{font-size:19px;line-height:1.55;font-weight:600;color:#fff;margin:0}
+@media (max-width:820px){
+  .hero-inner{grid-template-columns:1fr;padding:48px 20px}
+  .hero-divider{display:none}
+  .hero-bgmark svg{width:340px;height:auto}
+}
+
 /* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
    KR wordmark, just set as small text under the product name rather than
    redrawing the logo mark at a tiny size. */
-.krby{font-size:11px;color:#8a8a8a;margin:1px 0 4px;letter-spacing:.02em}
-.krbyname{color:#003b6a;font-weight:700}
+.krby{font-size:11px;color:var(--ink-muted);margin:1px 0 4px;letter-spacing:.02em}
+.krbyname{color:var(--brand);font-weight:700}
 .krbyname .pipe{color:var(--accent);font-weight:400;margin:0 3px}
 button{font:inherit;font-size:13px;padding:8px 14px;color:var(--ink);
   background:var(--surface);border:1px solid var(--border);border-radius:8px;
@@ -361,18 +419,15 @@ button:hover{background:var(--raised)}
    the plain-element "pagehead button" selector on specificity regardless of
    source order. #export keeps the lime fill; it lives in the dropdown, not
    directly in the toolbar row, so the generic rule still reaches it there.
-   Fixed light colours throughout, not var(--page)/var(--surface)/var(--chip)
-   — same reasoning as the pagehead itself just above: this chrome sits on
-   the now-fixed-white card regardless of page theme, so a theme-following
-   dark pill here would float against it like a mismatched island in dark
-   mode. */
+   Theme-following colours, not fixed light ones — the pagehead now lives
+   inside .notice's theme-able surface rather than a fixed-white card. */
 .icon-toolbar{display:flex;align-items:center;gap:2px;flex:none;
-  background:#f4f4f4;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:4px}
+  background:var(--raised);border:1px solid var(--border);border-radius:999px;padding:4px}
 .icon-toolbar .icon-btn{width:36px;height:36px;padding:0;display:inline-flex;
   align-items:center;justify-content:center;border-radius:50%;border:none;
-  background:transparent;color:#003b6a;font-weight:400;
+  background:transparent;color:var(--brand);font-weight:400;
   transition:background-color .12s ease}
-.icon-toolbar .icon-btn:hover{background:#e3e3e3;filter:none}
+.icon-toolbar .icon-btn:hover{background:var(--chip);filter:none}
 .icon-btn-wrap{position:relative}
 .more-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:20;
   background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:10px;
@@ -582,16 +637,17 @@ button:hover{background:var(--raised)}
 
 #filters summary{display:none}          /* desktop: always expanded, no control */
 #filters>.pillgroup:last-of-type{margin-bottom:18px}
-.cols{display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:start}
-/* The update feed runs far longer than the sidebar (deadlines + agency
-   counts), so once the feed scrolls past it the sidebar just ends, leaving a
-   tall blank column beside more update cards. Sticky keeps it in view while
-   the feed scrolls — align-items:start above matters here: it keeps the
-   sidebar's own box at its natural (short) height rather than stretched to
-   match the feed, which is what gives it room to travel within the grid row
-   before its own bottom reaches the row's bottom and it scrolls away normally. */
-.colside{position:sticky;top:18px}
-@media (max-width:900px){.cols{grid-template-columns:1fr}.colside{position:static}}
+.cols{display:grid;grid-template-columns:1fr 400px;gap:18px;align-items:stretch}
+/* Stretch (grid default), not align-items:start — which of colmain/colside
+   ends up taller depends on the active filter and how many deadlines exist,
+   so it isn't fixed to one side. Both columns are flex, and each one's last
+   card grows (flex:1) to fill whatever's left after grid stretch sets the
+   row height — whichever column is naturally shorter gets its trailing card
+   pulled down to the row's bottom instead of leaving blank page beside a
+   still-running column. */
+.colmain,.colside{display:flex;flex-direction:column}
+.colmain>*:last-child,.colside>*:last-child{flex:1}
+@media (max-width:900px){.cols{grid-template-columns:1fr}.colmain,.colside{display:block}}
 
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;
   padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
@@ -688,7 +744,7 @@ button:hover{background:var(--raised)}
    above it, sitting on the page itself rather than the navy footer below. */
 .quickcontact{margin-top:22px;background:var(--surface);border:1px solid var(--accent);
   border-radius:12px;padding:22px 24px;display:flex;gap:18px;align-items:flex-start;
-  box-shadow:var(--shadow-sm)}
+  box-shadow:var(--shadow-sm);flex:1}
 .quickcontact .qc-photo img{display:block;width:88px;height:88px;border-radius:50%;
   object-fit:cover}
 .quickcontact .qc-text{min-width:0}
@@ -744,7 +800,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footsocial .social-btn svg{width:22px;height:22px}
 .footsocial .social-btn:hover{filter:brightness(1.1)}
 /* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
-   pointed at the real pages on its site since RegWatch has none of its own
+   pointed at the real pages on its site since Mihari has none of its own
    (no blog, no offices, no careers page). Every link here leaves the site,
    same reasoning as Full bio above: target=_blank, never orphan the reader
    mid-update-list. */
@@ -776,7 +832,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
    verbatim from kaufmanrossin.com's own footer, entities and all — this is
-   the firm's standard boilerplate, not RegWatch-specific text. */
+   the firm's standard boilerplate, not Mihari-specific text. */
 .footlegalwrap{border-top:1px solid rgba(255,255,255,.15)}
 .footlegal{max-width:1240px;margin:0 auto;padding:14px 22px 20px;
   font-size:11px;color:#8fa6bc;line-height:1.6}
@@ -848,7 +904,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   .krheader-toprow{display:none}
   .krheader nav{display:none}
   .krcrumb{display:none}
-  .pagehead{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
+  .pagehead{gap:18px;margin-bottom:14px;padding-bottom:14px;
     flex-direction:column;align-items:flex-start}
   h1{font-size:22px;line-height:1.2;margin:0 0 4px}
   .sub{font-size:12.5px;line-height:1.4}
@@ -1304,7 +1360,7 @@ function eventIcs(title, when, label, url) {
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
   const uid = 'regwatch-' + when.replace(/-/g, '') + '-' + (h >>> 0).toString(36);
   return [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//RegWatch//Regulatory deadlines//EN',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mihari//Regulatory deadlines//EN',
     'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     'UID:' + uid + '@regwatch',
@@ -1314,8 +1370,8 @@ function eventIcs(title, when, label, url) {
     icsFold('SUMMARY:' + icsEsc(label + ': ' + title)),
     icsFold('DESCRIPTION:' + icsEsc(label + '. Open the source before acting: ' + url)),
     icsFold('URL:' + url),
-    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:RegWatch deadline in 7 days', 'TRIGGER:-P7D', 'END:VALARM',
-    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:RegWatch deadline tomorrow', 'TRIGGER:-P1D', 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Mihari deadline in 7 days', 'TRIGGER:-P7D', 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Mihari deadline tomorrow', 'TRIGGER:-P1D', 'END:VALARM',
     'END:VEVENT', 'END:VCALENDAR',
   ].join('\r\n') + '\r\n';
 }
@@ -1557,7 +1613,7 @@ $('#export').addEventListener('click', () => {
   ].map(cell).join(','))).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-  a.download = `regwatch-${TODAY}.csv`;
+  a.download = `mihari-${TODAY}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
 });
@@ -2035,7 +2091,7 @@ def coverage_panel(store):
         # alert — wasn't here. What matters for liability is simply that a reader
         # must not assume completeness; absence on this page is not evidence that
         # nothing happened.
-        '<p><strong>Not a complete record.</strong> RegWatch covers the agencies '
+        '<p><strong>Not a complete record.</strong> Mihari covers the agencies '
         'listed above, and only what they post on those listing pages. It is not a '
         'substitute for monitoring every regulator you answer to &mdash; confirm '
         'anything material against the source.</p>'
@@ -2113,10 +2169,10 @@ def build_ics(rows, today):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     lines = [
         "BEGIN:VCALENDAR", "VERSION:2.0",
-        "PRODID:-//RegWatch//Regulatory deadlines//EN",
+        "PRODID:-//Mihari//Regulatory deadlines//EN",
         "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-        "X-WR-CALNAME:RegWatch regulatory deadlines",
-        "X-WR-CALDESC:Comment-period and effective-date deadlines tracked by RegWatch.",
+        "X-WR-CALNAME:Mihari regulatory deadlines",
+        "X-WR-CALDESC:Comment-period and effective-date deadlines tracked by Mihari.",
         "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D",
     ]
     for uid, ymd, label, title, url in _ics_events(rows, today):
@@ -2131,9 +2187,9 @@ def build_ics(rows, today):
             f"SUMMARY:{_ics_escape(label + ': ' + title)}",
             f"DESCRIPTION:{_ics_escape(label + '. Open the source before acting: ' + url)}",
             f"URL:{url}",
-            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:RegWatch deadline in 7 days",
+            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Mihari deadline in 7 days",
             "TRIGGER:-P7D", "END:VALARM",
-            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:RegWatch deadline tomorrow",
+            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Mihari deadline tomorrow",
             "TRIGGER:-P1D", "END:VALARM",
             "END:VEVENT",
         ]
@@ -2243,7 +2299,7 @@ def main():
      preview is driven entirely by these tags plus a real image file. Without
      them LinkedIn shows a bare URL with no title, description or image. -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="RegWatch">
+<meta property="og:site_name" content="Mihari">
 <meta property="og:title" content="Regulatory update tracker — community banks, credit unions &amp; fintechs">
 <meta property="og:description" content="{share_desc}">
 <meta property="og:url" content="{SITE_URL}">
@@ -2259,8 +2315,8 @@ def main():
 <body data-today="{today}">
 <!-- Replica of kaufmanrossin.com's own two-band header, full-bleed outside
      .wrap so it spans edge to edge like the real one. Every link leaves
-     RegWatch for the real site — see the CSS comment above .krtop for why
-     that's the right call rather than trying to invent RegWatch equivalents
+     Mihari for the real site — see the CSS comment above .krtop for why
+     that's the right call rather than trying to invent Mihari equivalents
      of pages it doesn't have. -->
 <div class="krtop">
   <div class="krtopwrap">
@@ -2315,7 +2371,7 @@ def main():
     <span class="krcrumb-path">
       <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
       <span aria-hidden="true">/</span>
-      <span>RegWatch</span>
+      <span>Mihari</span>
     </span>
     <!-- Freshness stamp lives here now, not crowding the wordmark above —
          same fact, just relocated out of the title block. -->
@@ -2324,47 +2380,88 @@ def main():
        else datetime.now(timezone.utc).strftime('%B %d, %Y %H:%M UTC')}</span>
   </div>
 </div>
-<div class="wrap">
 
-<div class="pagehead">
-  <div class="t">
-    <h1>Reg<span class="lime">Watch</span></h1>
-    <!-- Same lockup convention as the firm's other tools (e.g. regERI): the
-         product wordmark, then a small "by KAUFMAN | ROSSIN" credit directly
-         under it, reusing the KR wordmark's own navy/lime pipe divider at a
-         much smaller size rather than inventing a new mark. -->
-    <p class="krby">by <span class="krbyname">KAUFMAN<span class="pipe">|</span>ROSSIN</span></p>
+<!-- Hero band, same skeleton as the firm's RISK page (see the CSS comment
+     above .herowrap): a brand moment before the functional dashboard starts,
+     not part of .wrap so it can run full-bleed. -->
+<div class="herowrap">
+  <div class="hero-bgmark" aria-hidden="true">
+    <svg viewBox="0 0 460 380" width="400" height="330">
+      <path d="M70,238 L154,322 L280,126 L322,126 L350,70 L378,126 L420,126"
+        fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"
+        stroke-linejoin="round" opacity=".14"/>
+      <circle class="hero-ping" cx="350" cy="70" r="20" fill="none" stroke="var(--accent)"
+        stroke-width="4" opacity="0"/>
+      <circle cx="350" cy="70" r="17" fill="var(--accent)" opacity=".55"/>
+    </svg>
   </div>
-  <!-- Share and install are mobile-first actions, so unlike the old lone
-       Export CSV button they stay visible on a phone; see the media query.
-       Export CSV moves into the overflow menu — it's still desktop-only,
-       same reasoning as before, just relocated. -->
-  <div class="icon-toolbar">
-    <button id="shareBtn" class="icon-btn" type="button" aria-label="Share this page" title="Share">
-      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
-    </button>
-    <button id="installBtn" class="icon-btn" type="button" aria-label="Install or bookmark this app" title="Install app">
-      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a.5.5 0 0 1 .5.5v16l-6.5-4-6.5 4v-16a.5.5 0 0 1 .5-.5z"/></svg>
-    </button>
-    <div class="icon-btn-wrap">
-      <button id="moreBtn" class="icon-btn" type="button" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More">
-        <svg viewBox="0 0 24 24" width="19" height="19"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
-      </button>
-      <div id="moreMenu" class="more-menu" hidden>
-        <!-- Kept in the markup, not built conditionally, so #export's click
-             handler always has its element regardless of menu state. -->
-        <button id="export" type="button">Export CSV</button>
-      </div>
+  <div class="hero-inner">
+    <div class="hero-titleblock">
+      <p class="hero-word">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
+          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
+            stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
+        </svg></p>
+      <div class="hero-rule"></div>
+      <p class="hero-sub"><b>by KAUFMAN <span class="hero-pipe">|</span> ROSSIN</b></p>
     </div>
+    <div class="hero-divider"></div>
+    <p class="hero-copy">The latest technology makes regulatory noise —
+      and now yours — more measurable, manageable and easy to act on.</p>
   </div>
 </div>
+
+<div class="wrap">
+
 <div id="iconToast" class="icon-toast" role="status" aria-live="polite"></div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
      what to do about it. How deadlines are derived moved into "What this covers"
      with the other scope caveats — it explains rather than instructs, and it was
-     costing two of six lines on a phone. Nothing was deleted. -->
+     costing two of six lines on a phone. Nothing was deleted.
+     Title + icon toolbar now live inside this same tile (merged with the old
+     standalone .pagehead card, per Alexander — one tile, not two). -->
 <div class="notice">
+  <div class="pagehead">
+    <div class="t">
+      <!-- Check Spike, integrated: a checkmark (resolved/cleared) that keeps
+           going into the same flat-then-peak spike used across the identity
+           work, trailing off the wordmark's last "i" instead of sitting
+           beside it as a separate icon — the wordmark carries its own mark. -->
+      <h1 class="wordmark">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
+          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
+            stroke="var(--brand)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
+        </svg></h1>
+      <!-- Same lockup convention as the firm's other tools (e.g. regERI): the
+           product wordmark, then a small "by KAUFMAN | ROSSIN" credit directly
+           under it, reusing the KR wordmark's own navy/lime pipe divider at a
+           much smaller size rather than inventing a new mark. -->
+      <p class="krby">Japanese for "lookout" &middot; by <span class="krbyname">KAUFMAN<span class="pipe">|</span>ROSSIN</span></p>
+    </div>
+    <!-- Share and install are mobile-first actions, so unlike the old lone
+         Export CSV button they stay visible on a phone; see the media query.
+         Export CSV moves into the overflow menu — it's still desktop-only,
+         same reasoning as before, just relocated. -->
+    <div class="icon-toolbar">
+      <button id="shareBtn" class="icon-btn" type="button" aria-label="Share this page" title="Share">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      </button>
+      <button id="installBtn" class="icon-btn" type="button" aria-label="Install or bookmark this app" title="Install app">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a.5.5 0 0 1 .5.5v16l-6.5-4-6.5 4v-16a.5.5 0 0 1 .5-.5z"/></svg>
+      </button>
+      <div class="icon-btn-wrap">
+        <button id="moreBtn" class="icon-btn" type="button" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More">
+          <svg viewBox="0 0 24 24" width="19" height="19"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
+        </button>
+        <div id="moreMenu" class="more-menu" hidden>
+          <!-- Kept in the markup, not built conditionally, so #export's click
+               handler always has its element regardless of menu state. -->
+          <button id="export" type="button">Export CSV</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <strong>Read this first.</strong> The summaries are based on agency listings.
   Always open the source document before acting on anything here.
   <div style="margin-top:9px">{coverage_html}</div>
@@ -2451,7 +2548,7 @@ def main():
         <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
         <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin, one of the Top 50 CPA and advisory firms in the U.S.</div>
         <div class="qc-icons">
-          <a href="mailto:asmith@kaufmanrossin.com?subject=RegWatch%20regulatory%20tracker" aria-label="Email Alexander Smith">
+          <a href="mailto:asmith@kaufmanrossin.com?subject=Mihari%20regulatory%20tracker" aria-label="Email Alexander Smith">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
           </a>
           <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">
