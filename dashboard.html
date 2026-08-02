@@ -43,7 +43,7 @@
   --ink:#212529; --ink-2:#3c3c3c; --ink-muted:#6c757d;
   --rule:#e3e3e3; --border:rgba(0,0,0,.12);
   --brand:#003b6a; --brand-bg:#003b6a; --brand-bg-2:#001f3f; --brand-bg-light:#074c83; --accent:#aed136;
-  --info:#2f6fed;
+  --info:var(--brand-bg-light);
   --bar:#003b6a; --track:#e3e3e3;
   --crit:#c0392b; --warn:#9a6400; --ok:#2f7d32; --neutral:#3c3c3c;
   --chip:#f0f0f0;
@@ -62,7 +62,7 @@
   --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
   --rule:#2a3035; --border:rgba(255,255,255,.12);
   --brand:#4e9bd8; --brand-bg:#123a63; --brand-bg-2:#0a2242; --brand-bg-light:#215383; --accent:#aed136;
-    --info:#4d8bff;
+    --info:var(--brand-bg-light);
   --bar:#4e9bd8; --track:#2a3035;
   --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
   --chip:#232a2f;
@@ -334,9 +334,9 @@ button:hover{background:var(--raised)}
    tasks icons via JS (see initQuickStart) — position:fixed with inline
    left/top set from the target's actual getBoundingClientRect, not a fixed
    guess, so it tracks wherever that row really lands at the reader's width.
-   A distinct --info blue rather than --brand: this is a transient system
-   message, not a piece of the Mihari identity, and needs to read as
-   "notification" even sitting right next to the brand navy. */
+   --info is var(--brand-bg-light) — the same mid-tone step used in the
+   hero/panel gradients, not a separate off-brand blue, so a transient
+   system message still reads as part of the Mihari palette. */
 .quickstart{position:fixed;z-index:70;width:280px;background:var(--info);color:#fff;
   border-radius:12px;box-shadow:var(--shadow-md);padding:14px 16px 12px}
 .quickstart[hidden]{display:none}
@@ -1076,7 +1076,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          all three items across the row instead of bunching Updated and the
          buttons together on one side. -->
     <span class="krcrumb-updated">Updated
-      August 2, 2026 21:45 UTC</span>
+      August 02, 2026 21:53 UTC</span>
     <!-- Share and install are mobile-first actions, so unlike the old lone
          Export CSV button they stay visible on a phone; see the media query.
          Export CSV moves into the overflow menu — it's still desktop-only,
@@ -2184,10 +2184,12 @@ setView(false);
 // dismissing.
 const QS_KEY = 'mihariQuickStartSeen';
 const QS_STEPS = [
-  { sel: '#cards .card .actions',
-    text: 'Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.' },
   { sel: '.icon-toolbar',
     text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
+  { sel: '#filters',
+    text: 'Narrow what you see: switch scope with View, combine agencies with Source, or search by keyword — all three work together.' },
+  { sel: '#cards .card .actions',
+    text: 'Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.' },
 ];
 function initQuickStart() {
   if (localStorage.getItem(QS_KEY)) return;
