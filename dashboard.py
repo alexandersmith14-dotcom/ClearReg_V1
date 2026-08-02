@@ -283,11 +283,17 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
   color:#fff;text-decoration:none;white-space:nowrap}
 .krtop a:hover{text-decoration:underline}
 .krtop .sites a.active{background:var(--accent);color:var(--brand);border-radius:2px}
-/* Divider between Wealth and Fund Administration only, matching the .util
-   pipe style on the right -- not before Wealth, since that would sit
-   against the "CPAs and Advisors" pill's own background rather than plain
-   navy and read as a stray line cutting through it. */
-.krtop .sites a:last-child{border-left:1px solid rgba(255,255,255,.3)}
+/* Divider between Wealth and Fund Administration, matching the real site's
+   actual divider style measured off kaufmanrossin.com -- a solid 1px LIME
+   ::after (background:var(--accent), not a translucent white border-left).
+   Only after Wealth (2nd child), not before it: a line there would cut
+   across the "CPAs and Advisors" active pill's own background instead of
+   sitting on plain navy. The .util pipes on the right were built earlier as
+   a translucent-white simplification and are left as-is here — this fix is
+   scoped to the divider just added. */
+.krtop .sites a:nth-child(2){position:relative}
+.krtop .sites a:nth-child(2)::after{content:'';position:absolute;top:50%;
+  transform:translateY(-50%);right:0;width:1px;height:14px;background:var(--accent)}
 .krtop .util a{font-size:12.5px;border-left:1px solid rgba(255,255,255,.3)}
 .krtop .util a:first-child{border-left:none}
 /* Second band: plain flush white bar, no card/shadow — this is fixed brand
