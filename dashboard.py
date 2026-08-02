@@ -254,28 +254,49 @@ body{margin:0;padding:0;background:var(--page);color:var(--ink);
   font-family:var(--ui-font);font-size:14px;line-height:1.55;
   -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1240px;margin:0 auto;padding:22px}
-/* Thin brand strip above the header, full-bleed edge to edge — echoes the
-   navy utility bar kaufmanrossin.com runs above its own nav. Sits outside
-   .wrap in the markup so the page's own padding never insets it; decorative
-   only, same fixed-chrome reasoning as the header below. */
-.topband{background:var(--brand-bg);height:10px}
-/* v1.7: matches kaufmanrossin.com's own header — the wordmark sits flush on a
-   plain white bar with navy text, no box around it at all. Fixed white/navy
-   regardless of page theme, not var(--surface)/var(--ink): the real site has
-   no dark mode to match, and following the theme put the logo back in a
-   white plate floating on dark mode's near-black surface — exactly the boxed
-   look this was meant to get rid of. Treating the header as fixed brand
-   chrome, like a real nav bar, means it never needs that plate in any mode. */
-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;
+/* Full-bleed replica of kaufmanrossin.com's own two-band header: a navy
+   utility strip (site-switcher tabs + Payment Portal/File Sharing/phone/
+   Español) above a white nav bar (wordmark + primary nav). Every link here
+   leaves RegWatch for the real site, same target=_blank reasoning as the
+   footer's nav — RegWatch has none of these pages itself; this is brand
+   chrome borrowed wholesale, not a RegWatch-specific nav that happens to
+   look similar. Colours/sizes measured off the live site, not eyeballed. */
+.krtop{background:var(--brand-bg)}
+.krtopwrap{max-width:1240px;margin:0 auto;padding:0 22px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.krtop nav{display:flex;align-items:center}
+.krtop a{display:inline-block;padding:10px 10px;font-size:16px;font-weight:500;
+  color:#fff;text-decoration:none;white-space:nowrap}
+.krtop a:hover{text-decoration:underline}
+.krtop .sites a.active{background:var(--accent);color:var(--brand);border-radius:2px}
+.krtop .util a{font-size:14px;border-left:1px solid rgba(255,255,255,.3)}
+.krtop .util a:first-child{border-left:none}
+/* Second band: plain flush white bar, no card/shadow — this is fixed brand
+   chrome sitting outside .wrap, not a themed page element, so it stays
+   white/navy in every theme same as the old single-band header did. */
+header.krheader{background:#fff;border-bottom:1px solid var(--border)}
+.krheaderwrap{max-width:1240px;margin:0 auto;padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.krheaderwrap .logowrap{flex:none}
+.krheaderwrap .krlogo{width:190px}
+.krheader nav{display:flex;align-items:center;gap:26px}
+.krheader nav a{color:var(--brand);font-size:16px;font-weight:500;text-decoration:none}
+.krheader nav a:hover{text-decoration:underline}
+.krheader .krsearch{display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--border);color:var(--brand)}
+.krheader .krsearch:hover{background:var(--raised)}
+/* Page-specific title card — everything the real corporate header doesn't
+   carry (RegWatch's own name, audience, freshness stamp, share/export
+   actions). Sits below the replicated chrome above, inside .wrap like the
+   rest of the page content; no longer holds its own logo since the krheader
+   band above already carries the wordmark once. */
+.pagehead{display:flex;align-items:center;gap:16px;margin-bottom:20px;
   background:#fff;color:#212529;padding:18px 22px;border-radius:12px;
   border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
-header .logowrap{margin-bottom:0;flex:none}
-header .krlogo{width:150px}
-header .t{flex:1}
+.pagehead .t{flex:1}
 /* Fixed navy/grey, not var(--brand)/var(--ink-2) — same reasoning as the
-   header background just above: this text sits on the fixed-white bar in
-   every theme, not the theme-following surface, so it needs the fixed-light
-   ink to match, same as the logo's own ink. */
+   pagehead background just above: this text sits on the fixed-white card in
+   every theme, not the theme-following surface. */
 h1{font-size:21px;margin:0 0 3px;color:#003b6a;font-weight:700;letter-spacing:-.01em}
 .sub{color:#3c3c3c;font-size:13px;margin:0}
 /* Desktop keeps both facts on one line; the separator is CSS so the phone can
@@ -285,7 +306,7 @@ button{font:inherit;font-size:13px;padding:8px 14px;color:var(--ink);
   background:var(--surface);border:1px solid var(--border);border-radius:8px;
   cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
 button:hover{background:var(--raised)}
-header button{background:var(--accent);border-color:var(--accent);
+.pagehead button{background:var(--accent);border-color:var(--accent);
   color:var(--on-accent);font-weight:700}
 /* Solid navy + lime trim, same pairing as the footer's Subscribe button —
    a deliberate two-tone pill rather than the plain white default. Extra
@@ -303,17 +324,18 @@ header button{background:var(--accent);border-color:var(--accent);
   background-size:200% 100%;background-position:right bottom;
   transition:background-position .5s ease}
 #showmore:hover,#dlmore:hover{background-position:left bottom}
-header button:hover{filter:brightness(1.06)}
+.pagehead button:hover{filter:brightness(1.06)}
 
-/* Icon toolbar (share / install / more) — overrides the lime header-button
+/* Icon toolbar (share / install / more) — overrides the lime pagehead-button
    fill above: these are quiet icon buttons, not CTAs, and .icon-btn beats
-   the plain-element "header button" selector on specificity regardless of
+   the plain-element "pagehead button" selector on specificity regardless of
    source order. #export keeps the lime fill; it lives in the dropdown, not
    directly in the toolbar row, so the generic rule still reaches it there.
    Fixed light colours throughout, not var(--page)/var(--surface)/var(--chip)
-   — same reasoning as the header itself just above: this chrome sits on the
-   now-fixed-white header regardless of page theme, so a theme-following dark
-   pill here would float against it like a mismatched island in dark mode. */
+   — same reasoning as the pagehead itself just above: this chrome sits on
+   the now-fixed-white card regardless of page theme, so a theme-following
+   dark pill here would float against it like a mismatched island in dark
+   mode. */
 .icon-toolbar{display:flex;align-items:center;gap:2px;flex:none;
   background:#f4f4f4;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:4px}
 .icon-toolbar .icon-btn{width:36px;height:36px;padding:0;display:inline-flex;
@@ -785,12 +807,16 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
           reference, not a headline.
      The accent rule also drops 4px to 3px: at phone width a 4px bar reads as a
      third element rather than a trim. */
-  /* Side-by-side with the title squeezed the mark down to the point it wasn't
-     readable. Stacked, it can run full-size across its own row. A plain 10px
-     flex gap read as cramped once the logo became its own white rectangle —
-     it needs enough air to look like a deliberate second element, not a
-     stray box bumping into the title. */
-  header{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
+  /* The replicated corporate chrome (utility strip + full nav) costs another
+     ~166px on top of the budget above — worth it on desktop for the brand
+     match, not on a phone. The utility strip drops outright; the nav bar
+     keeps just the wordmark, same "downloading a spreadsheet is a desktop
+     action" logic as #export just above. */
+  .krtop{display:none}
+  .krheaderwrap{padding:10px 16px}
+  .krheaderwrap .krlogo{width:140px}
+  .krheader nav{display:none}
+  .pagehead{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
     flex-direction:column;align-items:flex-start}
   h1{font-size:20px;line-height:1.2;margin:0 0 4px}
   .sub{font-size:12.5px;line-height:1.4}
@@ -801,8 +827,6 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      useful here than on desktop. The More button only ever held Export CSV,
      which isn't offered on a phone, so there's nothing left for it to open. */
   .icon-btn-wrap{display:none}
-  header .logowrap{padding:7px 10px}
-  header .krlogo{width:130px}
   /* Stays at readable body size on purpose — see the .notice comment above; a
      public tool cannot put its caveats in the footer. Only the padding and the
      leading tighten here, and the deadline explanation moved into the coverage
@@ -2203,11 +2227,46 @@ def main():
 <meta name="twitter:image" content="{SITE_URL}og-image.png">
 <style>{CSS}</style></head>
 <body data-today="{today}">
-<div class="topband"></div>
+<!-- Replica of kaufmanrossin.com's own two-band header, full-bleed outside
+     .wrap so it spans edge to edge like the real one. Every link leaves
+     RegWatch for the real site — see the CSS comment above .krtop for why
+     that's the right call rather than trying to invent RegWatch equivalents
+     of pages it doesn't have. -->
+<div class="krtop">
+  <div class="krtopwrap">
+    <nav class="sites" aria-label="Kaufman Rossin sites">
+      <a href="https://kaufmanrossin.com/" class="active" target="_blank" rel="noopener">CPAs and Advisors</a>
+      <a href="https://kaufmanrossinwealth.com/" target="_blank" rel="noopener">Wealth</a>
+      <a href="https://kaufmanrossinais.com/" target="_blank" rel="noopener">Fund Administration</a>
+    </nav>
+    <nav class="util" aria-label="Kaufman Rossin utility links">
+      <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
+      <a href="https://kaufmanrossin.com/kaufman-rossin-payment-portal/" target="_blank" rel="noopener">Payment Portal</a>
+      <a href="https://kaufmanrossin.com/file-sharing/" target="_blank" rel="noopener">File Sharing</a>
+      <a href="tel:888.680.5726">888.680.5726</a>
+      <a href="https://es.kaufmanrossin.com/" target="_blank" rel="noopener">Espa&ntilde;ol</a>
+    </nav>
+  </div>
+</div>
+<header class="krheader">
+  <div class="krheaderwrap">
+    <div class="logowrap">{KR_LOGO_SVG}</div>
+    <nav aria-label="Kaufman Rossin main navigation">
+      <a href="https://kaufmanrossin.com/industries/" target="_blank" rel="noopener">Who We Serve</a>
+      <a href="https://kaufmanrossin.com/services/" target="_blank" rel="noopener">What We Do</a>
+      <a href="https://kaufmanrossin.com/resources/" target="_blank" rel="noopener">Our Ideas</a>
+      <a href="https://kaufmanrossin.com/who-we-are/" target="_blank" rel="noopener">Get to Know Us</a>
+      <a href="https://kaufmanrossin.com/careers/" target="_blank" rel="noopener">Careers</a>
+      <a href="https://kaufmanrossin.com/contact-us/" target="_blank" rel="noopener">Contact Us</a>
+      <a href="https://kaufmanrossin.com/search" class="krsearch" target="_blank" rel="noopener" aria-label="Search kaufmanrossin.com">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </a>
+    </nav>
+  </div>
+</header>
 <div class="wrap">
 
-<header>
-  <div class="logowrap">{KR_LOGO_SVG}</div>
+<div class="pagehead">
   <div class="t">
     <h1>Regulatory update tracker</h1>
     <!-- The audience and the timestamp are two different facts. Run together they
@@ -2239,7 +2298,7 @@ def main():
       </div>
     </div>
   </div>
-</header>
+</div>
 <div id="iconToast" class="icon-toast" role="status" aria-live="polite"></div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
