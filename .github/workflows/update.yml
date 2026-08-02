@@ -126,6 +126,11 @@ jobs:
           # dashboard.py in the build step above. Readers subscribe to this URL
           # once and new comment periods appear in their calendar automatically.
           cp deadlines.ics site/deadlines.ics
+          # Hero background video, referenced by .hero-video's <source> in
+          # dashboard.html. Copy the whole folder rather than the one file so
+          # future hero assets don't need a workflow edit each time.
+          mkdir -p site/assets/video
+          cp assets/video/*.mp4 site/assets/video/
 
       - name: Publish to Pages
         uses: actions/upload-pages-artifact@v3
