@@ -304,7 +304,7 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
    breadcrumb: light grey pill, blue link, muted grey for the current page.
    Full-bleed here rather than the real site's narrower boxed version, since
    Mihari's page has no sidebar to make room for. */
-.krcrumb{background:#e9ecef}
+.krcrumb{background:radial-gradient(ellipse at center,#f3f4f6 0%,#dde1e6 100%)}
 .krcrumbwrap{display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:8px;max-width:1240px;margin:0 auto;padding:10px 22px;font-size:14px}
 .krcrumb-path a{color:#007bff;text-decoration:none}
