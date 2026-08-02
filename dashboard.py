@@ -283,6 +283,11 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
   color:#fff;text-decoration:none;white-space:nowrap}
 .krtop a:hover{text-decoration:underline}
 .krtop .sites a.active{background:var(--accent);color:var(--brand);border-radius:2px}
+/* Divider between Wealth and Fund Administration only, matching the .util
+   pipe style on the right -- not before Wealth, since that would sit
+   against the "CPAs and Advisors" pill's own background rather than plain
+   navy and read as a stray line cutting through it. */
+.krtop .sites a:last-child{border-left:1px solid rgba(255,255,255,.3)}
 .krtop .util a{font-size:12.5px;border-left:1px solid rgba(255,255,255,.3)}
 .krtop .util a:first-child{border-left:none}
 /* Second band: plain flush white bar, no card/shadow — this is fixed brand
