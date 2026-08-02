@@ -292,11 +292,11 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .krheader nav a:hover{text-decoration:underline}
 .krheader .krsearch{display:flex;align-items:center;border:1px solid var(--border);
   border-radius:6px;overflow:hidden}
-.krheader .krsearch input{border:none;padding:6px 10px;font-size:13px;width:110px;
+.krheader .krsearch input{border:none;padding:4px 8px;font-size:12px;width:85px;
   color:var(--brand);background:#fff}
 .krheader .krsearch input:focus{outline:none}
 .krheader .krsearch button{border:none;background:transparent;color:var(--brand);
-  padding:0 10px;height:32px;display:inline-flex;align-items:center;cursor:pointer}
+  padding:0 8px;height:26px;display:inline-flex;align-items:center;cursor:pointer}
 .krheader .krsearch button:hover{background:var(--raised)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
   clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -2285,7 +2285,7 @@ def main():
         <label for="krsearch-input" class="sr-only">Search kaufmanrossin.com</label>
         <input id="krsearch-input" type="search" name="s" placeholder="Search">
         <button type="submit" aria-label="Search kaufmanrossin.com">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
       </form>
     </div>
