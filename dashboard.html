@@ -170,6 +170,18 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 .herowrap{position:relative;
   background:radial-gradient(ellipse at center,var(--brand-bg) 0%,var(--brand-bg-2) 100%);
   overflow:hidden;margin-bottom:14px}
+/* v1.5 experiment: looped background video (Pexels, free license, no attribution
+   required) instead of the flat gradient. The gradient above is left in place as
+   the poster-less fallback — same color the video's overlay tints toward, so if
+   the file fails to load or reduced-motion hides it, the band still reads as a
+   deliberate navy panel, not a broken image. object-fit:cover crops rather than
+   letterboxes since this is a decorative backdrop, not content that must stay
+   uncropped. */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0}
+.hero-overlay{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse at center,rgba(0,59,106,.55) 0%,rgba(0,31,63,.88) 100%)}
+@media (prefers-reduced-motion:reduce){.hero-video{display:none}}
 .hero-bgmark{position:absolute;right:48px;bottom:-28px;pointer-events:none}
 .hero-bgmark svg{display:block}
 /* Draws the big background line in once on load, using the path's own
@@ -973,7 +985,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          all three items across the row instead of bunching Updated and the
          buttons together on one side. -->
     <span class="krcrumb-updated">Updated
-      August 2, 2026 19:46 UTC</span>
+      August 02, 2026 21:02 UTC</span>
     <!-- Share and install are mobile-first actions, so unlike the old lone
          Export CSV button they stay visible on a phone; see the media query.
          Export CSV moves into the overflow menu — it's still desktop-only,
@@ -1007,16 +1019,13 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
      above .herowrap): a brand moment before the functional dashboard starts,
      not part of .wrap so it can run full-bleed. -->
 <div class="herowrap">
-  <div class="hero-bgmark" aria-hidden="true">
-    <svg viewBox="0 0 460 380" width="320" height="264">
-      <path d="M70,238 L154,322 L280,126 L322,126 L350,70 L378,126 L420,126"
-        fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"
-        stroke-linejoin="round" opacity=".14"/>
-      <circle class="hero-ping" cx="350" cy="70" r="20" fill="none" stroke="var(--accent)"
-        stroke-width="4" opacity="0"/>
-      <circle cx="350" cy="70" r="17" fill="var(--accent)" opacity=".55"/>
-    </svg>
-  </div>
+  <!-- v1.5 experiment: replaces the Check Spike background mark with a looped
+       boardroom clip (Pexels, free license) + navy overlay for text contrast.
+       See the .hero-video CSS comment for the fallback/reduced-motion story. -->
+  <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+    <source src="assets/video/hero-boardroom.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-titleblock">
       <p class="hero-word">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
