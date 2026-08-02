@@ -374,6 +374,25 @@ button:hover{background:var(--raised)}
 .qs-foot button{background:rgba(0,0,0,.22);border:none;color:#fff;font-weight:700;
   padding:7px 14px;border-radius:8px;font-size:13px}
 .qs-foot button:hover{background:rgba(0,0,0,.34)}
+/* Text-slide hover, stolen from the "5 Trendy Animations" reference video:
+   the current label slides up and out on hover while a duplicate (in
+   --accent, via ::after so it never needs a second real DOM node) slides up
+   into its place from below. `data-label` on .lbl is kept in sync with its
+   textContent in JS (see initQuickStart) since the button's own text
+   changes between "Next" and "Got it". Scoped to real mouse hover only --
+   `pointer:fine` keeps this off touch devices entirely, so tapping never
+   leaves it stuck mid-slide with no hover-out event to reverse it; the
+   plain button (no slide) is what mobile gets, by design, not a fallback
+   bug. Desktop first, mobile intentionally simpler, per the reference
+   video's own point 5 about needing a non-hover backup. */
+.btn-slide{position:relative;overflow:hidden}
+.btn-slide .lbl{position:relative;display:block}
+@media (hover:hover) and (pointer:fine){
+  .btn-slide .lbl{transition:transform .28s cubic-bezier(.65,0,.35,1)}
+  .btn-slide .lbl::after{content:attr(data-label);position:absolute;left:0;top:100%;
+    color:var(--accent)}
+  .btn-slide:hover .lbl{transform:translateY(-100%)}
+}
 @media (max-width:640px){.quickstart{width:calc(100vw - 32px)}}
 
 /* Public-facing notice. Deliberately at the top and in normal body size: a
@@ -1111,7 +1130,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          all three items across the row instead of bunching Updated and the
          buttons together on one side. -->
     <span class="krcrumb-updated">Updated
-      August 2, 2026 22:53 UTC</span>
+      August 02, 2026 23:13 UTC</span>
     <!-- Share and install are mobile-first actions, so unlike the old lone
          Export CSV button they stay visible on a phone; see the media query.
          Export CSV moves into the overflow menu — it's still desktop-only,
@@ -1198,7 +1217,8 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
     <button id="qsClose" class="qs-close" type="button" aria-label="Dismiss">&times;</button>
   </div>
   <p>Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.</p>
-  <div class="qs-foot"><button id="qsDismiss" type="button">Got it</button></div>
+  <div class="qs-foot"><button id="qsDismiss" type="button" class="btn-slide">
+    <span class="lbl" data-label="Got it">Got it</span></button></div>
 </div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
@@ -2237,6 +2257,7 @@ function initQuickStart() {
   const qs = $('#quickstart');
   const qsText = qs && qs.querySelector('p');
   const qsBtn = $('#qsDismiss');
+  const qsLbl = qsBtn && qsBtn.querySelector('.lbl');
   if (!qs || !qsText) return;
   let step = 0;
   function place(target) {
@@ -2265,7 +2286,9 @@ function initQuickStart() {
     step = i;
     currentTarget = target;
     qsText.textContent = s.text;
-    qsBtn.textContent = hasMore ? 'Next' : 'Got it';
+    const label = hasMore ? 'Next' : 'Got it';
+    qsLbl.textContent = label;
+    qsLbl.dataset.label = label;
     qs.hidden = false;
     place(target);
   }
