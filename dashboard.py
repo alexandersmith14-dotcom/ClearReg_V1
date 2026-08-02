@@ -1392,10 +1392,15 @@ searchBox.addEventListener('keydown', e => {
 });
 
 // One active filter at a time across pills AND kpi tiles, so selecting either
-// clears the other.
+// clears the other. Source's All pill is the exception: it means "no agency
+// restriction," which is also true whenever some other dimension (Fintech
+// only, a KPI tile) is driving the view, so it stays pressed rather than
+// going blank alongside everything else.
 function clearFilterUI() {
   document.querySelectorAll('.pill, .kpi[data-kpi]')
     .forEach(x => x.setAttribute('aria-pressed', 'false'));
+  const all = $('.pill[data-kind="all"]');
+  if (all) all.setAttribute('aria-pressed', 'true');
   $('#viewnote').textContent = '';
 }
 
@@ -1421,8 +1426,6 @@ const clearFiltersBtn = $('#clearFilters');
 if (clearFiltersBtn) {
   clearFiltersBtn.addEventListener('click', () => {
     clearFilterUI();
-    const all = $('.pill[data-kind="all"]');
-    if (all) all.setAttribute('aria-pressed', 'true');
     filter = {kind: 'all', value: ''};
     render();
   });
@@ -1451,7 +1454,6 @@ if (sourceGroup) {
 
   allPill.addEventListener('click', () => {
     clearFilterUI();
-    allPill.setAttribute('aria-pressed', 'true');
     filter = {kind: 'all', value: ''};
     render();
   });
@@ -1476,8 +1478,6 @@ document.querySelectorAll('.kpi[data-kpi]').forEach(k => {
     clearFilterUI();
     if (already) {
       filter = {kind: 'all', value: ''};
-      const all = $('.pill[data-kind="all"]');
-      if (all) all.setAttribute('aria-pressed', 'true');
     } else {
       filter = {kind: 'kpi', value: key};
       k.setAttribute('aria-pressed', 'true');
