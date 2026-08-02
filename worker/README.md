@@ -44,7 +44,7 @@ visitor's browser                    this Worker                3 answerers
 
 ## Scope: updates only
 
-The passages sent here are RegWatch's **tracked updates**, not CFR text.
+The passages sent here are Mihari's **tracked updates**, not CFR text.
 `ASK_INCLUDE_REGULATIONS` in `dashboard.py` is `False` because a free answerer
 invented the subsections `12 CFR 1002.9(a)(2)(iii)`–`(vi)`, which do not exist in
 the source it was handed. No regulation text in, no subsections to fabricate. The
