@@ -281,7 +281,7 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
    chrome sitting outside .wrap, not a themed page element, so it stays
    white/navy in every theme same as the old single-band header did. */
 header.krheader{background:#fff;border-bottom:1px solid var(--border)}
-.krheaderwrap{max-width:1240px;margin:0 auto;padding:6px 22px 10px}
+.krheaderwrap{max-width:1240px;margin:0 auto;padding:10px 22px 14px}
 .krheader-toprow{display:flex;justify-content:flex-end}
 .krheader-mainrow{display:flex;align-items:center;justify-content:space-between;
   gap:20px;flex-wrap:wrap;margin-top:6px}
@@ -305,7 +305,7 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
    Full-bleed here rather than the real site's narrower boxed version, since
    RegWatch's page has no sidebar to make room for. */
 .krcrumb{background:#e9ecef}
-.krcrumbwrap{max-width:1240px;margin:0 auto;padding:12px 22px;font-size:14px}
+.krcrumbwrap{max-width:1240px;margin:0 auto;padding:16px 22px;font-size:14px}
 .krcrumbwrap a{color:#007bff;text-decoration:none}
 .krcrumbwrap a:hover{text-decoration:underline}
 .krcrumbwrap span[aria-hidden]{color:#6c757d;margin:0 8px}
