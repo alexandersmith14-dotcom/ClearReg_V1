@@ -1076,7 +1076,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          all three items across the row instead of bunching Updated and the
          buttons together on one side. -->
     <span class="krcrumb-updated">Updated
-      August 2, 2026 22:02 UTC</span>
+      August 02, 2026 22:12 UTC</span>
     <!-- Share and install are mobile-first actions, so unlike the old lone
          Export CSV button they stay visible on a phone; see the media query.
          Export CSV moves into the overflow menu — it's still desktop-only,
@@ -1220,7 +1220,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
     <button class="pill" data-kind="all" aria-pressed="true">All</button><button class="pill" data-kind="agency" data-value="FinCEN|FinCEN Advisories" aria-pressed="false">FinCEN</button><button class="pill" data-kind="agency" data-value="NCUA|NCUA Press" aria-pressed="false">NCUA</button><button class="pill" data-kind="agency" data-value="TX Dept of Banking" aria-pressed="false">Texas</button><button class="pill" data-kind="agency" data-value="CFPB|CFPB Rules" aria-pressed="false">CFPB</button><button class="pill" data-kind="agency" data-value="FDIC|FDIC FILs" aria-pressed="false">FDIC</button><button class="pill" data-kind="agency" data-value="Federal Reserve|Fed SR/CA Letters" aria-pressed="false">Federal Reserve</button><button class="pill" data-kind="agency" data-value="OFAC" aria-pressed="false">OFAC</button><button class="pill" data-kind="agency" data-value="OCC|OCC Bulletins" aria-pressed="false">OCC</button><button class="pill" data-kind="agency" data-value="FL OFR Press" aria-pressed="false">Florida</button><button class="pill" data-kind="agency" data-value="CSBS" aria-pressed="false">CSBS</button>
   </div>
 </details>
-<div class="pillgroup">
+<div class="pillgroup" id="searchGroup">
   <div class="grouplabel">Search<small>any word</small></div>
   <div class="searchwrap">
     <input id="q" type="search" autocomplete="off"
@@ -2187,7 +2187,9 @@ const QS_STEPS = [
   { sel: '.icon-toolbar',
     text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
   { sel: '#filters',
-    text: 'Narrow what you see: switch scope with View, combine agencies with Source, or search by keyword — all three work together.' },
+    text: 'Narrow what you see: switch scope with View, or combine agencies with Source — pick several to see them together.' },
+  { sel: '#searchGroup',
+    text: 'Search by keyword — works together with View and Source, not instead of them.' },
   // Absent when ASK_ENABLED is off in dashboard.py -- showStep skips a
   // missing target and moves on rather than ending the tour early.
   { sel: '.ask-panel',

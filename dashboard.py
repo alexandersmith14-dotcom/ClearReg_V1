@@ -1941,7 +1941,9 @@ const QS_STEPS = [
   { sel: '.icon-toolbar',
     text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
   { sel: '#filters',
-    text: 'Narrow what you see: switch scope with View, combine agencies with Source, or search by keyword — all three work together.' },
+    text: 'Narrow what you see: switch scope with View, or combine agencies with Source — pick several to see them together.' },
+  { sel: '#searchGroup',
+    text: 'Search by keyword — works together with View and Source, not instead of them.' },
   // Absent when ASK_ENABLED is off in dashboard.py -- showStep skips a
   // missing target and moves on rather than ending the tour early.
   { sel: '.ask-panel',
@@ -2841,7 +2843,7 @@ def main():
     {source_pills}
   </div>
 </details>
-<div class="pillgroup">
+<div class="pillgroup" id="searchGroup">
   <div class="grouplabel">Search<small>any word</small></div>
   <div class="searchwrap">
     <input id="q" type="search" autocomplete="off"
