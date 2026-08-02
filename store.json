@@ -52,7 +52,7 @@
       "FDIC FILs"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -84,7 +84,7 @@
       "FDIC FILs"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -293,7 +293,7 @@
       "OCC"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -319,7 +319,7 @@
       "OCC"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false
   },
   "7f846e6f32a71e4c": {
@@ -344,7 +344,7 @@
       "OCC"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false
   },
   "37737b8e84027d77": {
@@ -368,7 +368,7 @@
       "OCC"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false
   },
   "58f98bd53abba88c": {
@@ -467,7 +467,7 @@
       "OCC Bulletins"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -495,7 +495,7 @@
       "OCC Bulletins"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -523,7 +523,7 @@
       "OCC Bulletins"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": false,
     "credit_union": false
@@ -553,7 +553,7 @@
       "OCC Bulletins"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": true,
     "fintech_specific": true,
     "credit_union": false
@@ -580,7 +580,7 @@
       "OCC Bulletins"
     ],
     "first_seen": "2026-07-18",
-    "last_seen": "2026-08-01",
+    "last_seen": "2026-08-02",
     "fr_checked": false,
     "fintech_specific": true,
     "credit_union": false
