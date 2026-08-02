@@ -190,6 +190,7 @@ CSS = """
   --ink:#212529; --ink-2:#3c3c3c; --ink-muted:#6c757d;
   --rule:#e3e3e3; --border:rgba(0,0,0,.12);
   --brand:#003b6a; --brand-bg:#003b6a; --brand-bg-2:#001f3f; --brand-bg-light:#074c83; --accent:#aed136;
+  --info:#2f6fed;
   --bar:#003b6a; --track:#e3e3e3;
   --crit:#c0392b; --warn:#9a6400; --ok:#2f7d32; --neutral:#3c3c3c;
   --chip:#f0f0f0;
@@ -214,6 +215,7 @@ CSS = """
     --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
     --rule:#2a3035; --border:rgba(255,255,255,.12);
     --brand:#4e9bd8; --brand-bg:#123a63; --brand-bg-2:#0a2242; --brand-bg-light:#215383; --accent:#aed136;
+    --info:#4d8bff;
     --bar:#4e9bd8; --track:#2a3035;
     --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
     --chip:#232a2f;
@@ -231,6 +233,7 @@ CSS = """
   --ink:#f5f5f5; --ink-2:#c9cdd1; --ink-muted:#8b9298;
   --rule:#2a3035; --border:rgba(255,255,255,.12);
   --brand:#4e9bd8; --brand-bg:#123a63; --brand-bg-2:#0a2242; --brand-bg-light:#215383; --accent:#aed136;
+    --info:#4d8bff;
   --bar:#4e9bd8; --track:#2a3035;
   --crit:#e66767; --warn:#eda100; --ok:#4caf50; --neutral:#c9cdd1;
   --chip:#232a2f;
@@ -497,6 +500,34 @@ button:hover{background:var(--raised)}
   justify-content:center;color:var(--ink-muted);border:none;background:none;border-radius:6px}
 .idtaskdel:hover{color:var(--crit);background:var(--raised)}
 .idempty{font-size:13px;color:var(--ink-muted);padding:6px 4px}
+
+/* One-time onboarding callout, pointed at the first card's calendar/notes/
+   tasks icons via JS (see initQuickStart) — position:fixed with inline
+   left/top set from the target's actual getBoundingClientRect, not a fixed
+   guess, so it tracks wherever that row really lands at the reader's width.
+   A distinct --info blue rather than --brand: this is a transient system
+   message, not a piece of the Mihari identity, and needs to read as
+   "notification" even sitting right next to the brand navy. */
+.quickstart{position:fixed;z-index:70;width:280px;background:var(--info);color:#fff;
+  border-radius:12px;box-shadow:var(--shadow-md);padding:14px 16px 12px}
+.quickstart[hidden]{display:none}
+.qs-tail{position:absolute;width:14px;height:14px;background:var(--info);
+  transform:rotate(45deg);border-radius:3px}
+.qs-above .qs-tail{bottom:-6px}
+.qs-below .qs-tail{top:-6px}
+.qs-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.qs-head svg{flex:none}
+.qs-head b{flex:1;font-size:14px}
+.qs-close{flex:none;width:22px;height:22px;padding:0;display:flex;align-items:center;
+  justify-content:center;background:rgba(255,255,255,.16);border:none;color:#fff;
+  border-radius:6px;font-size:16px;line-height:1}
+.qs-close:hover{background:rgba(255,255,255,.28)}
+.quickstart p{margin:0 0 12px;font-size:13.5px;line-height:1.5;color:#fff}
+.qs-foot{display:flex;justify-content:flex-end}
+.qs-foot button{background:rgba(0,0,0,.22);border:none;color:#fff;font-weight:700;
+  padding:7px 14px;border-radius:8px;font-size:13px}
+.qs-foot button:hover{background:rgba(0,0,0,.34)}
+@media (max-width:640px){.quickstart{width:calc(100vw - 32px)}}
 
 /* Public-facing notice. Deliberately at the top and in normal body size: a
    personal triage tool can put its caveats in the footer, a public one can't.
@@ -1895,6 +1926,73 @@ applyViewport();
 labelViews();
 setView(false);
 
+// ------------------------------------------------------------- Quick start
+// Two-step onboarding tour, shown once per browser: step 1 points at the
+// calendar/notes/tasks icons on the first card, step 2 at the share/
+// bookmark/more toolbar. One shared callout element is reused and re-pointed
+// between steps rather than two separate elements, same "one shared
+// component, re-targeted" pattern as the Notes/Tasks dialog above.
+// Positioned by measuring the real target via getBoundingClientRect rather
+// than a hardcoded coordinate, so it lands correctly at whatever width/zoom
+// the reader is on, and repositions live if they resize or scroll before
+// dismissing.
+const QS_KEY = 'mihariQuickStartSeen';
+const QS_STEPS = [
+  { sel: '#cards .card .actions',
+    text: 'Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.' },
+  { sel: '.icon-toolbar',
+    text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
+];
+function initQuickStart() {
+  if (localStorage.getItem(QS_KEY)) return;
+  const qs = $('#quickstart');
+  const qsText = qs && qs.querySelector('p');
+  const qsBtn = $('#qsDismiss');
+  if (!qs || !qsText) return;
+  let step = 0;
+  function place(target) {
+    const r = target.getBoundingClientRect();
+    const margin = 12;
+    const above = r.top > qs.offsetHeight + margin + 20;
+    let left = r.left + r.width / 2 - qs.offsetWidth / 2;
+    left = Math.max(10, Math.min(left, window.innerWidth - qs.offsetWidth - 10));
+    qs.style.left = left + 'px';
+    qs.style.top = (above ? r.top - qs.offsetHeight - margin : r.bottom + margin) + 'px';
+    qs.classList.toggle('qs-above', above);
+    qs.classList.toggle('qs-below', !above);
+    const tailLeft = Math.max(16, Math.min(r.left + r.width / 2 - left - 7, qs.offsetWidth - 30));
+    qs.querySelector('.qs-tail').style.left = tailLeft + 'px';
+  }
+  let currentTarget = null;
+  const reposition = () => { if (!qs.hidden && currentTarget) place(currentTarget); };
+  function showStep(i) {
+    const s = QS_STEPS[i];
+    const target = s && document.querySelector(s.sel);
+    if (!target) { finish(); return; }
+    step = i;
+    currentTarget = target;
+    qsText.textContent = s.text;
+    qsBtn.textContent = i < QS_STEPS.length - 1 ? 'Next' : 'Got it';
+    qs.hidden = false;
+    place(target);
+  }
+  function finish() {
+    qs.hidden = true;
+    localStorage.setItem(QS_KEY, '1');
+    window.removeEventListener('resize', reposition);
+    window.removeEventListener('scroll', reposition);
+  }
+  function advance() {
+    if (step < QS_STEPS.length - 1) showStep(step + 1); else finish();
+  }
+  window.addEventListener('resize', reposition);
+  window.addEventListener('scroll', reposition, { passive: true });
+  $('#qsClose').addEventListener('click', finish);
+  qsBtn.addEventListener('click', advance);
+  showStep(0);
+}
+initQuickStart();
+
 // ------------------------------------------------------- Ask the tracked updates
 // Retrieval happens HERE, in the browser: the page already holds every tracked
 // update. Only the model call leaves, to a Cloudflare Worker that holds the API
@@ -2663,6 +2761,20 @@ def main():
     </div>
     <div id="idBody"></div>
   </div>
+</div>
+
+<!-- One-time onboarding callout -- see initQuickStart() for how it finds and
+     points at the first card's icon row. Shown once per browser, remembered
+     via localStorage. -->
+<div id="quickstart" class="quickstart" role="dialog" aria-label="Quick start" hidden>
+  <div class="qs-tail"></div>
+  <div class="qs-head">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.6.55 1 1.32 1 2.17V16h6v-.33c0-.85.4-1.62 1-2.17A6 6 0 0 0 12 3z"/></svg>
+    <b>Quick start</b>
+    <button id="qsClose" class="qs-close" type="button" aria-label="Dismiss">&times;</button>
+  </div>
+  <p>Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.</p>
+  <div class="qs-foot"><button id="qsDismiss" type="button">Got it</button></div>
 </div>
 
 <!-- The visible caveat is now the instruction only: what the summaries are, and
