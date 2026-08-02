@@ -452,8 +452,11 @@ button:hover{background:var(--raised)}
 .notice{background:var(--surface);border:1px solid var(--border);
   border-left:4px solid var(--crit);border-radius:12px;padding:13px 16px;
   margin-bottom:18px;font-size:13px;color:var(--ink-2);text-align:justify;
-  text-align-last:left;hyphens:auto;box-shadow:var(--shadow-sm)}
+  text-align-last:left;hyphens:auto;box-shadow:var(--shadow-sm);
+  animation:noticeIn .5s cubic-bezier(.25,.6,.4,1) .2s backwards}
 .notice strong{color:var(--ink)}
+@keyframes noticeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.notice{animation:none}}
 
 .coverage{font-size:12.5px;color:var(--ink-2)}
 .coverage summary{cursor:pointer;font-size:12.5px;color:var(--brand);
