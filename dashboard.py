@@ -283,19 +283,21 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
   color:#fff;text-decoration:none;white-space:nowrap}
 .krtop a:hover{text-decoration:underline}
 .krtop .sites a.active{background:var(--accent);color:var(--brand);border-radius:2px}
-/* Divider between Wealth and Fund Administration, matching the real site's
-   actual divider style measured off kaufmanrossin.com -- a solid 1px LIME
-   ::after (background:var(--accent), not a translucent white border-left).
-   Only after Wealth (2nd child), not before it: a line there would cut
+/* Dividers throughout .krtop, matching the real site's actual style measured
+   off kaufmanrossin.com's computed styles -- a solid 1px LIME ::after
+   (background:var(--accent)), not a translucent white border-left (the
+   earlier, un-measured guess this replaces). The real site applies it to
+   EVERY .util link uniformly, including the last (Español) -- its bar just
+   lands on the strip's trailing edge with nothing past it to contrast
+   against, so no :last-child exclusion is needed there. .sites only gets it
+   after Wealth (2nd child), not before it: a line before Wealth would cut
    across the "CPAs and Advisors" active pill's own background instead of
-   sitting on plain navy. The .util pipes on the right were built earlier as
-   a translucent-white simplification and are left as-is here — this fix is
-   scoped to the divider just added. */
-.krtop .sites a:nth-child(2){position:relative}
-.krtop .sites a:nth-child(2)::after{content:'';position:absolute;top:50%;
-  transform:translateY(-50%);right:0;width:1px;height:14px;background:var(--accent)}
-.krtop .util a{font-size:12.5px;border-left:1px solid rgba(255,255,255,.3)}
-.krtop .util a:first-child{border-left:none}
+   sitting on plain navy, which the real site's own layout never has to
+   contend with (its first item isn't a filled pill). */
+.krtop .sites a:nth-child(2),.krtop .util a{position:relative}
+.krtop .sites a:nth-child(2)::after,.krtop .util a::after{content:'';position:absolute;
+  top:50%;transform:translateY(-50%);right:0;width:1px;height:14px;background:var(--accent)}
+.krtop .util a{font-size:12.5px}
 /* Second band: plain flush white bar, no card/shadow — this is fixed brand
    chrome sitting outside .wrap, not a themed page element, so it stays
    white/navy in every theme same as the old single-band header did. */
