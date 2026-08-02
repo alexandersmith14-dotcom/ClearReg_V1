@@ -250,7 +250,13 @@ CSS = """
    The system stack below gives SF on iOS, Segoe UI on Windows, Roboto on
    Android — each platform's own interface face, which is what "native" looks
    like. Do not reintroduce Georgia or Verdana as fallbacks. */
-body{margin:0;padding:0;background:var(--page);color:var(--ink);
+/* var(--surface), not var(--page) — kaufmanrossin.com's own pages sit
+   directly on white, not a grey backdrop with white cards floating on it.
+   Panels/KPI tiles keep their own border (var(--border)) for definition, so
+   they don't disappear now that they match the page behind them. --page
+   stays defined and still used for recessed elements like input fields
+   (e.g. .ask-row input) that want to read as sunken against a white card. */
+body{margin:0;padding:0;background:var(--surface);color:var(--ink);
   font-family:var(--ui-font);font-size:14px;line-height:1.55;
   -webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1240px;margin:0 auto;padding:22px}
@@ -275,8 +281,10 @@ body{margin:0;padding:0;background:var(--page);color:var(--ink);
    chrome sitting outside .wrap, not a themed page element, so it stays
    white/navy in every theme same as the old single-band header did. */
 header.krheader{background:#fff;border-bottom:1px solid var(--border)}
-.krheaderwrap{max-width:1240px;margin:0 auto;padding:10px 22px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.krheaderwrap{max-width:1240px;margin:0 auto;padding:6px 22px 10px}
+.krheader-toprow{display:flex;justify-content:flex-end}
+.krheader-mainrow{display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-top:6px}
 .krheaderwrap .logowrap{flex:none}
 .krheaderwrap .krlogo{width:160px}
 .krheader nav{display:flex;align-items:center;gap:20px}
@@ -832,6 +840,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   .krtop{display:none}
   .krheaderwrap{padding:10px 16px}
   .krheaderwrap .krlogo{width:140px}
+  .krheader-toprow{display:none}
   .krheader nav{display:none}
   .krcrumb{display:none}
   .pagehead{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
@@ -2268,14 +2277,10 @@ def main():
 </div>
 <header class="krheader">
   <div class="krheaderwrap">
-    <div class="logowrap">{KR_LOGO_SVG}</div>
-    <nav aria-label="Kaufman Rossin main navigation">
-      <a href="https://kaufmanrossin.com/industries/" target="_blank" rel="noopener">Who We Serve</a>
-      <a href="https://kaufmanrossin.com/services/" target="_blank" rel="noopener">What We Do</a>
-      <a href="https://kaufmanrossin.com/resources/" target="_blank" rel="noopener">Our Ideas</a>
-      <a href="https://kaufmanrossin.com/who-we-are/" target="_blank" rel="noopener">Get to Know Us</a>
-      <a href="https://kaufmanrossin.com/careers/" target="_blank" rel="noopener">Careers</a>
-      <a href="https://kaufmanrossin.com/contact-us/" target="_blank" rel="noopener">Contact Us</a>
+    <!-- Two rows, not one: the real site sits its search box alone in a
+         thin top row, right-aligned, with the logo+nav row below it — not
+         inline with the nav links the way it first went in here. -->
+    <div class="krheader-toprow">
       <form class="krsearch" role="search" action="https://kaufmanrossin.com/search" method="get" target="_blank">
         <label for="krsearch-input" class="sr-only">Search kaufmanrossin.com</label>
         <input id="krsearch-input" type="search" name="s" placeholder="Search">
@@ -2283,7 +2288,18 @@ def main():
           <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
       </form>
-    </nav>
+    </div>
+    <div class="krheader-mainrow">
+      <div class="logowrap">{KR_LOGO_SVG}</div>
+      <nav aria-label="Kaufman Rossin main navigation">
+        <a href="https://kaufmanrossin.com/industries/" target="_blank" rel="noopener">Who We Serve</a>
+        <a href="https://kaufmanrossin.com/services/" target="_blank" rel="noopener">What We Do</a>
+        <a href="https://kaufmanrossin.com/resources/" target="_blank" rel="noopener">Our Ideas</a>
+        <a href="https://kaufmanrossin.com/who-we-are/" target="_blank" rel="noopener">Get to Know Us</a>
+        <a href="https://kaufmanrossin.com/careers/" target="_blank" rel="noopener">Careers</a>
+        <a href="https://kaufmanrossin.com/contact-us/" target="_blank" rel="noopener">Contact Us</a>
+      </nav>
+    </div>
   </div>
 </header>
 <!-- Grey breadcrumb band, same as every subpage on kaufmanrossin.com runs
