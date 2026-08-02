@@ -500,13 +500,15 @@ header button:hover{filter:brightness(1.06)}
   box-shadow:5px 5px 0 0 var(--brand)}
 .pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--brand)}
 /* Selected pill uses navy, not the brand green: the green is a background
-   accent and white text on it fails contrast badly. Its offset switches to
-   the lime accent, though — navy-on-navy would all but vanish, and it ties
-   the "selected" affordance to the brand highlight colour instead. */
+   accent and white text on it fails contrast badly. Shadow stays navy too,
+   matching the View toggle's active state — that control's shadow lives on
+   its shared wrapper, not per-button, so it can't switch colour when a
+   segment is pressed. Keeping .pill consistent with it beats a mismatched
+   lime accent it can't have. */
 .pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);
-  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--accent)}
-.pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--accent)}
-.pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--accent)}
+  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--brand)}
+.pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--brand)}
+.pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--brand)}
 
 /* Relevance is a lens, not a gate — this switches between the filtered default
    and everything collected. */
