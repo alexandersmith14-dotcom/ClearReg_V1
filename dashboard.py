@@ -498,27 +498,26 @@ header button:hover{filter:brightness(1.06)}
    offset on a dark one), so no new colour token is needed. */
 .pill{font-size:12.5px;padding:6px 13px;border-radius:999px;cursor:pointer;
   background:var(--surface);border:1px solid var(--border);color:var(--ink-2);
-  box-shadow:3px 3px 0 0 var(--brand);
+  box-shadow:3px 3px 0 0 var(--accent);
   transition:background-color .12s ease,border-color .12s ease,color .12s ease,
     box-shadow .12s ease,transform .12s ease}
 .pill:hover{border-color:var(--brand);transform:translate(-1px,-1px);
-  box-shadow:5px 5px 0 0 var(--brand)}
-.pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--brand)}
+  box-shadow:5px 5px 0 0 var(--accent)}
+.pill:active{transform:translate(3px,3px);box-shadow:0 0 0 0 var(--accent)}
 /* Selected pill uses navy, not the brand green: the green is a background
-   accent and white text on it fails contrast badly. Shadow stays navy too,
+   accent and white text on it fails contrast badly. Shadow stays lime,
    matching the View toggle's active state — that control's shadow lives on
-   its shared wrapper, not per-button, so it can't switch colour when a
-   segment is pressed. Keeping .pill consistent with it beats a mismatched
-   lime accent it can't have. */
+   its shared wrapper, not per-button, so every segment (pressed or not)
+   shares the same lime offset. */
 .pill[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);
-  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--brand)}
-.pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--brand)}
-.pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--brand)}
+  color:#fff;font-weight:700;box-shadow:3px 3px 0 0 var(--accent)}
+.pill[aria-pressed="true"]:hover{box-shadow:5px 5px 0 0 var(--accent)}
+.pill[aria-pressed="true"]:active{box-shadow:0 0 0 0 var(--accent)}
 
 /* Relevance is a lens, not a gate — this switches between the filtered default
    and everything collected. */
 .viewtoggle{display:inline-flex;border:1px solid var(--border);border-radius:999px;
-  overflow:hidden;box-shadow:3px 3px 0 0 var(--brand)}
+  overflow:hidden;box-shadow:3px 3px 0 0 var(--accent)}
 .viewtoggle button{border:none;border-radius:0;padding:6px 15px;font-size:12.5px;
   background:var(--surface);color:var(--ink-2);cursor:pointer}
 .viewtoggle button[aria-pressed="true"]{background:var(--brand);color:#fff;font-weight:700}
