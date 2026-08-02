@@ -2459,24 +2459,6 @@ def main():
      Title + icon toolbar now live inside this same tile (merged with the old
      standalone .pagehead card, per Alexander — one tile, not two). -->
 <div class="notice">
-  <div class="pagehead">
-    <div class="t">
-      <!-- Check Spike, integrated: a checkmark (resolved/cleared) that keeps
-           going into the same flat-then-peak spike used across the identity
-           work, trailing off the wordmark's last "i" instead of sitting
-           beside it as a separate icon — the wordmark carries its own mark. -->
-      <h1 class="wordmark">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
-          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
-            stroke="var(--brand)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
-        </svg></h1>
-      <!-- Same lockup convention as the firm's other tools (e.g. regERI): the
-           product wordmark, then a small "by KAUFMAN | ROSSIN" credit directly
-           under it, reusing the KR wordmark's own navy/lime pipe divider at a
-           much smaller size rather than inventing a new mark. -->
-      <p class="krby">Japanese for "lookout" &middot; by <span class="krbyname">KAUFMAN<span class="pipe">|</span>ROSSIN</span></p>
-    </div>
-  </div>
   <strong>Read this first.</strong> The summaries are based on agency listings.
   Always open the source document before acting on anything here.
   <div style="margin-top:9px">{coverage_html}</div>
