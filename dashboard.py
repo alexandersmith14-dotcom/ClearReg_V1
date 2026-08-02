@@ -271,7 +271,12 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
    chrome borrowed wholesale, not a Mihari-specific nav that happens to
    look similar. Colours/sizes measured off the live site, not eyeballed. */
 .krtop{background:var(--brand-bg)}
-.krtopwrap{max-width:1240px;margin:0 auto;padding:0 22px;
+/* Full-bleed, not capped at the page's 1240px column like every other band
+   below it -- this thin utility strip reads as chrome pinned to the browser
+   edges (matching the real site), not as part of the page's own content
+   width. The white krheader row underneath keeps the 1240px cap since it
+   carries the logo/nav that aligns with the rest of the page. */
+.krtopwrap{padding:0 22px;
   display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .krtop nav{display:flex;align-items:center}
 .krtop a{display:inline-block;padding:6px 10px;font-size:14px;font-weight:500;
