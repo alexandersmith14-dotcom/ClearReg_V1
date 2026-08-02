@@ -192,11 +192,18 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
   padding:64px 22px;display:grid;grid-template-columns:1fr 1px 1fr;
   gap:44px;align-items:center}
 .hero-divider{background:var(--accent);width:1px;height:100%;align-self:stretch}
+/* Fits to content (the wordmark, its widest child) rather than stretching to
+   fill the grid column — that's what lets .hero-rule below key off 100% and
+   always match the wordmark's actual rendered width instead of guessing a
+   fixed px value that's wrong at some size or other. */
+.hero-titleblock{width:fit-content}
 .hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
-  color:#fff;margin:0;line-height:1;letter-spacing:-.02em}
-.hero-rule{width:220px;height:4px;background:var(--accent);margin:16px 0 10px}
-.hero-sub{margin-left:40px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
-  color:#bcd3e6;margin:0}
+  color:#fff;margin:0;line-height:1;letter-spacing:-.02em;
+  display:flex;align-items:flex-end;gap:2px}
+.hero-word svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
+.hero-rule{width:100%;height:4px;background:var(--accent);margin:16px 0 10px}
+.hero-sub{margin:0 0 0 40px;font-size:12px;letter-spacing:.1em;
+  text-transform:uppercase;color:#bcd3e6}
 .hero-sub b{display:block;color:#fff;font-weight:800;font-size:15px;
   letter-spacing:0;text-transform:none;margin-top:3px}
 .hero-pipe{color:var(--accent);font-weight:400}
@@ -967,8 +974,12 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
     </svg>
   </div>
   <div class="hero-inner">
-    <div>
-      <p class="hero-word">Mihari</p>
+    <div class="hero-titleblock">
+      <p class="hero-word">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
+          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
+            stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
+        </svg></p>
       <div class="hero-rule"></div>
       <p class="hero-sub"><b>by KAUFMAN <span class="hero-pipe">|</span> ROSSIN</b></p>
     </div>
