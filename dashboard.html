@@ -112,9 +112,26 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .krheader nav{display:flex;align-items:center;gap:20px}
 .krheader nav a{color:var(--brand);font-size:14.5px;font-weight:500;text-decoration:none}
 .krheader nav a:hover{text-decoration:underline}
-.krheader .krsearch{display:inline-flex;align-items:center;justify-content:center;
-  width:32px;height:32px;border-radius:50%;border:1px solid var(--border);color:var(--brand)}
-.krheader .krsearch:hover{background:var(--raised)}
+.krheader .krsearch{display:flex;align-items:center;border:1px solid var(--border);
+  border-radius:6px;overflow:hidden}
+.krheader .krsearch input{border:none;padding:6px 10px;font-size:13px;width:110px;
+  color:var(--brand);background:#fff}
+.krheader .krsearch input:focus{outline:none}
+.krheader .krsearch button{border:none;background:transparent;color:var(--brand);
+  padding:0 10px;height:32px;display:inline-flex;align-items:center;cursor:pointer}
+.krheader .krsearch button:hover{background:var(--raised)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Grey breadcrumb band — same colours as the real site's Bootstrap-derived
+   breadcrumb: light grey pill, blue link, muted grey for the current page.
+   Full-bleed here rather than the real site's narrower boxed version, since
+   RegWatch's page has no sidebar to make room for. */
+.krcrumb{background:#e9ecef}
+.krcrumbwrap{max-width:1240px;margin:0 auto;padding:12px 22px;font-size:14px}
+.krcrumbwrap a{color:#007bff;text-decoration:none}
+.krcrumbwrap a:hover{text-decoration:underline}
+.krcrumbwrap span[aria-hidden]{color:#6c757d;margin:0 8px}
+.krcrumbwrap span:last-child{color:#6c757d}
 /* Page-specific title card — everything the real corporate header doesn't
    carry (RegWatch's own name, audience, freshness stamp, share/export
    actions). Sits below the replicated chrome above, inside .wrap like the
@@ -646,6 +663,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   .krheaderwrap{padding:10px 16px}
   .krheaderwrap .krlogo{width:140px}
   .krheader nav{display:none}
+  .krcrumb{display:none}
   .pagehead{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
     flex-direction:column;align-items:flex-start}
   h1{font-size:20px;line-height:1.2;margin:0 0 4px}
@@ -837,12 +855,28 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
       <a href="https://kaufmanrossin.com/who-we-are/" target="_blank" rel="noopener">Get to Know Us</a>
       <a href="https://kaufmanrossin.com/careers/" target="_blank" rel="noopener">Careers</a>
       <a href="https://kaufmanrossin.com/contact-us/" target="_blank" rel="noopener">Contact Us</a>
-      <a href="https://kaufmanrossin.com/search" class="krsearch" target="_blank" rel="noopener" aria-label="Search kaufmanrossin.com">
-        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      </a>
+      <form class="krsearch" role="search" action="https://kaufmanrossin.com/search" method="get" target="_blank">
+        <label for="krsearch-input" class="sr-only">Search kaufmanrossin.com</label>
+        <input id="krsearch-input" type="search" name="s" placeholder="Search">
+        <button type="submit" aria-label="Search kaufmanrossin.com">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </form>
     </nav>
   </div>
 </header>
+<!-- Grey breadcrumb band, same as every subpage on kaufmanrossin.com runs
+     directly under its header — "Home" is a real external link (leaves for
+     the real site, same as everything else in the replicated chrome above),
+     the current page is plain text, matching the real site's link/muted-text
+     colour split exactly. -->
+<div class="krcrumb">
+  <div class="krcrumbwrap">
+    <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
+    <span aria-hidden="true">/</span>
+    <span>Regulatory Update Tracker</span>
+  </div>
+</div>
 <div class="wrap">
 
 <div class="pagehead">
@@ -852,7 +886,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
          wrapped to three ragged lines on a phone; as separate blocks they are two
          tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
     <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      August 2, 2026 01:05 UTC</span></p>
+      August 02, 2026 01:11 UTC</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
