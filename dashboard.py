@@ -1942,6 +1942,10 @@ const QS_STEPS = [
     text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
   { sel: '#filters',
     text: 'Narrow what you see: switch scope with View, combine agencies with Source, or search by keyword — all three work together.' },
+  // Absent when ASK_ENABLED is off in dashboard.py -- showStep skips a
+  // missing target and moves on rather than ending the tour early.
+  { sel: '.ask-panel',
+    text: 'Ask a plain-English question about the tracked updates and get a sourced answer, reconciled across three models — research to verify, not compliance advice.' },
   { sel: '#cards .card .actions',
     text: 'Every update has three quick actions: add a deadline to your calendar, jot a private note, or track a task — right from the list.' },
 ];
@@ -1968,13 +1972,17 @@ function initQuickStart() {
   let currentTarget = null;
   const reposition = () => { if (!qs.hidden && currentTarget) place(currentTarget); };
   function showStep(i) {
+    if (i >= QS_STEPS.length) { finish(); return; }
     const s = QS_STEPS[i];
-    const target = s && document.querySelector(s.sel);
-    if (!target) { finish(); return; }
+    const target = document.querySelector(s.sel);
+    // A gated feature (e.g. Ask, off via ASK_ENABLED) has no element to
+    // point at -- skip it rather than ending the whole tour early.
+    if (!target) { showStep(i + 1); return; }
+    const hasMore = QS_STEPS.slice(i + 1).some(x => document.querySelector(x.sel));
     step = i;
     currentTarget = target;
     qsText.textContent = s.text;
-    qsBtn.textContent = i < QS_STEPS.length - 1 ? 'Next' : 'Got it';
+    qsBtn.textContent = hasMore ? 'Next' : 'Got it';
     qs.hidden = false;
     place(target);
   }
