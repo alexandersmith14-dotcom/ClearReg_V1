@@ -455,6 +455,11 @@ header button:hover{filter:brightness(1.06)}
    mechanism, no way for a reader to tell. */
 .pillgroup{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:18px}
 .pillgroup:last-of-type{margin-bottom:18px}
+.clearfilters{display:block;background:none;border:none;color:var(--brand);
+  font-size:12px;font-weight:700;text-decoration:underline;cursor:pointer;
+  padding:0;margin:8px 0 12px}
+.clearfilters:hover{color:var(--ink)}
+.clearfilters[hidden]{display:none}
 .grouplabel{font-size:11px;font-weight:700;letter-spacing:.06em;
   text-transform:uppercase;color:var(--ink-muted);width:104px;flex:none}
 .grouplabel small{display:block;font-weight:400;letter-spacing:0;
@@ -1342,6 +1347,8 @@ function renderAgencies(rs) {
 function render() {
   const rs = rows();
   renderCards(rs); renderDeadlines(rs); renderAgencies(rs); renderFilteredOut(); renderRegRef();
+  const cf = $('#clearFilters');
+  if (cf) cf.hidden = filter.kind === 'all';
 }
 
 // Counts on the buttons, so the size of each lens is visible before clicking
@@ -1395,12 +1402,31 @@ function clearFilterUI() {
 document.querySelectorAll('.pill').forEach(p => {
   if (p.closest('#sourceGroup')) return; // Source pills: multi-select, handled below.
   p.addEventListener('click', () => {
+    const already = p.getAttribute('aria-pressed') === 'true';
     clearFilterUI();
-    p.setAttribute('aria-pressed', 'true');
-    filter = {kind: p.dataset.kind, value: p.dataset.value || ''};
+    if (already) {
+      filter = {kind: 'all', value: ''};
+    } else {
+      p.setAttribute('aria-pressed', 'true');
+      filter = {kind: p.dataset.kind, value: p.dataset.value || ''};
+    }
     render();
   });
 });
+
+// Clear filters: resets Source/Fintech/Credit-union/KPI selections back to
+// "all", same as clicking the Source group's All pill, from one visible
+// control instead of relying on the reader to notice that pill does it.
+const clearFiltersBtn = $('#clearFilters');
+if (clearFiltersBtn) {
+  clearFiltersBtn.addEventListener('click', () => {
+    clearFilterUI();
+    const all = $('.pill[data-kind="all"]');
+    if (all) all.setAttribute('aria-pressed', 'true');
+    filter = {kind: 'all', value: ''};
+    render();
+  });
+}
 
 // Source pills multi-select: pick several agencies, results combine (OR).
 // Still a single filter dimension overall — picking a KPI tile or Fintech/
@@ -2244,6 +2270,7 @@ def main():
      single "Filters & view ▸" line and stays the first live control. -->
 <details id="filters" open>
   <summary>Filters &amp; view</summary>
+  <button id="clearFilters" type="button" class="clearfilters" hidden>Clear filters</button>
   <div class="pillgroup">
     <div class="grouplabel">View<small>how much to show</small></div>
     <div class="viewtoggle">
