@@ -142,7 +142,6 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .krcrumb-path span[aria-hidden]{color:#6c757d;margin:0 8px}
 .krcrumb-path span:last-child{color:#6c757d}
 .krcrumb-updated{color:#6c757d;font-size:12.5px}
-.krcrumb-right{display:flex;align-items:center;gap:12px}
 /* Page-specific title card — everything the real corporate header doesn't
    carry (Mihari's own name, audience, freshness stamp, share/export
    actions). Sits below the replicated chrome above, inside .wrap like the
@@ -201,7 +200,7 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 .hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
   color:#fff;margin:0;line-height:1;letter-spacing:-.02em;
   display:flex;align-items:flex-end;gap:2px}
-.hero-word svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
+.hero-word svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none;overflow:visible}
 .hero-rule{width:100%;height:4px;background:var(--accent);margin:16px 0 10px}
 .hero-sub{margin:0;font-size:12px;letter-spacing:.1em;
   text-transform:uppercase;color:#bcd3e6}
@@ -954,34 +953,35 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
       <span>Mihari</span>
     </span>
     <!-- Freshness stamp lives here now, not crowding the wordmark above —
-         same fact, just relocated out of the title block. -->
-    <div class="krcrumb-right">
-      <!-- Freshness stamp lives here now, not crowding the wordmark above —
-           same fact, just relocated out of the title block. -->
-      <span class="krcrumb-updated">Updated
-        August 2, 2026 17:39 UTC</span>
-      <!-- Share and install are mobile-first actions, so unlike the old lone
-           Export CSV button they stay visible on a phone; see the media query.
-           Export CSV moves into the overflow menu — it's still desktop-only,
-           same reasoning as before, just relocated. Moved up here from the
-           title card per Alexander, so they sit with the page-level "Updated"
-           fact rather than crowding the wordmark. -->
-      <div class="icon-toolbar">
-        <button id="shareBtn" class="icon-btn" type="button" aria-label="Share this page" title="Share">
-          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+         same fact, just relocated out of the title block. Sits as its own
+         flex item (not grouped with the toolbar) so space-between spreads
+         all three items across the row instead of bunching Updated and the
+         buttons together on one side. -->
+    <span class="krcrumb-updated">Updated
+      August 02, 2026 17:51 UTC</span>
+    <!-- Share and install are mobile-first actions, so unlike the old lone
+         Export CSV button they stay visible on a phone; see the media query.
+         Export CSV moves into the overflow menu — it's still desktop-only,
+         same reasoning as before, just relocated. Moved up here from the
+         title card per Alexander, so they sit with the page-level "Updated"
+         fact rather than crowding the wordmark; pushed to the row's far
+         right edge (its own flex item) per his follow-up, not bunched
+         against the Updated timestamp. -->
+    <div class="icon-toolbar">
+      <button id="shareBtn" class="icon-btn" type="button" aria-label="Share this page" title="Share">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      </button>
+      <button id="installBtn" class="icon-btn" type="button" aria-label="Install or bookmark this app" title="Install app">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a.5.5 0 0 1 .5.5v16l-6.5-4-6.5 4v-16a.5.5 0 0 1 .5-.5z"/></svg>
+      </button>
+      <div class="icon-btn-wrap">
+        <button id="moreBtn" class="icon-btn" type="button" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More">
+          <svg viewBox="0 0 24 24" width="19" height="19"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
         </button>
-        <button id="installBtn" class="icon-btn" type="button" aria-label="Install or bookmark this app" title="Install app">
-          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a.5.5 0 0 1 .5.5v16l-6.5-4-6.5 4v-16a.5.5 0 0 1 .5-.5z"/></svg>
-        </button>
-        <div class="icon-btn-wrap">
-          <button id="moreBtn" class="icon-btn" type="button" aria-label="More options" aria-haspopup="true" aria-expanded="false" title="More">
-            <svg viewBox="0 0 24 24" width="19" height="19"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg>
-          </button>
-          <div id="moreMenu" class="more-menu" hidden>
-            <!-- Kept in the markup, not built conditionally, so #export's click
-                 handler always has its element regardless of menu state. -->
-            <button id="export" type="button">Export CSV</button>
-          </div>
+        <div id="moreMenu" class="more-menu" hidden>
+          <!-- Kept in the markup, not built conditionally, so #export's click
+               handler always has its element regardless of menu state. -->
+          <button id="export" type="button">Export CSV</button>
         </div>
       </div>
     </div>
