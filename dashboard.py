@@ -305,28 +305,33 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
    Full-bleed here rather than the real site's narrower boxed version, since
    RegWatch's page has no sidebar to make room for. */
 .krcrumb{background:#e9ecef}
-.krcrumbwrap{max-width:1240px;margin:0 auto;padding:16px 22px;font-size:14px}
-.krcrumbwrap a{color:#007bff;text-decoration:none}
-.krcrumbwrap a:hover{text-decoration:underline}
-.krcrumbwrap span[aria-hidden]{color:#6c757d;margin:0 8px}
-.krcrumbwrap span:last-child{color:#6c757d}
+.krcrumbwrap{display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;max-width:1240px;margin:0 auto;padding:16px 22px;font-size:14px}
+.krcrumb-path a{color:#007bff;text-decoration:none}
+.krcrumb-path a:hover{text-decoration:underline}
+.krcrumb-path span[aria-hidden]{color:#6c757d;margin:0 8px}
+.krcrumb-path span:last-child{color:#6c757d}
+.krcrumb-updated{color:#6c757d;font-size:12.5px}
 /* Page-specific title card — everything the real corporate header doesn't
    carry (RegWatch's own name, audience, freshness stamp, share/export
    actions). Sits below the replicated chrome above, inside .wrap like the
    rest of the page content; no longer holds its own logo since the krheader
    band above already carries the wordmark once. */
-.pagehead{display:flex;align-items:center;gap:16px;margin-bottom:20px;
-  background:#fff;color:#212529;padding:18px 22px;border-radius:12px;
+.pagehead{display:flex;align-items:center;gap:16px;margin-bottom:16px;
+  background:#fff;color:#212529;padding:12px 20px;border-radius:12px;
   border-bottom:4px solid var(--accent);box-shadow:var(--shadow-md)}
 .pagehead .t{flex:1}
 /* Fixed navy/grey, not var(--brand)/var(--ink-2) — same reasoning as the
    pagehead background just above: this text sits on the fixed-white card in
    every theme, not the theme-following surface. */
-h1{font-size:21px;margin:0 0 3px;color:#003b6a;font-weight:700;letter-spacing:-.01em}
-.sub{color:#3c3c3c;font-size:13px;margin:0}
-/* Desktop keeps both facts on one line; the separator is CSS so the phone can
-   drop it and break instead. */
-.sub .stamp::before{content:" · "}
+h1{font-size:27px;margin:0;color:#003b6a;font-weight:800;letter-spacing:-.01em}
+h1 .lime{color:var(--accent)}
+/* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
+   KR wordmark, just set as small text under the product name rather than
+   redrawing the logo mark at a tiny size. */
+.krby{font-size:11px;color:#8a8a8a;margin:1px 0 4px;letter-spacing:.02em}
+.krbyname{color:#003b6a;font-weight:700}
+.krbyname .pipe{color:var(--accent);font-weight:400;margin:0 3px}
 button{font:inherit;font-size:13px;padding:8px 14px;color:var(--ink);
   background:var(--surface);border:1px solid var(--border);border-radius:8px;
   cursor:pointer;transition:background-color .12s ease,border-color .12s ease}
@@ -845,10 +850,8 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
   .krcrumb{display:none}
   .pagehead{padding:14px 16px;gap:18px;margin-bottom:14px;border-bottom-width:3px;
     flex-direction:column;align-items:flex-start}
-  h1{font-size:20px;line-height:1.2;margin:0 0 4px}
+  h1{font-size:22px;line-height:1.2;margin:0 0 4px}
   .sub{font-size:12.5px;line-height:1.4}
-  .sub .stamp{display:block;font-size:11.5px;opacity:.72;margin-top:2px}
-  .sub .stamp::before{content:none}
   #export{display:none}
   /* Share and install stay — they're mobile-first actions, arguably more
      useful here than on desktop. The More button only ever held Export CSV,
@@ -2309,22 +2312,28 @@ def main():
      colour split exactly. -->
 <div class="krcrumb">
   <div class="krcrumbwrap">
-    <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
-    <span aria-hidden="true">/</span>
-    <span>Regulatory Update Tracker</span>
+    <span class="krcrumb-path">
+      <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
+      <span aria-hidden="true">/</span>
+      <span>RegWatch</span>
+    </span>
+    <!-- Freshness stamp lives here now, not crowding the wordmark above —
+         same fact, just relocated out of the title block. -->
+    <span class="krcrumb-updated">Updated
+      {datetime.now(timezone.utc).strftime('%B %-d, %Y %H:%M UTC') if os.name != 'nt'
+       else datetime.now(timezone.utc).strftime('%B %d, %Y %H:%M UTC')}</span>
   </div>
 </div>
 <div class="wrap">
 
 <div class="pagehead">
   <div class="t">
-    <h1>Regulatory update tracker</h1>
-    <!-- The audience and the timestamp are two different facts. Run together they
-         wrapped to three ragged lines on a phone; as separate blocks they are two
-         tidy ones, and the stamp can be dimmed since it is reference, not billing. -->
-    <p class="sub">Community banks, credit unions &amp; fintechs<span class="stamp">Updated
-      {datetime.now(timezone.utc).strftime('%B %-d, %Y %H:%M UTC') if os.name != 'nt'
-       else datetime.now(timezone.utc).strftime('%B %d, %Y %H:%M UTC')}</span></p>
+    <h1>Reg<span class="lime">Watch</span></h1>
+    <!-- Same lockup convention as the firm's other tools (e.g. regERI): the
+         product wordmark, then a small "by KAUFMAN | ROSSIN" credit directly
+         under it, reusing the KR wordmark's own navy/lime pipe divider at a
+         much smaller size rather than inventing a new mark. -->
+    <p class="krby">by <span class="krbyname">KAUFMAN<span class="pipe">|</span>ROSSIN</span></p>
   </div>
   <!-- Share and install are mobile-first actions, so unlike the old lone
        Export CSV button they stay visible on a phone; see the media query.
