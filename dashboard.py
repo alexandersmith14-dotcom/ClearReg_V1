@@ -425,10 +425,17 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
      never has (title block + copy now stack instead of sharing one row),
      and the desktop gap value was doing double duty as horizontal spacing
      there; unchanged, it becomes 44px of pure vertical dead air between
-     the stacked blocks on a phone. */
-  .hero-inner{grid-template-columns:1fr;padding:28px 20px;gap:16px}
+     the stacked blocks on a phone. Bottom padding trimmed further than top
+     (10px vs 28px) -- real-device photos (ported from Mihari) showed dead
+     navy space below the copy paragraph before the hero ends; top padding
+     stays since it reads fine against the breadcrumb bar above. herowrap's
+     own margin-bottom also cut (14px to 6px) since that stacked with
+     .wrap's mobile padding-top to widen the white gap before the "Read
+     this first" notice card. */
+  .hero-inner{grid-template-columns:1fr;padding:28px 20px 10px;gap:12px}
   .hero-divider{display:none}
   .hero-bgmark svg{width:340px;height:auto}
+  .herowrap{margin-bottom:6px}
 }
 
 /* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
