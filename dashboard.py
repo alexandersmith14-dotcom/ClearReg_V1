@@ -839,7 +839,8 @@ header.krheader{animation-delay:.08s}
 .badge.t-Guidance{color:#fff;background:var(--brand)}
 .badge.t-Enforcement{color:#fff;background:var(--neutral)}
 .card .agency{font-size:12px;color:var(--ink-muted)}
-.card h3{font-size:14.5px;margin:0 0 5px;font-weight:600;line-height:1.35}
+.card h3{font-size:14.5px;margin:0 0 5px;font-weight:600;line-height:1.35;
+  text-align:justify;text-align-last:left}
 .card h3 a{color:var(--brand);text-decoration:none}
 .card h3 a:hover{text-decoration:underline}
 .card p{margin:0;font-size:13px;color:var(--ink-2);text-align:justify;
@@ -855,7 +856,8 @@ header.krheader{animation-delay:.08s}
 .dl .dot{flex:none;width:9px;height:9px;border-radius:50%;margin-top:6px}
 .dl .body{flex:1}
 .dl .agency{font-size:12px;color:var(--ink-muted);margin-bottom:2px}
-.dl .ttl{font-size:13.5px;font-weight:600;line-height:1.35}
+.dl .ttl{font-size:13.5px;font-weight:600;line-height:1.35;
+  text-align:justify;text-align-last:left}
 .dl .ttl a{color:var(--ink);text-decoration:none}
 .dl .ttl a:hover{text-decoration:underline}
 .dl .when{font-size:12px;margin-top:3px;font-variant-numeric:tabular-nums}
