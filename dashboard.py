@@ -120,7 +120,7 @@ ICS_PATH = "deadlines.ics"
 
 # Absolute URL of the published site. Social scrapers require absolute URLs for
 # og:image and og:url — a relative path silently produces no preview.
-SITE_URL = "https://alexandersmith14-dotcom.github.io/Mihari_V1/"
+SITE_URL = "https://alexandersmith14-dotcom.github.io/ClearReg_V1/"
 
 # Kaufman Rossin brand.
 # Navy #003B6A and green #AED136 are taken from kaufmanrossin.com, along with
@@ -266,9 +266,9 @@ body{margin:0;padding:0;background:var(--surface);color:var(--ink);
 /* Full-bleed replica of kaufmanrossin.com's own two-band header: a navy
    utility strip (site-switcher tabs + Payment Portal/File Sharing/phone/
    Español) above a white nav bar (wordmark + primary nav). Every link here
-   leaves Mihari for the real site, same target=_blank reasoning as the
-   footer's nav — Mihari has none of these pages itself; this is brand
-   chrome borrowed wholesale, not a Mihari-specific nav that happens to
+   leaves ClearReg for the real site, same target=_blank reasoning as the
+   footer's nav — ClearReg has none of these pages itself; this is brand
+   chrome borrowed wholesale, not a ClearReg-specific nav that happens to
    look similar. Colours/sizes measured off the live site, not eyeballed. */
 .krtop{background:var(--brand-bg)}
 /* Full-bleed, not capped at the page's 1240px column like every other band
@@ -324,7 +324,7 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 /* Grey breadcrumb band — same colours as the real site's Bootstrap-derived
    breadcrumb: light grey pill, blue link, muted grey for the current page.
    Full-bleed here rather than the real site's narrower boxed version, since
-   Mihari's page has no sidebar to make room for. */
+   ClearReg's page has no sidebar to make room for. */
 .krcrumb{background:radial-gradient(ellipse at center,#f3f4f6 0%,#dde1e6 100%)}
 .krcrumbwrap{display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:8px;max-width:1240px;margin:0 auto;padding:10px 22px;font-size:14px}
@@ -334,7 +334,7 @@ header.krheader{background:#fff;border-bottom:1px solid var(--border)}
 .krcrumb-path span:last-child{color:#6c757d}
 .krcrumb-updated{color:#6c757d;font-size:12.5px}
 /* Page-specific title card — everything the real corporate header doesn't
-   carry (Mihari's own name, audience, freshness stamp, share/export
+   carry (ClearReg's own name, audience, freshness stamp, share/export
    actions). Sits below the replicated chrome above, inside .wrap like the
    rest of the page content; no longer holds its own logo since the krheader
    band above already carries the wordmark once. */
@@ -525,7 +525,7 @@ button:hover{background:var(--raised)}
    guess, so it tracks wherever that row really lands at the reader's width.
    --info is var(--brand-bg-light) — the same mid-tone step used in the
    hero/panel gradients, not a separate off-brand blue, so a transient
-   system message still reads as part of the Mihari palette. */
+   system message still reads as part of the ClearReg palette. */
 .quickstart{position:fixed;z-index:70;width:280px;background:var(--info);color:#fff;
   border-radius:12px;box-shadow:var(--shadow-md);padding:14px 16px 12px}
 .quickstart[hidden]{display:none}
@@ -953,7 +953,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 .footsocial .social-btn svg{width:22px;height:22px}
 .footsocial .social-btn:hover{filter:brightness(1.1)}
 /* Locations / Quick Links / Subscribe — kaufmanrossin.com's own footer nav,
-   pointed at the real pages on its site since Mihari has none of its own
+   pointed at the real pages on its site since ClearReg has none of its own
    (no blog, no offices, no careers page). Every link here leaves the site,
    same reasoning as Full bio above: target=_blank, never orphan the reader
    mid-update-list. */
@@ -985,7 +985,7 @@ footer.sitefoot{margin-top:22px;background:var(--brand-bg)}
 /* Legal strip. The divider spans the full navy width; the text inside
    re-centers to the same 1240px column as .footwrap above it. Copied
    verbatim from kaufmanrossin.com's own footer, entities and all — this is
-   the firm's standard boilerplate, not Mihari-specific text. */
+   the firm's standard boilerplate, not ClearReg-specific text. */
 .footlegalwrap{border-top:1px solid rgba(255,255,255,.15)}
 .footlegal{max-width:1240px;margin:0 auto;padding:14px 22px 20px;
   font-size:11px;color:#8fa6bc;line-height:1.6}
@@ -1475,8 +1475,8 @@ function calButtons(d) {
 // Storage is per-browser localStorage keyed by the item's URL: there's no
 // login on this site, so a stable per-device key is the only option, and
 // it keeps these completely private (nothing here leaves the browser).
-const NOTES_KEY = 'mihariNotes';
-const TASKS_KEY = 'mihariTasks';
+const NOTES_KEY = 'clearregNotes';
+const TASKS_KEY = 'clearregTasks';
 function loadNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch { return {}; } }
 function saveNotes(o) { localStorage.setItem(NOTES_KEY, JSON.stringify(o)); }
 function loadTasks() { try { return JSON.parse(localStorage.getItem(TASKS_KEY)) || {}; } catch { return {}; } }
@@ -1539,7 +1539,7 @@ function eventIcs(title, when, label, url) {
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
   const uid = 'regwatch-' + when.replace(/-/g, '') + '-' + (h >>> 0).toString(36);
   return [
-    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mihari//Regulatory deadlines//EN',
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//ClearReg//Regulatory deadlines//EN',
     'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     'UID:' + uid + '@regwatch',
@@ -1549,8 +1549,8 @@ function eventIcs(title, when, label, url) {
     icsFold('SUMMARY:' + icsEsc(label + ': ' + title)),
     icsFold('DESCRIPTION:' + icsEsc(label + '. Open the source before acting: ' + url)),
     icsFold('URL:' + url),
-    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Mihari deadline in 7 days', 'TRIGGER:-P7D', 'END:VALARM',
-    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Mihari deadline tomorrow', 'TRIGGER:-P1D', 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:ClearReg deadline in 7 days', 'TRIGGER:-P7D', 'END:VALARM',
+    'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:ClearReg deadline tomorrow', 'TRIGGER:-P1D', 'END:VALARM',
     'END:VEVENT', 'END:VCALENDAR',
   ].join('\r\n') + '\r\n';
 }
@@ -1795,7 +1795,7 @@ $('#export').addEventListener('click', () => {
   ].map(cell).join(','))).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-  a.download = `mihari-${TODAY}.csv`;
+  a.download = `clearreg-${TODAY}.csv`;
   a.click();
   URL.revokeObjectURL(a.href);
 });
@@ -1971,7 +1971,7 @@ setView(false);
 // than a hardcoded coordinate, so it lands correctly at whatever width/zoom
 // the reader is on, and repositions live if they resize or scroll before
 // dismissing.
-const QS_KEY = 'mihariQuickStartSeen';
+const QS_KEY = 'clearregQuickStartSeen';
 const QS_STEPS = [
   { sel: '.icon-toolbar',
     text: 'Share this page, save/install it for quick access, or export the tracked updates to a spreadsheet from here.' },
@@ -2445,7 +2445,7 @@ def coverage_panel(store):
         # alert — wasn't here. What matters for liability is simply that a reader
         # must not assume completeness; absence on this page is not evidence that
         # nothing happened.
-        '<p><strong>Not a complete record.</strong> Mihari covers the agencies '
+        '<p><strong>Not a complete record.</strong> ClearReg covers the agencies '
         'listed above, and only what they post on those listing pages. It is not a '
         'substitute for monitoring every regulator you answer to &mdash; confirm '
         'anything material against the source.</p>'
@@ -2523,10 +2523,10 @@ def build_ics(rows, today):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     lines = [
         "BEGIN:VCALENDAR", "VERSION:2.0",
-        "PRODID:-//Mihari//Regulatory deadlines//EN",
+        "PRODID:-//ClearReg//Regulatory deadlines//EN",
         "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-        "X-WR-CALNAME:Mihari regulatory deadlines",
-        "X-WR-CALDESC:Comment-period and effective-date deadlines tracked by Mihari.",
+        "X-WR-CALNAME:ClearReg regulatory deadlines",
+        "X-WR-CALDESC:Comment-period and effective-date deadlines tracked by ClearReg.",
         "REFRESH-INTERVAL;VALUE=DURATION:P1D", "X-PUBLISHED-TTL:P1D",
     ]
     for uid, ymd, label, title, url in _ics_events(rows, today):
@@ -2541,9 +2541,9 @@ def build_ics(rows, today):
             f"SUMMARY:{_ics_escape(label + ': ' + title)}",
             f"DESCRIPTION:{_ics_escape(label + '. Open the source before acting: ' + url)}",
             f"URL:{url}",
-            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Mihari deadline in 7 days",
+            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:ClearReg deadline in 7 days",
             "TRIGGER:-P7D", "END:VALARM",
-            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:Mihari deadline tomorrow",
+            "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:ClearReg deadline tomorrow",
             "TRIGGER:-P1D", "END:VALARM",
             "END:VEVENT",
         ]
@@ -2653,7 +2653,7 @@ def main():
      preview is driven entirely by these tags plus a real image file. Without
      them LinkedIn shows a bare URL with no title, description or image. -->
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Mihari">
+<meta property="og:site_name" content="ClearReg">
 <meta property="og:title" content="Regulatory update tracker — community banks, credit unions &amp; fintechs">
 <meta property="og:description" content="{share_desc}">
 <meta property="og:url" content="{SITE_URL}">
@@ -2669,8 +2669,8 @@ def main():
 <body data-today="{today}">
 <!-- Replica of kaufmanrossin.com's own two-band header, full-bleed outside
      .wrap so it spans edge to edge like the real one. Every link leaves
-     Mihari for the real site — see the CSS comment above .krtop for why
-     that's the right call rather than trying to invent Mihari equivalents
+     ClearReg for the real site — see the CSS comment above .krtop for why
+     that's the right call rather than trying to invent ClearReg equivalents
      of pages it doesn't have. -->
 <div class="krtop">
   <div class="krtopwrap">
@@ -2725,7 +2725,7 @@ def main():
     <span class="krcrumb-path">
       <a href="https://kaufmanrossin.com/" target="_blank" rel="noopener">Home</a>
       <span aria-hidden="true">/</span>
-      <span>Mihari</span>
+      <span>ClearReg</span>
     </span>
     <!-- Freshness stamp lives here now, not crowding the wordmark above —
          same fact, just relocated out of the title block. Sits as its own
@@ -2777,7 +2777,7 @@ def main():
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-titleblock">
-      <p class="hero-word">Mihari<svg viewBox="0 0 40 34" aria-hidden="true">
+      <p class="hero-word">ClearReg<svg viewBox="0 0 40 34" aria-hidden="true">
           <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
             stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
           <circle class="hero-ping-sm" cx="25" cy="4" r="2.6" fill="none" stroke="var(--accent)"
@@ -2917,7 +2917,7 @@ def main():
         <a class="qc-name" href="https://kaufmanrossin.com/professionals/alexander-smith/" target="_blank" rel="noopener">Alexander Smith, CRCM, CFE</a>
         <div class="qc-title">Risk Advisory Services Senior Manager at Kaufman Rossin, one of the Top 50 CPA and advisory firms in the U.S.</div>
         <div class="qc-icons">
-          <a href="mailto:asmith@kaufmanrossin.com?subject=Mihari%20regulatory%20tracker" aria-label="Email Alexander Smith">
+          <a href="mailto:asmith@kaufmanrossin.com?subject=ClearReg%20regulatory%20tracker" aria-label="Email Alexander Smith">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
           </a>
           <a href="https://www.linkedin.com/in/alexandersmith14/" target="_blank" rel="noopener" aria-label="Alexander Smith on LinkedIn">

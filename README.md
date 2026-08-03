@@ -1,4 +1,4 @@
-# Mihari
+# ClearReg
 
 A bot that watches government websites for regulatory updates affecting community
 banks and fintechs, decides which ones matter, explains each one in plain English,
@@ -131,7 +131,7 @@ DFPI email.
 
 ## Bookmarking and saving to a phone
 
-The page has a proper tab icon, so a bookmark shows the Mihari mark rather
+The page has a proper tab icon, so a bookmark shows the ClearReg mark rather
 than a blank square, and it can be saved to a phone home screen where it opens
 full screen like an app.
 

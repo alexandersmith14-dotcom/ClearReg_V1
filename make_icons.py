@@ -97,7 +97,7 @@ def main():
 
     manifest = {
         "name": "Regulatory update tracker — community banks & fintechs",
-        "short_name": "Mihari",
+        "short_name": "ClearReg",
         "description": "Daily federal regulatory updates for community banks and "
                        "fintechs, in plain English.",
         # Relative, because the site is served from a /regwatch/ subpath rather
