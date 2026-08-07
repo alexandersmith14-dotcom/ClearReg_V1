@@ -31,3 +31,13 @@ worker/.wrangler/
 
 # Derived calendar feed, regenerated every build (see dashboard.py ICS_PATH)
 deadlines.ics
+
+# Derived permalink pages + sitemap, regenerated every build (see
+# dashboard.py UPDATES_DIR / SITEMAP_PATH)
+/updates/
+sitemap.xml
+
+# Derived SDN search index, regenerated every build from sdn_snapshot.json
+# (which IS committed — see sdn_monitor.py SDN_INDEX_PATH)
+sdn_index.json
+

@@ -118,9 +118,27 @@ OUT_PATH = "dashboard.html"
 # Derived output, never committed (see .gitignore).
 ICS_PATH = "deadlines.ics"
 
+# Cumulative log of OFAC SDN list changes, written by sdn_monitor.py. Read-only
+# here — this file's lifecycle (fetch, diff, snapshot) lives entirely in that
+# script, not in the dashboard build.
+SDN_LOG_PATH = "sdn_log.json"
+
+# Read-only here too — only used to report the current full-list count next
+# to the "search the full list" box. The actual per-entry data for that
+# search comes from sdn_index.json (sdn_monitor.py SDN_INDEX_PATH), fetched
+# lazily by the browser, not from this file.
+SDN_SNAPSHOT_PATH = "sdn_snapshot.json"
+
 # Absolute URL of the published site. Social scrapers require absolute URLs for
 # og:image and og:url — a relative path silently produces no preview.
 SITE_URL = "https://alexandersmith14-dotcom.github.io/ClearReg_V1/"
+
+# One permalink page per relevant update, so each plain-English summary gets
+# its own indexable URL instead of living only inside a client-side "show
+# more" list. Derived output, regenerated every build — never committed (see
+# .gitignore), same treatment as deadlines.ics.
+UPDATES_DIR = "updates"
+SITEMAP_PATH = "sitemap.xml"
 
 # Kaufman Rossin brand.
 # Navy #003B6A and green #AED136 are taken from kaufmanrossin.com, along with
@@ -409,8 +427,80 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
 .hero-titleblock{width:fit-content;display:flex;flex-direction:column;align-items:flex-end}
 .hero-word{font-family:inherit;font-weight:800;font-size:clamp(46px,7.5vw,88px);
   color:#fff;margin:0;line-height:1;letter-spacing:-.02em;
-  display:flex;align-items:flex-end;gap:2px}
-.hero-word svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none;overflow:visible}
+  display:flex;align-items:flex-end;gap:0}
+/* Pull-in was a fixed -64px, tuned against desktop's ~88px font-size. The
+   wordmark's font-size is a clamp() that floors at 46px on narrow phones,
+   so the icon shrinks but the pull stayed fixed -- on mobile it ate almost
+   the entire icon width, reading as the icon and the K tangled together.
+   em-based keeps the same visual gap-to-icon-size ratio at every size. */
+.hero-word svg{width:1.35em;height:1.1em;margin:0 -.727em .1em 0;flex:none;overflow:visible}
+/* K/R merge: the wordmark's two brand-color letters start pulled apart
+   (K left, R right) and slide together on load, landing right as the
+   page's own .herowrap fade-in finishes (.24s delay + .5s duration above)
+   so the letters aren't sliding across an invisible band. A short
+   text-shadow pulse fires on landing to sell "merge" as a distinct beat
+   rather than just a slide-and-stop. Implicit 0% keyframe = the element's
+   own pre-animation transform (set by .kr-k/.kr-r below), so krMerge only
+   needs a `to` frame. */
+.hero-word .kr{color:var(--accent);display:inline-block;opacity:0}
+.hero-word .kr-k{position:relative;transform:translateX(-32px);
+  animation:krMerge 1s cubic-bezier(.2,.8,.3,1) .8s forwards,
+    krPulse .45s ease-out 1.8s forwards}
+/* Echoes the KAUFMAN | ROSSIN credit line's own pipe divider (.hero-pipe)
+   — grows in right as K/R land and form "KR" (1.8s, same moment as their
+   pulse), holds through the pause, then shrinks back out as R continues
+   into its real position (2.8s, same moment .hero-word-rest starts
+   fading in). Positioned relative to .kr-k itself (not the whole word)
+   so it doesn't need a measured absolute offset. */
+/* margin-left/width were fixed 10px/4px, tuned against desktop's ~88px
+   wordmark font-size -- same scale-mismatch bug as the icon pull-in above.
+   At mobile's 46px floor that fixed footprint ate a much bigger share of
+   --kr-gap below (which IS em-based), so the divider ran into R instead of
+   sitting cleanly between the two letters. em-based keeps the same ratio
+   to --kr-gap at every size. */
+.kr-divider{position:absolute;left:100%;top:50%;margin-left:.114em;
+  width:3px;height:1.3em;background:var(--accent);border-radius:2px;
+  transform:translateY(-50%) scaleY(0);transform-origin:center;
+  animation:krDividerIn .3s ease-out 1.8s forwards,
+    krDividerOut .3s ease-in 2.8s forwards}
+@keyframes krDividerIn{to{transform:translateY(-50%) scaleY(1)}}
+@keyframes krDividerOut{to{transform:translateY(-50%) scaleY(0)}}
+@media (prefers-reduced-motion:reduce){
+  .kr-divider{animation:none;transform:translateY(-50%) scaleY(0)}
+}
+/* R doesn't just slide into its real spot — it stops next to K first
+   (forming "KR" at the same moment K lands: 33% of this 3s run = .8s
+   delay + 1s, matching krMerge's own timing above), holds there through
+   66% (a full second), then continues on into its real position while
+   .hero-word-rest (the "lea"/"ance" spans, still at opacity 0) fades in
+   around it so R doesn't appear to slide across already-visible
+   letters. --kr-gap is the horizontal distance from R's real position
+   back to next to K, in em so it scales with the responsive wordmark
+   size instead of a viewport-specific px guess — deliberately short of
+   flush against K (K's own glyph has a diagonal leg that reads as
+   touching R's stem at true zero gap) so "KR" reads as two distinct
+   letters, not a collision. */
+.hero-word .kr-r{--kr-gap:-1.15em;transform:translateX(32px);
+  animation:krFormThenSettle 3s cubic-bezier(.4,0,.2,1) .8s forwards,
+    krPulse .45s ease-out 1.8s forwards,
+    krPulse .4s ease-out 3.8s forwards}
+@keyframes krMerge{to{opacity:1;transform:translateX(0)}}
+@keyframes krFormThenSettle{
+  0%{opacity:0;transform:translateX(32px)}
+  33%{opacity:1;transform:translateX(var(--kr-gap))}
+  66%{opacity:1;transform:translateX(var(--kr-gap))}
+  100%{opacity:1;transform:translateX(0)}
+}
+@keyframes krPulse{
+  0%,100%{text-shadow:0 0 0 rgba(174,209,54,0)}
+  50%{text-shadow:0 0 18px rgba(174,209,54,.9)}
+}
+.hero-word-rest{opacity:0;animation:heroRestIn .5s ease-out 2.8s forwards}
+@keyframes heroRestIn{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .hero-word .kr{animation:none;opacity:1;transform:none}
+  .hero-word-rest{animation:none;opacity:1}
+}
 .hero-rule{width:100%;height:4px;background:var(--accent);margin:16px 0 10px}
 .hero-sub{margin:0;font-size:12px;letter-spacing:.1em;
   text-transform:uppercase;color:#bcd3e6}
@@ -437,6 +527,25 @@ h1.wordmark svg{width:.85em;height:.72em;margin-bottom:.08em;flex:none}
   .hero-divider{display:none}
   .hero-bgmark svg{width:340px;height:auto}
   .herowrap{margin-bottom:6px}
+  /* .hero-rule's 16px/10px margin is fixed px, not tied to the wordmark's
+     font-size (the rule sits outside .hero-word, so em there wouldn't
+     track the wordmark anyway) -- it just reads as oversized once the
+     wordmark itself has shrunk to its 46px mobile floor. Tightened to
+     match, same reasoning as the other mobile paddings in this block. */
+  .hero-rule{margin:8px 0 8px}
+  /* Both em-scaled correctly now (proportional to desktop's approved
+     look), but at mobile's small absolute sizes the same ratio still
+     reads as cramped -- icon nearly touching K, divider nearly touching
+     R. Relaxed further on mobile only: less negative icon pull-in opens
+     air before the K, smaller divider margin-left pulls the bar back
+     toward K and off of R. Desktop unchanged. */
+  .hero-word svg{margin-right:-.65em;transform:translateY(-4px)}
+  .kr-divider{margin-left:.05em}
+  /* Was centered on mobile (floated with dead space either side, read as
+     adrift rather than deliberate) -- shifted right instead, matching
+     desktop's right-aligned-to-the-wordmark treatment rather than
+     centering. Per Alexander. */
+  .hero-sub{align-self:flex-end;text-align:right}
 }
 
 /* "by KAUFMAN | ROSSIN" credit line — same navy/lime pipe as the full-size
@@ -594,7 +703,8 @@ header.krheader{animation-delay:.08s}
 
 .coverage{font-size:12.5px;color:var(--ink-2)}
 .coverage summary{cursor:pointer;font-size:12.5px;color:var(--brand);
-  font-weight:600;list-style:none}
+  font-weight:600;list-style:none;display:inline-block;
+  padding-bottom:3px;border-bottom:2px solid var(--accent)}
 .coverage summary::-webkit-details-marker{display:none}
 .coverage summary::before{content:"▸ ";}
 .coverage[open] summary::before{content:"▾ ";}
@@ -838,6 +948,50 @@ header.krheader{animation-delay:.08s}
 .badge.t-Proposed{color:#fff;background:var(--warn)}
 .badge.t-Guidance{color:#fff;background:var(--brand)}
 .badge.t-Enforcement{color:#fff;background:var(--neutral)}
+.p-sdn .sdnintro{font-size:12.5px;color:var(--ink-muted);margin:2px 0 28px}
+.p-sdn .sdnlist{display:flex;flex-direction:column;gap:2px}
+.sdnrow{display:flex;align-items:center;gap:10px;padding:6px 0;
+  border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.sdnrow[hidden]{display:none}
+.sdnrow .badge{flex:none}
+.sdnname{font-size:13px;font-weight:600;flex:1 1 auto;min-width:180px}
+.sdnmeta{font-size:12px;color:var(--ink-muted);white-space:nowrap}
+.sdnempty,.sdnnote{font-size:12.5px;color:var(--ink-muted)}
+.sdnsearch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sdnsearch input{flex:1 1 320px;max-width:420px;appearance:none;-webkit-appearance:none;
+  font-family:var(--ui-font);font-size:14px;padding:8px 12px;
+  color:var(--ink);background:var(--surface);border:1px solid var(--border);
+  border-radius:10px}
+.sdnsearch input:focus{outline:2px solid var(--brand);outline-offset:1px;
+  border-color:var(--brand)}
+.sdnsearch input::-webkit-search-cancel-button{display:none}
+.sdncount{font-size:12.5px;color:var(--ink-muted)}
+.p-sdn h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--brand);font-weight:700;margin:18px 0 8px;padding-bottom:4px;
+  border-bottom:2px solid var(--accent);display:inline-block}
+.sdnfullsearch{margin-top:4px}
+.sdnfullcount{font-weight:400;text-transform:none;letter-spacing:0}
+.sdnhighlights{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 28px}
+.sdnhighlights .sdnmini h3{margin:0;display:inline-block}
+.sdnmini summary{cursor:pointer;list-style:none}
+.sdnmini summary::-webkit-details-marker{display:none}
+.sdnmini summary::before{content:"▸ ";color:var(--ink-muted);font-size:12px}
+.sdnmini[open] summary::before{content:"▾ "}
+/* Long entity names (some run 60+ chars) wrapped inconsistently against
+   short ones when name+meta shared a row with flex-wrap — some rows one
+   line, some two, reading as cramped/uneven. Every row now always stacks
+   name then meta, so the rhythm is consistent regardless of name length. */
+.sdnhighlights .sdnrow{flex-direction:column;align-items:flex-start;
+  gap:2px;padding:9px 0}
+.sdnhighlights .sdnmeta{white-space:normal}
+.sdnhighlights .sdnlist{gap:0}
+@media (max-width:900px){.sdnhighlights{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.sdnhighlights{grid-template-columns:1fr}}
+.sdnactivity{margin-top:32px;padding-top:18px;border-top:1px solid var(--rule)}
+.sdnactivity summary{cursor:pointer;font-size:13px;font-weight:600;
+  color:var(--ink-2)}
+.sdnactivity[open] summary{margin-bottom:4px}
+.sdnsince{font-weight:400;color:var(--ink-muted);font-size:12px}
 .card .agency{font-size:12px;color:var(--ink-muted)}
 .card h3{font-size:14.5px;margin:0 0 5px;font-weight:600;line-height:1.35;
   text-align:justify;text-align-last:left}
@@ -1497,12 +1651,17 @@ let userChoseDlLimit = false;    // same, for the deadlines panel
 let userToggledFilters = false;  // or an explicit open/close
 
 function renderCards(rs) {
-  const list = rs.slice(0, cardLimit);
-  $('#cards').innerHTML = list.length ? list.map(d => {
+  // Every matching row renders into the DOM regardless of cardLimit — only
+  // display is capped (via the `hidden` attribute, same mechanism as a native
+  // <details> accordion), not markup. A search crawler executing this script
+  // sees the full text of every update; only human eyes past cardLimit need a
+  // click to reveal it. Slicing rs itself before mapping used to mean 362 of
+  // 370 plain-English summaries never existed in the DOM at all.
+  $('#cards').innerHTML = rs.length ? rs.map((d, i) => {
     const short = (d.type || '').split(' ')[0];
     // In the "everything" view a set-aside item must be visibly marked, or the
     // reader cannot tell which items met the criteria and which did not.
-    return `<div class="card${d.relevant ? '' : ' dropped'}">
+    return `<div class="card${d.relevant ? '' : ' dropped'}"${i >= cardLimit ? ' hidden' : ''}>
       <div class="top">
         <span class="badge t-${esc(short)}">${esc(d.type || '—')}</span>
         <span class="agency">${esc(d.sources.join(' · '))}</span>
@@ -1512,14 +1671,14 @@ function renderCards(rs) {
       <p>${esc(d.why)}</p>
       <div class="cardfoot">
         <div class="meta">${esc(d.date)} · <span class="u u-${esc(d.urgency)}">${esc(d.urgency)}</span></div>
-        <div class="actions">${calButtons(d)}${itemActionButtons(d)}</div>
+        <div class="actions">${d.slug ? `<a class="cal" href="updates/${esc(d.slug)}.html">Details</a>` : ''}${calButtons(d)}${itemActionButtons(d)}</div>
       </div>
     </div>`;
   }).join('') : '<div class="empty">No updates match this filter.</div>';
   $('#cardcount').textContent = `${rs.length} update${rs.length === 1 ? '' : 's'}`;
   const more = $('#showmore');
   if (more) {
-    const hidden = rs.length - list.length;
+    const hidden = rs.length - Math.min(rs.length, cardLimit);
     more.hidden = hidden <= 0;
     more.textContent = `Show ${hidden} more update${hidden === 1 ? '' : 's'}`;
   }
@@ -1902,6 +2061,52 @@ if (dlMoreBtn) dlMoreBtn.addEventListener('click', () => {
   render();
   dlMoreBtn.hidden = true;
 });
+
+// Full-list SDN search — looks up a name against the CURRENT ~19k-entry list,
+// not just recent changes. sdn_index.json isn't fetched until the reader
+// actually types something, so a page load that never touches this box never
+// pays for it. Fetched once and cached in memory for the rest of the session.
+const sdnListQ = document.getElementById('sdnlistq');
+if (sdnListQ) {
+  const sdnListResults = document.getElementById('sdnlistresults');
+  const sdnListCount = document.getElementById('sdnlistcount');
+  let sdnIndex = null;
+  let sdnIndexPromise = null;
+  const SDN_RESULT_CAP = 50;
+
+  function renderSdnResults(query) {
+    if (!query) { sdnListResults.innerHTML = ''; sdnListCount.textContent = ''; return; }
+    const q = query.toLowerCase();
+    const matches = sdnIndex.filter(([num, name]) => name.toLowerCase().includes(q));
+    const shown = matches.slice(0, SDN_RESULT_CAP);
+    sdnListResults.innerHTML = shown.length ? shown.map(([num, name, type, program]) =>
+      `<div class="sdnrow">
+        <span class="sdnname">${esc(name || '(unnamed entry)')}</span>
+        <span class="sdnmeta">${esc(program || '—')}${type ? ' · ' + esc(type) : ''}</span>
+      </div>`
+    ).join('') : '<p class="sdnempty">No matches on the current list.</p>';
+    sdnListCount.textContent = matches.length > SDN_RESULT_CAP
+      ? `showing first ${SDN_RESULT_CAP} of ${matches.length} matches`
+      : `${matches.length} match${matches.length === 1 ? '' : 'es'}`;
+  }
+
+  sdnListQ.addEventListener('input', () => {
+    const query = sdnListQ.value.trim();
+    if (!query) { renderSdnResults(''); return; }
+    if (sdnIndex) { renderSdnResults(query); return; }
+    if (!sdnIndexPromise) {
+      sdnListCount.textContent = 'loading full list…';
+      sdnIndexPromise = fetch('sdn_index.json').then(r => r.json()).then(data => {
+        sdnIndex = data;
+        return data;
+      }).catch(() => {
+        sdnListCount.textContent = 'Could not load the full list — try again.';
+        sdnIndexPromise = null;
+      });
+    }
+    sdnIndexPromise.then(() => { if (sdnIndex) renderSdnResults(sdnListQ.value.trim()); });
+  });
+}
 
 // "Add to calendar" — delegated on document rather than any one list, since
 // .cal buttons now render in three places that each re-render independently
@@ -2349,6 +2554,122 @@ def build_rows(store):
     return rows
 
 
+_SLUG_STRIP = re.compile(r"[^a-z0-9]+")
+
+
+def assign_slugs(rows):
+    """Give every relevant row a stable, unique slug for its permalink page.
+    Set-aside items get none — thin, filtered-out content isn't worth its own
+    indexable page, and skipping them keeps the sitemap free of noise."""
+    seen = set()
+    for d in rows:
+        if not d["relevant"]:
+            d["slug"] = None
+            continue
+        base = _SLUG_STRIP.sub("-", (d["title"] or "").lower()).strip("-")[:80] or "update"
+        slug = f"{d['date'] or '0000-00-00'}-{base}"
+        if slug in seen:
+            n = 2
+            while f"{slug}-{n}" in seen:
+                n += 1
+            slug = f"{slug}-{n}"
+        seen.add(slug)
+        d["slug"] = slug
+
+
+UPDATE_PAGE_CSS = """
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  max-width:760px;margin:0 auto;padding:32px 20px;color:#212529;line-height:1.6;background:#fff}
+a{color:#003b6a}
+.badge{display:inline-block;background:#f0f0f0;color:#3c3c3c;font-size:12px;
+  font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;
+  border-radius:3px;margin:0 6px 0 0}
+.meta{color:#6c757d;font-size:13px;margin:12px 0 24px}
+.back{display:inline-block;margin-bottom:20px;font-size:13px}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid #e3e3e3;
+  font-size:12px;color:#6c757d}
+"""
+
+
+def build_update_page(d):
+    """A standalone, permalinked page for one regulatory update — the plain-
+    English summary that otherwise only exists inside the dashboard's
+    client-side JSON. Kept deliberately light (no app JS/CSS) since its only
+    job is to be a crawlable, shareable landing page for this one topic."""
+    title = d["title"] or "Regulatory update"
+    agency = " · ".join(d["sources"]) or "Federal regulator"
+    desc = (d["why"] or "")[:300]
+    page_url = f"{SITE_URL}{UPDATES_DIR}/{d['slug']}.html"
+    dates = []
+    if d.get("comments_close_on"):
+        dates.append(f"Comments close {hesc(d['comments_close_on'])}")
+    if d.get("effective_on"):
+        dates.append(f"Takes effect {hesc(d['effective_on'])}")
+    meta_line = " · ".join([hesc(d["date"] or "")] + dates)
+    jsonld = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": title,
+        "description": d["why"] or "",
+        "datePublished": d["date"] or "",
+        "url": page_url,
+        "publisher": {"@type": "Organization", "name": "Kaufman Rossin",
+                       "url": "https://kaufmanrossin.com/"},
+        "about": agency,
+    }
+    return f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{hesc(title)} — ClearReg</title>
+<meta name="description" content="{hesc(desc)}">
+<link rel="canonical" href="{page_url}">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="ClearReg">
+<meta property="og:title" content="{hesc(title)}">
+<meta property="og:description" content="{hesc(desc)}">
+<meta property="og:url" content="{page_url}">
+<meta property="og:image" content="{SITE_URL}og-image.png">
+<script type="application/ld+json">{json.dumps(jsonld)}</script>
+<style>{UPDATE_PAGE_CSS}</style></head>
+<body>
+<a class="back" href="../index.html">&larr; Back to the ClearReg tracker</a><br>
+<span class="badge">{hesc(d["type"] or "Update")}</span><span class="badge">{hesc(agency)}</span>
+<h1>{hesc(title)}</h1>
+<p class="meta">{meta_line}</p>
+<p>{hesc(d["why"] or "")}</p>
+<p><a href="{hesc(d["url"])}" target="_blank" rel="noopener">Read the original source at {hesc(agency)} &rarr;</a></p>
+<footer>Tracked by <a href="../index.html">ClearReg</a>, Kaufman Rossin's regulatory
+  intelligence platform. Not legal or compliance advice.</footer>
+</body></html>"""
+
+
+def write_update_pages(rows):
+    """Writes one permalink HTML page per relevant row into UPDATES_DIR.
+    Returns the list of (page_url, lastmod) pairs for the sitemap."""
+    os.makedirs(UPDATES_DIR, exist_ok=True)
+    entries = []
+    for d in rows:
+        if not d["slug"]:
+            continue
+        with open(os.path.join(UPDATES_DIR, f"{d['slug']}.html"), "w",
+                   encoding="utf-8") as f:
+            f.write(build_update_page(d))
+        entries.append((f"{SITE_URL}{UPDATES_DIR}/{d['slug']}.html",
+                         d["date"] or ""))
+    return entries
+
+
+def build_sitemap(update_entries, today):
+    urls = [(SITE_URL, str(today))] + update_entries
+    body = "".join(
+        f"  <url><loc>{hesc(u)}</loc><lastmod>{hesc(lm or str(today))}</lastmod></url>\n"
+        for u, lm in urls
+    )
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f"{body}</urlset>\n")
+
+
 def kpis(rows, today):
     """Headline numbers, and tag each item with the tiles it belongs to.
 
@@ -2550,6 +2871,15 @@ def coverage_panel(store):
         'Federal Register record could be matched, and taken from that record\'s '
         'structured fields. An item showing no deadline has no match — that does '
         'not mean no deadline exists.</p>'
+        # A separate mechanism from everything above — full-list diff against
+        # OFAC's own SDN.CSV, not the classified/relevance-filtered feed — so
+        # it needs its own line here or its coverage is invisible next to the
+        # agency list above, same principle as the rest of this panel.
+        '<p><strong>OFAC SDN list:</strong> tracked separately from the agency '
+        'feed above — the full <a href="https://sanctionslist.ofac.treas.gov/Home/SdnList" '
+        'target="_blank" rel="noopener">Specially Designated Nationals list</a> is '
+        'downloaded and diffed against the previous day\'s list, not classified or '
+        'filtered for relevance the way the rest of this page is.</p>'
         # One honest scope line instead of an enumerated "not tracked" list. The
         # enumeration named specific agencies (which read as tracked) and kept
         # inviting the question of why NYDFS — followed only by personal email
@@ -2568,6 +2898,103 @@ def coverage_panel(store):
         'filtered out, so this is not a complete record of everything these '
         'agencies publish.</p>'
         "</div></details>"
+    )
+
+
+def sdn_panel(today):
+    """OFAC SDN list changes, written by sdn_monitor.py into SDN_LOG_PATH.
+    Server-rendered, not JS-templated like the main card feed — volume here
+    is naturally small, so there's no pagination-vs-crawlability tradeoff to
+    make; everything just renders.
+    """
+    if not os.path.exists(SDN_LOG_PATH):
+        return ""
+    with open(SDN_LOG_PATH, encoding="utf-8") as f:
+        log = json.load(f)
+    since_label = f"records back to {hesc(min(e['date'] for e in log))}" if log else "no records yet"
+
+    # Three parallel lists rather than one combined feed — a reader wants
+    # "who's newly sanctioned" or "who got delisted" or "what changed on an
+    # existing entry", not a mixed chronological stream they have to scan
+    # for the type they care about. (An earlier combined "Recent changes"
+    # list — everything interleaved, its own search box — turned out to be
+    # almost entirely redundant with these three, per Alexander.) Pulled
+    # from the WHOLE log, not a day-windowed slice — a slow month for
+    # additions shouldn't leave this empty just because the 5 most recent
+    # ones happened 40 days ago.
+    def _mini_list(title, action, empty_label):
+        matching = sorted((e for e in log if e["action"] == action),
+                           key=lambda e: e["date"], reverse=True)
+        items = matching[:5]
+        if not items:
+            return (f'<details class="sdnmini"><summary><h3>{title}</h3></summary>'
+                    f'<p class="sdnempty">{empty_label}</p></details>')
+        rows = '<div class="sdnlist">' + "".join(
+            f'<div class="sdnrow">'
+            f'<span class="sdnname">{hesc(e["name"] or "(unnamed entry)")}</span>'
+            f'<span class="sdnmeta">{hesc(e["program"] or "—")} · {hesc(e["date"])}</span>'
+            f'</div>'
+            for e in items
+        ) + '</div>'
+        # Fewer than 5 reads as cut off / broken unless it's clear that's
+        # the true total, not a display limit — same principle as the
+        # "Not a complete record" line elsewhere on this page: absence
+        # or a short list must not be mistaken for missing data.
+        note = (f'<p class="sdnnote">All {len(matching)} recorded.</p>'
+                if len(matching) < 5 else '')
+        return (f'<details class="sdnmini"><summary><h3>{title}</h3></summary>'
+                f'{rows}{note}</details>')
+
+    highlights = (
+        '<div class="sdnhighlights">'
+        + _mini_list("Most recent additions", "added", "No additions recorded yet.")
+        + _mini_list("Most recent removals", "removed", "No removals recorded yet.")
+        + _mini_list("Most recent modifications", "modified", "No modifications recorded yet.")
+        + '</div>'
+    )
+
+    total = None
+    if os.path.exists(SDN_SNAPSHOT_PATH):
+        with open(SDN_SNAPSHOT_PATH, encoding="utf-8") as f:
+            total = len(json.load(f))
+    total_label = f'{total:,} entries' if total is not None else 'the full list'
+
+    # Separate from the changes log above: this looks up any name against the
+    # CURRENT full SDN list (~19k entries), not just what changed recently.
+    # Backed by sdn_index.json, fetched lazily on first use rather than
+    # embedded in the page — a 19k-entry list doesn't belong in every page
+    # load, only in the hands of someone actually searching.
+    full_search = (
+        '<div class="sdnfullsearch">'
+        f'<h3>Search the full list <span class="sdnfullcount">({total_label})</span></h3>'
+        '<div class="sdnsearch">'
+        '<input id="sdnlistq" type="search" autocomplete="off" '
+        'placeholder="Search all tracked SDN entries by name…" '
+        'aria-label="Search the full SDN list">'
+        '<span id="sdnlistcount" class="sdncount"></span>'
+        '</div>'
+        '<div id="sdnlistresults" class="sdnlist sdnfullresults"></div>'
+        '</div>'
+    )
+
+    # Led with the full-list search — that's the one thing most readers
+    # actually want here. Everything else (day-over-day changes, recent
+    # additions/removals) is real and stays, but tucked into a closed
+    # sub-section rather than competing with it up front; the panel was
+    # reading as cluttered with all of it open by default.
+    return (
+        '<details class="panel p-sdn foldable" open>'
+        f'<summary><h2>OFAC SDN list <span style="float:right;'
+        f'text-transform:none;letter-spacing:0">{total_label}</span></h2></summary>'
+        '<p class="sdnintro">Search OFAC\'s Specially Designated Nationals '
+        'list by name. Not classified or summarized; a name and program tag '
+        'speaks for itself.</p>'
+        f'{full_search}'
+        '<details class="sdnactivity">'
+        f'<summary>Recent list activity <span class="sdnsince">({since_label})</span></summary>'
+        f'{highlights}'
+        '</details>'
+        '</details>'
     )
 
 
@@ -2673,6 +3100,7 @@ def main():
         store = json.load(f)
 
     rows = build_rows(store)
+    assign_slugs(rows)
     today = datetime.now(timezone.utc).date()
 
     # Busiest agency first, so the ordering carries information rather than being
@@ -2706,6 +3134,7 @@ def main():
 
     coverage_html = coverage_panel(store)
     regref_html = regref_panel()
+    sdn_html = sdn_panel(today)
 
 
     # Tiles are clickable when they count something — clicking filters the list to
@@ -2751,6 +3180,7 @@ def main():
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Regulatory update tracker — community banks, credit unions &amp; fintechs</title>
 <meta name="description" content="{share_desc}">
+<link rel="canonical" href="{SITE_URL}">
 <!-- Tab, bookmark and home-screen icons. Generated by make_icons.py; the paths
      are relative because the site is served from a /regwatch/ subpath, not a
      domain root. Anything absolute here 404s.
@@ -2782,6 +3212,21 @@ def main():
 <meta name="twitter:title" content="Regulatory update tracker — community banks, credit unions &amp; fintechs">
 <meta name="twitter:description" content="{share_desc}">
 <meta name="twitter:image" content="{SITE_URL}og-image.png">
+<script type="application/ld+json">{{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "ClearReg",
+  "url": "{SITE_URL}",
+  "description": {json.dumps(share_desc)},
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "publisher": {{
+    "@type": "Organization",
+    "name": "Kaufman Rossin",
+    "url": "https://kaufmanrossin.com/"
+  }}
+}}</script>
 <style>{CSS}</style></head>
 <body data-today="{today}">
 <!-- Replica of kaufmanrossin.com's own two-band header, full-bleed outside
@@ -2894,19 +3339,21 @@ def main():
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-titleblock">
-      <p class="hero-word">ClearReg<svg viewBox="0 0 40 34" aria-hidden="true">
-          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L35,10" fill="none"
+      <h1 class="hero-word"><svg viewBox="0 0 40 34" aria-hidden="true">
+          <path d="M2,22 L9,29 L17,10 L22,10 L25,4 L28,10 L38,10" fill="none"
             stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
           <circle class="hero-ping-sm" cx="25" cy="4" r="2.6" fill="none" stroke="var(--accent)"
             stroke-width="1.2" opacity="0"/>
           <circle cx="25" cy="4" r="2.6" fill="var(--accent)"/>
-        </svg></p>
+        </svg><span class="kr kr-k">C<span class="kr-divider" aria-hidden="true"></span></span><span class="hero-word-rest">lear</span><span class="kr kr-r">R</span><span class="hero-word-rest">eg</span><span class="sr-only"> — Regulatory Update Tracker for Community Banks, Credit Unions &amp; Fintechs</span></h1>
       <div class="hero-rule"></div>
       <p class="hero-sub"><b>by KAUFMAN <span class="hero-pipe">|</span> ROSSIN</b></p>
     </div>
     <div class="hero-divider"></div>
-    <p class="hero-copy">The latest technology makes regulatory noise —
-      and now yours — more measurable, manageable and easy to act on.</p>
+    <p class="hero-copy">Compliance teams don't need more alerts — they need
+      clarity. ClearReg, Kaufman Rossin's regulatory intelligence platform,
+      transforms the constant stream of rule changes into measurable,
+      manageable insight your team can act on immediately.</p>
   </div>
 </div>
 
@@ -2965,6 +3412,12 @@ def main():
     <div class="agrow" id="agencies"></div>
   </div>
 </div>
+
+<!-- Moved up from the bottom of the page, per Alexander — an empty-state
+     panel ("No SDN list changes recorded") buried below 370 cards and the
+     footer read as broken/missing rather than as a quiet day. -->
+<div style="margin:18px 0">{sdn_html}</div>
+
 <!-- Filters & view sits above Search now (was the other way round). On a phone
      this block collapses to its summary, so Search still lands directly under a
      single "Filters & view ▸" line and stays the first live control. -->
@@ -3160,6 +3613,12 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         f.write(html)
+
+    update_entries = write_update_pages(rows)
+    with open(SITEMAP_PATH, "w", encoding="utf-8") as f:
+        f.write(build_sitemap(update_entries, today))
+    print(f"Wrote {len(update_entries)} update pages to {UPDATES_DIR}/ "
+          f"and {SITEMAP_PATH}")
 
     # The subscribable feed. Written with CRLF already embedded, so newline="" to
     # stop the platform translating them again.

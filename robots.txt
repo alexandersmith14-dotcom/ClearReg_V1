@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alexandersmith14-dotcom.github.io/ClearReg_V1/sitemap.xml
